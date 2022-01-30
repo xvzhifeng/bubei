@@ -1,5 +1,9 @@
 <template>
   <view class="content" :style="{ height: app_height + 'rpx' }">
+    <view class="navigate">
+      <uni-icons type="left" color="" @click="back()" size="50rpx"/>
+    </view>
+
     <view class="userIconView">
       <cover-image
         :src="userImageUrl"
@@ -13,22 +17,27 @@
     <view class="grid">
       <view class="gridUpRow">
         <view class="subGrid">
-          <uni-icons type="chat" color="#52CC6F" size="50" @click="message()"/>
+          <uni-icons type="chat" color="#52CC6F" size="50" @click="message()" />
           <text>我的消息</text>
         </view>
 
         <view class="subGrid">
-          <uni-icons type="camera" color="#C465E2" size="50" @click="camera()"/>
+          <uni-icons
+            type="camera"
+            color="#C465E2"
+            size="50"
+            @click="camera()"
+          />
           <text>我的装备</text>
         </view>
       </view>
       <view class="gridDownRow">
         <view class="subGrid">
-          <uni-icons type="gift" color="#FEEDA6" size="50" @click="gift()"/>
+          <uni-icons type="gift" color="#FEEDA6" size="50" @click="gift()" />
           <text>我的酷币</text>
         </view>
         <view class="subGrid">
-          <uni-icons type="color" color="#FF7272" size="50" @click="color()"/>
+          <uni-icons type="color" color="#FF7272" size="50" @click="color()" />
           <text>我的喜欢</text>
         </view>
       </view>
@@ -42,7 +51,7 @@ export default {
     return {
       username: "用户名",
       app_height: 0,
-      userImageUrl:"/static/logo.png"
+      userImageUrl: "/static/logo.png",
     };
   },
   onLoad(options) {
@@ -56,7 +65,10 @@ export default {
     });
   },
   methods: {
-    gotoUserInfo(){
+    back() {
+      uni.navigateBack({ delta: 1 });
+    },
+    gotoUserInfo() {
       //todo
       uni.showToast({
         title: "gotoUserInfo",
@@ -64,7 +76,7 @@ export default {
         mask: true,
       });
     },
-    message(){
+    message() {
       //todo
       uni.showToast({
         title: "message",
@@ -72,7 +84,7 @@ export default {
         mask: true,
       });
     },
-    camera(){
+    camera() {
       //todo
       uni.showToast({
         title: "camera",
@@ -80,7 +92,7 @@ export default {
         mask: true,
       });
     },
-    gift(){
+    gift() {
       //todo
       uni.showToast({
         title: "gift",
@@ -88,14 +100,14 @@ export default {
         mask: true,
       });
     },
-    color(){
+    color() {
       //todo
       uni.showToast({
         title: "color",
         icon: "success",
         mask: true,
       });
-    }
+    },
   },
 };
 </script>
@@ -110,11 +122,18 @@ export default {
   justify-content: center;
 }
 
+.navigate{
+  margin: 20rpx;
+  position: absolute;
+  left: 0rpx;
+  top:30rpx;
+}
+
 .userIconView {
   display: flex;
   flex-direction: column;
-	align-items: center;
-	justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .userIcon {
@@ -149,17 +168,17 @@ export default {
 .subGrid {
   width: 280rpx;
   height: 280rpx;
-  border-radius:20rpx;
+  border-radius: 20rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 20rpx;
-  background: rgba(52,64,106,0.8);
+  background: rgba(52, 64, 106, 0.8);
   box-shadow: 2px 2px 2px #000000;
 }
 
-text{
+text {
   color: rgb(255, 255, 255);
 }
 </style>

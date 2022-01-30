@@ -7,49 +7,32 @@
 	// 	}
 	// },
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		
-		
-		
-		
-		
-		
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom"
 			}
 		},
-		
 		{
 			"path": "pages/login/login",
-			"style": {
-				"navigationBarTitleText": "不背日语"
-			}
+			"style": {}
 		},
-	
-		
 		{
 			"path": "pages/login/email",
-			"style": {
-				"navigationBarTitleText": "邮箱登录"
-			}
+			"style": {}
 		},
 		{
 			"path": "pages/login/verificationCode",
-			"style": {
-				"navigationBarTitleText": "邮箱登录"
-			}
+			"style": {}
 		},
 		{
 			"path": "pages/index/user",
 			"style": {
+				"navigationStyle": "custom"
 			}
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "不背日语",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationStyle": "custom"
 	}
 }

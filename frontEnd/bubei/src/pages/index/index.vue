@@ -12,18 +12,23 @@
       <text> Hyacinth </text>
     </view>
 
-    <view class="buttonView" >
+    <view class="buttonView">
       <view classs="subButtonView1">
-        <button :disabled="false" :loading="false" @click="study()" plain="true" class="button">
+        <button
+          :disabled="false"
+          :loading="false"
+          @click="study()"
+          plain="true"
+          class="button"
+        >
           <view class="subButtonView1_1">
             <text class="BurronText">Learn</text>
             <text class="BurronTextCount">{{ learnCount }}</text>
           </view>
-          
         </button>
       </view>
 
-      <view classs="subButtonView2" >
+      <view classs="subButtonView2">
         <button
           :disabled="false"
           :loading="false"
@@ -75,10 +80,12 @@ export default {
         icon: "success",
         mask: true,
       });
-      uni.navigateTo({ url: "/pages/index/user" ,
-	  success:()=>{
-		  console.log("success goto user page");
-	  }});
+      uni.navigateTo({
+        url: "/pages/index/user",
+        success: () => {
+          console.log("success goto user page");
+        },
+      });
     },
     study() {
       uni.showToast({
@@ -157,9 +164,9 @@ export default {
 	align-items: left;
 	justify-content: left; */
   position: absolute;
-  left: 0;
-  top: 0;
-  align-self: start;
+  margin: 20rpx;
+  left: 2rpx;
+  top: 30rpx;
 }
 
 .userIcon {
@@ -172,32 +179,36 @@ export default {
   justify-content: space-around;
   width: 750rpx;
   flex-basis: 20upx;
- 
+
   margin: 0 auto;
 }
-.button{
+.button {
   padding: 0rpx;
+  /* filter: blur(1px); */
 }
 .subButtonView1 {
   width: 280rpx;
   height: 120rpx;
   border-radius: 50%;
- display: inline-block;
-  /* opacity: 0.3; */
-  padding: 0px;
+  display: inline-block;
+  /* border: 2px solid #4caf50; */
+  filter: blur(10px);
 }
 
 .subButtonView1_1 {
   width: 250rpx;
   display: flex;
   flex-direction: column;
-  background: rgba(58, 57, 57,0.4);
-
+  background: rgba(10, 10, 10, 0.4);
+  /* border: 2px solid #4caf50; */
+  /* z-index: -1;
+  opacity: 0.5; */
 }
 
 .subButtonView2 {
   border-radius: 100px;
-width: 280rpx;
+  width: 280rpx;
+  /* border: 2px solid #4caf50; */
   /* opacity: 0.3;
   filter: blur(20px); */
   display: inline-block;
@@ -206,16 +217,12 @@ width: 280rpx;
   font-size: 60rpx;
   display: flex;
   flex-basis: 500upx;
-  
-
 }
 .BurronText {
   font-size: 28rpx;
-  color: rgb(58, 57, 57);
+  color: rgba(14, 13, 13);
   width: 120rpx;
   display: block;
-  
-
 }
 .BurronTextCount {
   font-size: 28rpx;
