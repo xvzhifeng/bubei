@@ -178,9 +178,10 @@ export default {
   display: flex;
   justify-content: space-around;
   width: 750rpx;
-  flex-basis: 20upx;
-
-  margin: 0 auto;
+  /* flex-basis: 5upx;
+  margin: 0 auto; */
+  position: absolute;
+  bottom: 240rpx;
 }
 .button {
   padding: 0rpx;
