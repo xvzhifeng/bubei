@@ -114,7 +114,8 @@ export default {
 
 <style>
 .content {
-  background: linear-gradient(to top, rgba(65, 63, 63, 0), rgb(5, 110, 136));
+  /* background: linear-gradient(to top, rgba(65, 63, 63, 0), rgb(16, 17, 17)); */
+  background: #1f1d3a;
   background-size: cover;
   display: flex;
   flex-direction: column;

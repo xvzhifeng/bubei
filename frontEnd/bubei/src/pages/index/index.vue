@@ -1,5 +1,6 @@
 <template >
   <view class="content" :style="{ height: appHeight + 'rpx' }">
+    <!-- // backgrount -->
     <image class="image-bg" :src="backgroundUrl" />
     <view class="userIconView">
       <cover-image
@@ -62,6 +63,7 @@ export default {
       reviewCount: 20,
       appHeight: 0,
       backgroundUrl: "/static/temp/index.jpg",
+      // backgroundUrl:"/static/logo.png",
     };
   },
   onLoad() {
