@@ -14,7 +14,9 @@
     </view>
 
     <view class="buttonView">
+       
       <view classs="subButtonView1">
+        <view class="xvhua"></view>
         <button
           :disabled="false"
           :loading="false"
@@ -30,18 +32,21 @@
       </view>
 
       <view classs="subButtonView2">
-        <button
-          :disabled="false"
-          :loading="false"
-          @click="review()"
-          plain="true"
-          class="button"
-        >
-          <view class="subButtonView1_1">
-            <text class="BurronText">Review</text>
-            <text class="BurronTextCount">{{ reviewCount }}</text>
-          </view>
-        </button>
+        <view class="xvhua"></view>
+        <view class="reviewButtton">
+          <button
+            :disabled="false"
+            :loading="false"
+            @click="review()"
+            plain="true"
+            class="button"
+          >
+            <view class="subButtonView1_1">
+              <text class="BurronText">Review</text>
+              <text class="BurronTextCount">{{ reviewCount }}</text>
+            </view>
+          </button>
+        </view>
       </view>
     </view>
     <!-- bottom icon -->
@@ -91,7 +96,7 @@ export default {
     },
     study() {
       // pages/learn/main
-       uni.navigateTo({
+      uni.navigateTo({
         url: "/pages/learn/main",
         success: () => {
           console.log("success goto learn page");
@@ -194,6 +199,7 @@ export default {
 }
 .button {
   padding: 0rpx;
+  border:0rpx;
   /* filter: blur(1px); */
 }
 .subButtonView1 {
@@ -209,7 +215,7 @@ export default {
   width: 250rpx;
   display: flex;
   flex-direction: column;
-  background: rgba(10, 10, 10, 0.4);
+  /* background: rgba(10, 10, 10, 0.4); */
   /* border: 2px solid #4caf50; */
   /* z-index: -1;
   opacity: 0.5; */
@@ -248,5 +254,20 @@ export default {
   position: absolute;
   bottom: 75rpx;
   color: rgb(255, 251, 246);
+}
+.xvhua {
+  position: absolute;
+  z-index: -1;
+  background-color: rgb(179, 178, 178);
+  filter: blur(2px);
+  height: 100%;
+  width: 250rpx;
+  opacity: 0.8;
+}
+.reviewButtton {
+  z-index: 1;
+   /* position: absolute; */
+    /* filter: blur(10px); */
+  /* float: left; */
 }
 </style>

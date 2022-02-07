@@ -1,6 +1,7 @@
 <template>
   <!-- 最外层 -->
   <view class="content" :style="{ height: appHeight + 'rpx' }">
+   <image class="image-bg" :src="backgroundUrl" />
     <view class="navigate">
       <uni-icons type="left" color="" @click="back()" size="50rpx" />
     </view>
@@ -129,6 +130,7 @@
 export default {
   data() {
     return {
+       backgroundUrl: "/static/temp/index.jpg",
       appHeight: 0,
       nextText: true,
       pageShow: [false, false, false],
@@ -153,7 +155,12 @@ export default {
   },
   methods: {
     back() {
-      uni.navigateBack({ delta: 1 });
+      uni.navigateTo({
+        url: "/pages/index/index",
+        success: () => {
+          console.log("success goto index/index page");
+        },
+      });
     },
     next() {
       this.nextText = !this.nextText;
@@ -166,9 +173,22 @@ export default {
 </script>
 
 <style>
+.image-bg {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  /* opacity: 0.3; */
+  filter: blur(10px);
+  
+}
 .content {
   /* background: linear-gradient(to top, rgba(65, 63, 63, 0), rgb(16, 17, 17)); */
-  background: #1f1d3a;
+ 
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -209,6 +229,7 @@ export default {
   position: absolute;
   left: 75rpx;
   bottom: 200rpx;
+  border-radius: 10rpx;
 }
 
 .wordOption {
