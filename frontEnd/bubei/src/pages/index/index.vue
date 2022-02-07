@@ -90,6 +90,13 @@ export default {
       });
     },
     study() {
+      // pages/learn/main
+       uni.navigateTo({
+        url: "/pages/learn/main",
+        success: () => {
+          console.log("success goto learn page");
+        },
+      });
       uni.showToast({
         title: "Learn",
         icon: "success",
