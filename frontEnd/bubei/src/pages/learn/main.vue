@@ -6,73 +6,70 @@
       <uni-icons type="left" color="" @click="back()" size="50rpx" />
     </view>
     <!-- 单词选项页面 -->
-    <view class="pageOptions" :hidden="!pageShow[0]">
+    <view class="pageOptions" v-show="pageShow[0]">
       <!-- 单词显示区域 -->
       <view class="wordView">
         <view class="wordName">
           <text class="wordName">
-            {{ words[0].name }}
+            {{ words[wordIndex].name }}
           </text>
         </view>
         <view class="wordVoice">
           <text>
-            {{ words[0].voice }}
+            {{ words[wordIndex].voice }}
           </text>
         </view>
       </view>
       <!-- 单词选项区域 -->
       <view class="wordOptions">
         <view class="wordOption">
-          <button @click="options(words[0].name)">
-            {{ words[0].name }}
+          <button @click="options(words[wordIndex].name)">
+            {{ words[wordIndex].name }}
           </button>
         </view>
         <view class="wordOption">
-          <button @click="options(words[0].name)">
-            {{ words[0].name }}
+          <button @click="options(words[wordIndex].name)">
+            {{ words[wordIndex].name }}
           </button>
         </view>
         <view class="wordOption">
-          <button @click="options(words[0].name)">
-            {{ words[0].name }}
+          <button @click="options(words[wordIndex].name)">
+            {{ words[wordIndex].name }}
           </button>
         </view>
         <view class="wordOption">
-          <button @click="options(words[0].name)">
-            {{ words[0].name }}
+          <button @click="options(words[wordIndex].name)">
+            {{ words[wordIndex].name }}
           </button>
         </view>
       </view>
       <view class="lookAnster">
-        <view @click="next()" class="lookAnsterText">
-          <view :hidden="!nextText">
+        <view @click="lookAnster()" class="lookAnsterText">
+          <view>
             <text>看答案</text>
-          </view>
-          <view :hidden="nextText">
-            <text>下一页</text>
           </view>
         </view>
       </view>
     </view>
 
     <!-- 单词详细信息 -->
-    <view class="pageDetail" :hidden="pageShow[1]">
+    <view class="pageDetail" v-show="pageShow[1]">
       <!-- 单词显示区域 -->
       <!-- 单词显示区域 -->
       <view class="wordView">
         <view class="wordName">
           <text class="wordName">
-            {{ words[0].name }}
+            {{ words[wordIndex].name }}
           </text>
         </view>
         <view class="wordVoice">
           <text>
-            {{ words[0].voice }}
+            {{ words[wordIndex].voice }}
           </text>
         </view>
         <view class="wordMeans">
           <text>
-            {{ words[0].means }}
+            {{ words[wordIndex].means }}
           </text>
         </view>
       </view>
@@ -84,22 +81,22 @@
       <view class="wordDetail" :style="{ height: appHeight * 0.6 + 'rpx' }">
         <view
           class="sentenceXvhua"
-          :style="{ height: appHeight * 0.18 + 'rpx' }"></view>
+          :style="{ height: appHeight * 0.18 + 'rpx' }"
+        ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
           <view class="sentenceName">
-            <text> hello, kangkang. </text>
+            <text> {{words[wordIndex].sentence[0].name}}</text>
           </view>
-          <view class="sentenceMean"> <text> 你好，kangkang。</text> </view>
+          <view class="sentenceMean"> <text> {{words[wordIndex].sentence[0].means}}</text> </view>
         </view>
         <view
           class="grammarXvhua"
           :style="{ height: appHeight * 0.38 + 'rpx' }"
         ></view>
         <view class="grammar" :style="{ height: appHeight * 0.38 + 'rpx' }">
-          <view class="grammarList" v-for="(item,index) in words[0].grammer">
-            {{item.name}}  {{item.means}}
+          <view class="grammarList" v-for="(item, index) in words[wordIndex].grammer">
+            {{ item.name }} {{ item.means }}
           </view>
-          
         </view>
       </view>
       <view>
@@ -114,38 +111,78 @@
     </view>
 
     <!-- 单词显示例句，猜单词页面 -->
-    <view class="pagePart" :hidden="!pageShow[2]">
+    <view class="pagePart" v-show="pageShow[2]">
       <!-- 单词显示区域 -->
       <view class="wordView">
-        <text>
-          {{ words[0].name }}
-        </text>
-        <br />
-        <text>
-          {{ words[0].voice }}
-        </text>
-        <br />
-        <text>
-          {{ words[0].means }}
-        </text>
+        <view class="wordName">
+          <text class="wordName">
+            {{ words[wordIndex].name }}
+          </text>
+        </view>
+        <view class="wordVoice">
+          <text>
+            {{ words[wordIndex].voice }}
+          </text>
+        </view>
+        <view class="wordMeans">
+          <text>
+            {{ words[wordIndex].means }}
+          </text>
+        </view>
       </view>
+
       <!-- 单词详细页面 -->
       <view class="wordDetail">
-        <view class="sentence"> 例句</view>
+        <!-- <view class="sentence"> 例句</view> -->
+        <view
+          class="wordViewSize"
+          :style="{ height: appHeight * 0.18 + 'rpx' }"
+        ></view>
+        <view
+          class="sentenceXvhua"
+          :style="{ height: appHeight * 0.18 + 'rpx' }"
+        ></view>
+        <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
+          <view class="sentenceName">
+            <text>{{words[wordIndex].sentence[0].name}}</text>
+          </view>
+          <view class="sentenceMean" :hidden="showSentenceMeansFlag">
+            <text> {{words[wordIndex].sentence[0].means}}</text>
+          </view>
+        </view>
+
+        <view :style="{ height: appHeight * 0.2 + 'rpx' }"></view>
       </view>
-      <view>
-        <button hover-class="button-hover" @click="showSentenceMeans()">
-          查看例句译文
-        </button>
-      </view>
-      <view>
+      <view class="lookSentenceMeans">
+        <uni-icons
+          type="star"
+          size="40"
+          @click="showSentenceMeans()"
+        ></uni-icons>
         <view>
-          <button hover-class="button-hover" @click="next()">
+          <text>查看例句译文</text>
+        </view>
+      </view>
+      <view class="bottomView">
+        <view class="knowButton">
+          <button
+            open-type=""
+            hover-class="button-hover"
+            @click="know()"
+            plain="true"
+            class="buttonNoBorder"
+          >
             <text>认识</text>
           </button>
         </view>
-        <view>
-          <button hover-class="button-hover" @click="next()">
+        <view class="knowButton">
+          <button
+            open-type=""
+            hover-class="button-hover"
+            @click="unknow()"
+            plain="true"
+            class="buttonNoBorder"
+          >
             <text>不认识</text>
           </button>
         </view>
@@ -164,24 +201,85 @@ export default {
       appHeight: 0,
       nextText: true,
       pageShow: [false, false, false],
+      showSentenceMeansFlag: true,
+      wordIndex: 0,
       words: [
         {
-          name: "hello",
+          name: "hello1",
           means: "你好",
           voice: "nihao",
-          grammer:[
+          count: 0,
+          sentence: [
             {
-              name:"hello world",
-              means:"你好，世界",
+              name: "hello world",
+              means: "你好，世界",
+            },
+          ],
+          grammer: [
+            {
+              name: "hello world",
+              means: "你好，世界",
             },
             {
-              name:"hi",
-              means:"你好",
+              name: "hi",
+              means: "你好",
             },
             {
-              name:"hello,bye",
-              means:"你好，再见"
-            }    
+              name: "hello,bye",
+              means: "你好，再见",
+            },
+          ],
+        },
+        {
+          name: "hello2",
+          means: "你好",
+          voice: "nihao",
+          count: 0,
+          sentence: [
+            {
+              name: "hello world",
+              means: "你好，世界",
+            },
+          ],
+          grammer: [
+            {
+              name: "hello world",
+              means: "你好，世界",
+            },
+            {
+              name: "hi",
+              means: "你好",
+            },
+            {
+              name: "hello,bye",
+              means: "你好，再见",
+            },
+          ],
+        },
+        {
+          name: "hello3",
+          means: "你好",
+          voice: "nihao",
+          count: 0,
+          sentence: [
+            {
+              name: "hello world",
+              means: "你好，世界",
+            },
+          ],
+          grammer: [
+            {
+              name: "hello world",
+              means: "你好，世界",
+            },
+            {
+              name: "hi",
+              means: "你好",
+            },
+            {
+              name: "hello,bye",
+              means: "你好，再见",
+            },
           ],
         },
       ],
@@ -196,8 +294,25 @@ export default {
         console.log(`user: ${error}`);
       },
     });
+
+    this.changeShow();
   },
   methods: {
+    changeShow(showDetail = false) {
+      console.log("changeShow :" + this.wordIndex);
+      this.pageShow.fill(false);
+      if (showDetail) {
+        this.$set(this.pageShow,1,true);
+      } else {
+        if (this.words[this.wordIndex].count == 0) {
+          this.$set(this.pageShow,0,true);
+        } else {
+          this.$set(this.pageShow,2,true);
+        }
+      }
+
+      console.log(this.pageShow);
+    },
     back() {
       uni.navigateTo({
         url: "/pages/index/index",
@@ -212,6 +327,40 @@ export default {
     options(event) {
       console.log(event);
     },
+    showSentenceMeans() {
+      this.showSentenceMeansFlag = !this.showSentenceMeansFlag;
+    },
+    lookAnster() {
+      this.changeShow(true);
+      this.words[this.wordIndex].count = 0;
+      console.log(this.pageShow);
+    },
+    nextWord() {
+      this.wordIndex = (this.wordIndex + 1) % this.words.length;
+      console.log(this.wordIndex);
+      this.changeShow();
+    },
+    know() {
+      this.words[this.wordIndex].count += 1;
+      this.changeShow(true);
+    },
+    unknow() {
+      this.words[this.wordIndex].count = 0;
+      this.changeShow(true);
+    },
+    options(word) {
+      if(word == this.words[this.wordIndex].name) {
+        this.words[this.wordIndex].count++;
+      } else {
+        this.words[this.wordIndex].count = 0;
+         uni.showToast({
+        title: "单词选择错误",
+        icon: "faild",
+        mask: true,
+      });
+      }
+      this.changeShow(true);
+    }
   },
 };
 </script>
@@ -332,7 +481,6 @@ export default {
 .sentenceName {
   /* position: absolute; */
   margin: 40rpx 60rpx 0rpx;
-  
 }
 
 .sentenceMean {
@@ -364,5 +512,34 @@ export default {
 
 .grammarList {
   margin: 20rpx 60rpx 0rpx;
+}
+
+.bottomView {
+  display: flex;
+  position: absolute;
+  bottom: 20rpx;
+  /* left: 20rpx; */
+}
+
+.knowButton {
+  width: 320rpx;
+  text-align: center;
+  height: 100rpx;
+  margin: 20rpx;
+  border: 0rpx;
+}
+
+.buttonNoBorder {
+  border: 0rpx;
+}
+
+.button-hover {
+  background-color: rgba(143, 143, 143, 0.651);
+}
+
+.lookSentenceMeans {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 </style>
