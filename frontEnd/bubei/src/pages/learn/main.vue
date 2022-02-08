@@ -1,12 +1,12 @@
 <template>
   <!-- 最外层 -->
   <view class="content" :style="{ height: appHeight + 'rpx' }">
-   <image class="image-bg" :src="backgroundUrl" />
+    <image class="image-bg" :src="backgroundUrl" />
     <view class="navigate">
       <uni-icons type="left" color="" @click="back()" size="50rpx" />
     </view>
     <!-- 单词选项页面 -->
-    <view class="pageOptions" :hidden="pageShow[0]">
+    <view class="pageOptions" :hidden="!pageShow[0]">
       <!-- 单词显示区域 -->
       <view class="wordView">
         <view class="wordName">
@@ -43,43 +43,73 @@
           </button>
         </view>
       </view>
-       <view class="lookAnster">
-          <view @click="next()" class="lookAnsterText">
-            <view :hidden="!nextText">
-              <text>看答案</text>
-            </view>
-            <view :hidden="nextText">
-              <text>下一页</text>
-            </view>
+      <view class="lookAnster">
+        <view @click="next()" class="lookAnsterText">
+          <view :hidden="!nextText">
+            <text>看答案</text>
+          </view>
+          <view :hidden="nextText">
+            <text>下一页</text>
           </view>
         </view>
+      </view>
     </view>
 
     <!-- 单词详细信息 -->
-    <view class="pageDetail" :hidden="!pageShow[1]">
+    <view class="pageDetail" :hidden="pageShow[1]">
+      <!-- 单词显示区域 -->
       <!-- 单词显示区域 -->
       <view class="wordView">
-        <text>
-          {{ words[0].name }}
-        </text>
-        <br />
-        <text>
-          {{ words[0].voice }}
-        </text>
-        <br />
-        <text>
-          {{ words[0].means }}
-        </text>
+        <view class="wordName">
+          <text class="wordName">
+            {{ words[0].name }}
+          </text>
+        </view>
+        <view class="wordVoice">
+          <text>
+            {{ words[0].voice }}
+          </text>
+        </view>
+        <view class="wordMeans">
+          <text>
+            {{ words[0].means }}
+          </text>
+        </view>
       </view>
+      <view
+        class="wordViewSize"
+        :style="{ height: appHeight * 0.18 + 'rpx' }"
+      ></view>
       <!-- 单词详细页面 -->
-      <view class="wordDetail">
-        <view class="sentence"> 例句</view>
-        <view class="grammar"> 相关语法，短语 </view>
+      <view class="wordDetail" :style="{ height: appHeight * 0.6 + 'rpx' }">
+        <view
+          class="sentenceXvhua"
+          :style="{ height: appHeight * 0.18 + 'rpx' }"></view>
+        <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
+          <view class="sentenceName">
+            <text> hello, kangkang. </text>
+          </view>
+          <view class="sentenceMean"> <text> 你好，kangkang。</text> </view>
+        </view>
+        <view
+          class="grammarXvhua"
+          :style="{ height: appHeight * 0.38 + 'rpx' }"
+        ></view>
+        <view class="grammar" :style="{ height: appHeight * 0.38 + 'rpx' }">
+          <view class="grammarList" v-for="(item,index) in words[0].grammer">
+            {{item.name}}  {{item.means}}
+          </view>
+          
+        </view>
       </view>
       <view>
-        <button hover-class="button-hover" @click="next()">
-          <text>下一词</text>
-        </button>
+        <view class="lookAnster">
+          <view @click="nextWord()" class="lookAnsterText">
+            <view>
+              <text>下一词</text>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
 
@@ -130,7 +160,7 @@
 export default {
   data() {
     return {
-       backgroundUrl: "/static/temp/index.jpg",
+      backgroundUrl: "/static/temp/index.jpg",
       appHeight: 0,
       nextText: true,
       pageShow: [false, false, false],
@@ -139,6 +169,20 @@ export default {
           name: "hello",
           means: "你好",
           voice: "nihao",
+          grammer:[
+            {
+              name:"hello world",
+              means:"你好，世界",
+            },
+            {
+              name:"hi",
+              means:"你好",
+            },
+            {
+              name:"hello,bye",
+              means:"你好，再见"
+            }    
+          ],
         },
       ],
     };
@@ -184,11 +228,10 @@ export default {
   height: 100%;
   /* opacity: 0.3; */
   filter: blur(10px);
-  
 }
 .content {
   /* background: linear-gradient(to top, rgba(65, 63, 63, 0), rgb(16, 17, 17)); */
- 
+
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -210,13 +253,24 @@ export default {
   top: 120rpx;
 }
 
+.wordViewSize {
+  height: 200rpx;
+  width: 750rpx;
+}
+
 .wordName {
   font-size: 56rpx;
   color: aliceblue;
 }
 
 .wordVoice {
-  font-size: 32rpx;
+  font-size: 30rpx;
+  color: aliceblue;
+  margin: 10rpx;
+}
+
+.wordMeans {
+  font-size: 36rpx;
   color: aliceblue;
   margin: 10rpx;
 }
@@ -246,5 +300,69 @@ export default {
 .lookAnsterText {
   width: 150rpx;
   text-align: center;
+}
+
+.wordDetail {
+  width: 750rpx;
+}
+
+.sentence {
+  /* background-color: rgb(211, 177, 28); */
+  height: 200rpx;
+  margin: 20rpx;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* opacity: 0.8; */
+}
+
+.sentenceXvhua {
+  background-color: rgba(143, 143, 143, 0.651);
+  /* height: 160rpx; */
+  margin: 20rpx;
+  border-radius: 20rpx;
+  position: absolute;
+  z-index: -1;
+  width: 710rpx;
+  /* filter: blur(2px); */
+  opacity: 0.7;
+}
+
+.sentenceName {
+  /* position: absolute; */
+  margin: 40rpx 60rpx 0rpx;
+  
+}
+
+.sentenceMean {
+  /* position: absolute; */
+  /* top: 20rpx; */
+  margin: 20rpx 60rpx 0rpx;
+}
+
+.grammarXvhua {
+  background-color: rgba(143, 143, 143, 0.651);
+  /* height: 160rpx; */
+  margin: 20rpx;
+  border-radius: 20rpx;
+  position: absolute;
+  z-index: -1;
+  width: 710rpx;
+  /* filter: blur(2px); */
+  opacity: 0.7;
+}
+
+.grammar {
+  /* background-color: rgb(211, 177, 28); */
+  height: 550rpx;
+  margin: 20rpx;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.grammarList {
+  margin: 20rpx 60rpx 0rpx;
 }
 </style>
