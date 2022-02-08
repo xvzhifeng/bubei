@@ -22,7 +22,13 @@
       </view>
       <!-- 单词选项区域 -->
       <view class="wordOptions">
-        <view class="wordOption">
+        <view class="wordOption" v-for="(item,index) in words[wordIndex].options" :key="index">
+          <view class="optionXvhua"></view>
+          <button @click="choice(item.name)" plain="true" class="buttonNoBorder">
+            {{ item.name}}
+          </button>
+        </view>
+        <!-- <view class="wordOption">
           <button @click="options(words[wordIndex].name)">
             {{ words[wordIndex].name }}
           </button>
@@ -36,12 +42,7 @@
           <button @click="options(words[wordIndex].name)">
             {{ words[wordIndex].name }}
           </button>
-        </view>
-        <view class="wordOption">
-          <button @click="options(words[wordIndex].name)">
-            {{ words[wordIndex].name }}
-          </button>
-        </view>
+        </view> -->
       </view>
       <view class="lookAnster">
         <view @click="lookAnster()" class="lookAnsterText">
@@ -94,7 +95,7 @@
           :style="{ height: appHeight * 0.38 + 'rpx' }"
         ></view>
         <view class="grammar" :style="{ height: appHeight * 0.38 + 'rpx' }">
-          <view class="grammarList" v-for="(item, index) in words[wordIndex].grammer">
+          <view class="grammarList" v-for="(item, index) in words[wordIndex].grammer" :key="index">
             {{ item.name }} {{ item.means }}
           </view>
         </view>
@@ -209,6 +210,20 @@ export default {
           means: "你好",
           voice: "nihao",
           count: 0,
+          options:[
+            {
+              name:"word1",
+            },
+            {
+              name:"word1",
+            },
+            {
+              name:"word1",
+            },
+            {
+              name:"hello1",
+            }
+          ],
           sentence: [
             {
               name: "hello world",
@@ -235,6 +250,20 @@ export default {
           means: "你好",
           voice: "nihao",
           count: 0,
+           options:[
+            {
+              name:"word1",
+            },
+            {
+              name:"word1",
+            },
+            {
+              name:"word1",
+            },
+            {
+              name:"hello1",
+            }
+          ],
           sentence: [
             {
               name: "hello world",
@@ -261,6 +290,20 @@ export default {
           means: "你好",
           voice: "nihao",
           count: 0,
+           options:[
+            {
+              name:"word1",
+            },
+            {
+              name:"word1",
+            },
+            {
+              name:"word1",
+            },
+            {
+              name:"hello3",
+            }
+          ],
           sentence: [
             {
               name: "hello world",
@@ -348,7 +391,7 @@ export default {
       this.words[this.wordIndex].count = 0;
       this.changeShow(true);
     },
-    options(word) {
+    choice(word) {
       if(word == this.words[this.wordIndex].name) {
         this.words[this.wordIndex].count++;
       } else {
@@ -424,11 +467,21 @@ export default {
   margin: 10rpx;
 }
 
+.optionXvhua {
+  position: absolute;
+  background-color: rgba(143, 143, 143, 0.651);
+  width: 560rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  box-shadow: 2px 2px 2px #b3aeae;
+}
+
 .wordOptions {
   width: 600rpx;
   /* align-self: flex-start; */
   /* position: absolute; */
   /* bottom: 75rpx; */
+  
   position: absolute;
   left: 75rpx;
   bottom: 200rpx;
@@ -437,6 +490,7 @@ export default {
 
 .wordOption {
   margin: 20rpx;
+  border-radius: 20rpx;
 }
 
 .lookAnster {
