@@ -429,6 +429,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: 36rpx;
 }
 
 .navigate {
@@ -503,6 +504,7 @@ export default {
 .lookAnsterText {
   width: 150rpx;
   text-align: center;
+  font-size: 36rpx;
 }
 
 .wordDetail {
