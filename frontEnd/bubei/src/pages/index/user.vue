@@ -66,7 +66,12 @@ export default {
   },
   methods: {
     back() {
-      uni.navigateBack({ delta: 1 });
+      uni.navigateTo({
+        url: "/pages/index/index",
+        success: () => {
+          console.log("success goto index/index page");
+        },
+      });
     },
     gotoUserInfo() {
       //todo

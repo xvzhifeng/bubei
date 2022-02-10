@@ -454,6 +454,7 @@ export default {
 .wordName {
   font-size: 56rpx;
   color: aliceblue;
+   
 }
 
 .wordVoice {
@@ -466,6 +467,7 @@ export default {
   font-size: 36rpx;
   color: aliceblue;
   margin: 10rpx;
+   
 }
 
 .optionXvhua {
@@ -479,17 +481,17 @@ export default {
 
 .wordOptions {
   width: 600rpx;
-  /* align-self: flex-start; */
-  /* position: absolute; */
-  /* bottom: 75rpx; */
-  
+   
+ 
   position: absolute;
   left: 75rpx;
   bottom: 200rpx;
   border-radius: 10rpx;
+  
 }
 
 .wordOption {
+ 
   margin: 20rpx;
   border-radius: 20rpx;
 }
@@ -499,6 +501,7 @@ export default {
   position: absolute;
   bottom: 50rpx;
   left: 300rpx;
+   
 }
 
 .lookAnsterText {
