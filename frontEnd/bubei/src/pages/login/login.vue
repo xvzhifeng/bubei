@@ -45,7 +45,8 @@
               color="rgb(250, 166, 96)"
               style="transform: scale(0.7)"
             />&nbsp;&nbsp;
-            我已成功阅读并同意《隐私协议》《服务条款》和《儿童信息保护》
+            
+            <p class="xieyi">我已成功阅读并同意<span>《隐私协议》《服务条款》</span>和<span>《儿童信息保护》</span></p>
           </label>
         </checkbox-group>
       </view>
@@ -108,6 +109,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 36rpx;
   /* justify-items: center; */
   /* color: rgb(59, 58, 58); */
 }
@@ -122,6 +124,8 @@ export default {
   width: 124rpx;
   height: 124rpx;
   margin: 6rpx;
+  
+  
 }
 .title2 {
   display: flex;
@@ -133,8 +137,27 @@ export default {
   width: 124rpx;
   height: 124rpx;
   margin: 6rpx;
-}
 
+}
+.xieyi{
+  color:#ffffff;
+  display: flex;
+  position: absolute;
+  left:10%;
+  width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
+
+}
+strong{
+  color:rgb(242, 245, 53);
+  
+  
+ 
+}
+span{
+  color:rgb(242, 245, 53);
+}
 .title3 {
   display: flex;
   justify-content: center;
@@ -145,6 +168,8 @@ export default {
   width: 400px;
   height: 40px;
   margin: 10rpx;
+  position:absolute;
+  top:35%;
 }
 
 .font1 {
@@ -174,6 +199,7 @@ export default {
   justify-content: end;
   align-items: center;
   height: 400px;
+  
 }
 
 .subButton {
@@ -181,6 +207,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+   position: absolute;
+  bottom: 25%;
   /* align-items: center; */
   /* align-self: end; */
 }
@@ -200,17 +228,29 @@ export default {
   height: 50px;
   margin: 10px;
   background-color: rgb(242, 245, 53);
+  
 }
-
+.emailButton{
+  position: absolute;
+  bottom: 35%;
+}
 .option {
   margin: 20px;
-  width: 300px;
+  width: 90%;
   height: 50px;
   font-size: 10px;
+  position: absolute;
+  bottom: 8%;
+  display: flex;
+ 
+left: 5%;
 }
 
 .checkboxs {
-  height: 40px;
+  height: 7%;
   color: rgb(242, 245, 53);
+  display: flex;
+ 
+  
 }
 </style>
