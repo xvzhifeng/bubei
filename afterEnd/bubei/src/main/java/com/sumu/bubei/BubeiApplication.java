@@ -1,8 +1,10 @@
 package com.sumu.bubei;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@MapperScan("com.sumu.bubei.models.res.mapper")
 @SpringBootApplication
 public class BubeiApplication {
 

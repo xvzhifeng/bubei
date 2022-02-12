@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sumu.bubei.models.res.mapper.PictureMapper">
+    <select id="com.sumu.bubei.models.res.mapper.PictureMapper.getOneBackgroundPicture" resultType="com.sumu.bubei.models.res.entity.BackgroundPicture">
+        select * from BackgroundImage as bgi ORDER BY bgi.createtime DESC LIMIT 1;
+    </select>
+
+</mapper>
