@@ -10,7 +10,7 @@ HOST_NAME="${HOSTNAME}"
 TRAN_DATE=`date +%Y%m%d%H%M%S`
 
 function start() {
-    nohup $JAVA_HOME/bin/java $VM_OPTS $CONF_FILES -classpath $CONF_HOME:$JAR_FILE \
+    nohup $JAVA_HOME/bin/java $VM_OPTS $CONF_FILES -classpath $CONF_HOME:$JAR_FILE --spring.profiles.active=dev \
         org.springframework.boot.loader.JarLauncher >>$LOG_FILE 2>&1 &
     return $?
 }

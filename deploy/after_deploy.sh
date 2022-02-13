@@ -19,14 +19,14 @@ fi
 
 cd ${BASE_DIR}/${PROJECT_DIR}
 # -pl 指定项目
-mvn clean package -pl bubei -am -Dmaven.test.skip=true
+mvn clean package -pl com.sumu:bubei -am -Dmaven.test.skip=true
 if [ $? -ne 0 ]; then
     echo -e "fail to build bubei source"
     exit 1
 fi
 
-\cp bubei/target/bubei.jar /data/bin/lib/
-\cp bubei/bin/*.sh /data/bin/
+\cp -f target/bubei.jar /data/bin/lib/
+\cp -f bin/*.sh /data/bin/
 
 echo -e "${BLUE}${BOLD}bubei deploy completed.${NC}${NORM}"
 exit 0
