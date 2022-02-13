@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>上传背景图片</title>
+</head>
+<body>
+
+<form th:action="@{/res/util/uploadFile}" method="post" enctype="multipart/form-data">
+    <label>上传背景图片</label>
+    <input type="file" name="file"/>
+    <input type="text" name="url"/>
+    <input type="submit" value="上传"/>
+</form>
+<p>当前上传的背景图:</p>
+<img th:src="${session.BackgroundImageBase64}"/>
+
+
+</body>
+</html>

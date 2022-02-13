@@ -20,5 +20,12 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.31.251:3306/Bubei
+    url: jdbc:mysql://127.0.0.1:3307/bubei
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-file-size:
+        -1
+      max-request-size:
+        -1

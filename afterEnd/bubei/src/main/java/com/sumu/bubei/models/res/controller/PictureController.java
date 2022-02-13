@@ -18,6 +18,7 @@ public class PictureController {
 
     @Autowired
     PictureService pictureService;
+
     @RequestMapping("/latestBackgroundPic")
     public BackgroundPicture getBackgroundPicture() {
         return pictureService.getBackgroundPicture();

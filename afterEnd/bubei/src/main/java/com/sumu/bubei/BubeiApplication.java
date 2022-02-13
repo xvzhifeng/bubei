@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MapperScan("com.sumu.bubei.models.res.mapper")
+@MapperScan("com.sumu.bubei.models")
 @SpringBootApplication
 public class BubeiApplication {
 

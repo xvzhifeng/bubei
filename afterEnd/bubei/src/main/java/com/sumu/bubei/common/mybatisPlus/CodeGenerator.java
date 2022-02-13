@@ -17,6 +17,7 @@ import java.util.Scanner;
 // 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
 public class CodeGenerator {
 
+    String Model_word = "Sentences,SentencesRelaction,UserNotStudyWordRecord,UserStudyHistory,UserStudyWordRecord,WordBook,WordBookRelation,Words";
     /**
      * <p>
      * 读取控制台内容
@@ -49,12 +50,12 @@ public class CodeGenerator {
         gc.setOpen(false);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         gc.setServiceName("%sService");
-        gc.setFileOverride(false);
+        gc.setFileOverride(true);
         mpg.setGlobalConfig(gc);
 
         // 数据源配置 数据库名 账号密码
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/bubei?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true");
+        dsc.setUrl("jdbc:mysql://localhost:3307/bubei?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
@@ -64,7 +65,7 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(null);
-        pc.setParent("com.sumu.today.models.word");
+        pc.setParent("com.sumu.bubei.models.word");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -87,7 +88,7 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！
-                return projectPath + "/src/main/resources/mapper/word"
+                return projectPath + "/src/main/resources/mybatis/mapper/word"
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
