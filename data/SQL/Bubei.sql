@@ -23,6 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `BackgroundImage`;
 CREATE TABLE `BackgroundImage` (
   `backgroundImageID` int(11) NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `base64` longtext COLLATE utf8mb4_general_ci DEFAULT NULL,
   `standby1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `standby2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `standby3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -31,8 +33,6 @@ CREATE TABLE `BackgroundImage` (
   `createTime` datetime DEFAULT NULL,
   `updateUser` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `updateTime` datetime DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `base64` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`backgroundImageID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
