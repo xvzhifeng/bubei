@@ -31,14 +31,17 @@ public class FileController {
 
     @Autowired
     BackgroundImageServiceImpl backgroundImageService;
+
     @GetMapping(value = "/file")
     public ModelAndView file(ModelAndView modelAndView) {
-        modelAndView.setViewName("/res/backgroundImage/uploadFile");
+        // 部署成jar时，不能加最前面的/
+//        modelAndView.setViewName("/res/backgroundImage/uploadFile");
+        modelAndView.setViewName("res/backgroundImage/uploadFile");
         return modelAndView;
     }
 
     @PostMapping(value = "/uploadFile")
-    public ModelAndView fileUpload(@RequestParam(value = "file") MultipartFile file,String url, ModelAndView modelAndView, HttpServletRequest request) throws IOException {
+    public ModelAndView fileUpload(@RequestParam(value = "file") MultipartFile file, String url, ModelAndView modelAndView, HttpServletRequest request) throws IOException {
         if (file.isEmpty()) {
             log.info("文件为空");
             modelAndView.addObject("msg", "上传的文件为空，请重新上传！");
@@ -50,9 +53,9 @@ public class FileController {
         String s = encoder.encodeToString(bytes);
         String fileName = file.getOriginalFilename();  // 文件名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));  // 后缀名
-        String img = "data:image/" + suffixName.replace(".","") + ";base64,"+s;
+        String img = "data:image/" + suffixName.replace(".", "") + ";base64," + s;
         HttpSession session = request.getSession();
-        session.setAttribute("BackgroundImageBase64",img);
+        session.setAttribute("BackgroundImageBase64", img);
         modelAndView.addObject("msg", "上传的成功！");
         modelAndView.setViewName("/res/backgroundImage/uploadFile");
         BackgroundImage backgroundImage = new BackgroundImage();
