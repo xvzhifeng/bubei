@@ -11,7 +11,7 @@ DEPLOY_DIR=/data/bin
 PROJECT_DIR=afterEnd/bubei
 
 rm -rf ${BASE_DIR}
-git clone git@gitee.com:sumuxzf/bubei.git -b mx ${BASE_DIR}
+git clone git@gitee.com:sumuxzf/bubei.git -b dev ${BASE_DIR}
 if [ $? -ne 0]; then
     echo -e "fail to get bubei source"
     exit 1
