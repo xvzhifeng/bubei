@@ -12,7 +12,7 @@ PROJECT_DIR=afterEnd/bubei
 
 rm -rf ${BASE_DIR}
 git clone git@gitee.com:sumuxzf/bubei.git -b dev ${BASE_DIR}
-if [ $? -ne 0]; then
+if [ $? -ne 0 ]; then
     echo -e "fail to get bubei source"
     exit 1
 fi
@@ -20,7 +20,7 @@ fi
 cd ${BASE_DIR}/${PROJECT_DIR}
 # -pl 指定项目
 mvn clean package -pl bubei -am -Dmaven.test.skip=true
-if [ $? -ne 0]; then
+if [ $? -ne 0 ]; then
     echo -e "fail to build bubei source"
     exit 1
 fi
