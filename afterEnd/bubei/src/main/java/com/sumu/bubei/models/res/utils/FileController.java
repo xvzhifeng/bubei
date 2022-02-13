@@ -45,7 +45,7 @@ public class FileController {
         if (file.isEmpty()) {
             log.info("文件为空");
             modelAndView.addObject("msg", "上传的文件为空，请重新上传！");
-            modelAndView.setViewName("/res/backgroundImage/uploadFile");
+            modelAndView.setViewName("res/backgroundImage/uploadFile");
             return modelAndView;
         }
         byte[] bytes = file.getBytes();
@@ -57,7 +57,7 @@ public class FileController {
         HttpSession session = request.getSession();
         session.setAttribute("BackgroundImageBase64", img);
         modelAndView.addObject("msg", "上传的成功！");
-        modelAndView.setViewName("/res/backgroundImage/uploadFile");
+        modelAndView.setViewName("res/backgroundImage/uploadFile");
         BackgroundImage backgroundImage = new BackgroundImage();
         backgroundImage.setBase64(img);
         backgroundImage.setUrl(url);
