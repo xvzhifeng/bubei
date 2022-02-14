@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>上传背景图片</title>
+    <style>
+    </style>
 </head>
 <body>
 
 <form th:action="@{/res/util/uploadFile}" method="post" enctype="multipart/form-data">
     <label>上传背景图片</label>
     <input type="file" name="file"/>
-    <input type="text" name="url"/>
+    <label>图片别名</label>
+    <input type="text" name="name"/>
     <input type="submit" value="上传"/>
 </form>
-<p>当前上传的背景图:</p>
+<p>当前上传的背景图 :</p>
 <img th:src="${session.BackgroundImageBase64}"/>
 
+<P> git 地址图片</P>
+<img th:src="${url}"/>
 
 </body>
 </html>

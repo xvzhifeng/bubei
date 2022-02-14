@@ -43,6 +43,7 @@ public class BackgroundImage implements Serializable {
     @Base64Validate(message = "base64 字段必须是符合base64编码字符")
     private String base64;
 
+    // image name
     private String standby1;
 
     private String standby2;
