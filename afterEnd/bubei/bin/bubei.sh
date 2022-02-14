@@ -8,6 +8,7 @@ CONF_FILES="-Dbubei_path=${CONF_HOME}/bubei.ini"
 VM_OPTS=""
 HOST_NAME="${HOSTNAME}"
 TRAN_DATE=`date +%Y%m%d%H%M%S`
+declare -i RETRY_MAX_NUM=10
 
 function start() {
     nohup $JAVA_HOME/bin/java $VM_OPTS $CONF_FILES -classpath $CONF_HOME:$JAR_FILE   \
