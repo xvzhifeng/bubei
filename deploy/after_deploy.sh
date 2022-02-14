@@ -25,6 +25,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+mkdir /data/bin/
+mkdir /data/bin/lib
+
 \cp -f target/bubei.jar /data/bin/lib/
 \cp -f bin/*.sh /data/bin/
 
