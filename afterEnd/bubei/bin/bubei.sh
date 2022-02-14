@@ -2,7 +2,7 @@
 PROCESS_NAME="bubei"
 PROCESS_PATH=/data/bin/lib
 JAR_FILE="${PROCESS_PATH}/${PROCESS_NAME}.jar"
-LOG_FILE="/data/log"
+LOG_FILE="/data/log/stdout.log"
 CONF_HOME=/data/conf
 CONF_FILES="-Dbubei_path=${CONF_HOME}/bubei.ini"
 VM_OPTS=""
