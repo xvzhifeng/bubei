@@ -66,13 +66,20 @@ public class FileController {
         modelAndView.addObject("url",url);
         modelAndView.setViewName("res/backgroundImage/uploadFile");
         BackgroundImage backgroundImage = new BackgroundImage();
-        backgroundImage.setBase64(img);
+//        backgroundImage.setBase64(img);
         backgroundImage.setStandby1(name);
         backgroundImage.setUrl(url);
         backgroundImageService.insertOne(backgroundImage);
         return modelAndView;
     }
 
+    /**
+     *  当图片大于1m时，需要登录gitee才能查看
+     * @param content base64 的文件
+     * @param name 文件别名
+     * @param suffixName 文件后缀
+     * @return 图片的url地址
+     */
     public String uploadGit(String content, String name, String suffixName){
         GitUploadFile gitUploadFile = new GitUploadFile();
         gitUploadFile.init();

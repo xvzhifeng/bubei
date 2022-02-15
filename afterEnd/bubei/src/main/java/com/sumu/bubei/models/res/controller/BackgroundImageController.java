@@ -1,6 +1,8 @@
 package com.sumu.bubei.models.res.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sumu.bubei.common.rest.entity.BaseReturn;
 import com.sumu.bubei.common.rest.entity.ResultInfo;
 import com.sumu.bubei.models.res.entity.BackgroundImage;
@@ -41,6 +43,15 @@ public class BackgroundImageController {
         } else {
             return new ResultInfo().success(HttpStatus.BAD_REQUEST.value(), "上传失败");
         }
+    }
+
+    @RequestMapping("/getImage")
+    @ResponseBody
+    public IPage<BackgroundImage> getBackgroundImage(long current,long size) {
+        IPage<BackgroundImage> page = new Page<>(current,size);
+        backgroundImageService.page(page);
+        page.getRecords().forEach(System.out::println);
+        return page;
     }
 
 }

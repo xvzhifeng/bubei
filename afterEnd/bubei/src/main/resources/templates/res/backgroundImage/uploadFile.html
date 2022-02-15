@@ -1,25 +1,117 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <script src="/js/bootstrap.bundle.js"></script>
     <title>上传背景图片</title>
     <style>
+        .imageView {
+            height: 22%;
+            width: 20%;
+            margin: 10px;
+        }
+
+        .image {
+            height: 90%;
+            width: 100%;
+        }
+
+        .content {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+            margin: 20px;
+        }
+
+        .formDiv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inputDiv {
+            display: flex;
+            flex-direction: column;
+            height: 200px;
+            justify-content: space-around;
+        }
+
+        .imageDiv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .commonDiv {
+            height: 200px;
+            width: 200px;
+            margin: 5px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
+
 <body>
-
-<form th:action="@{/res/util/uploadFile}" method="post" enctype="multipart/form-data">
-    <label>上传背景图片</label>
-    <input type="file" name="file"/>
-    <label>图片别名</label>
-    <input type="text" name="name"/>
-    <input type="submit" value="上传"/>
-</form>
-<p>当前上传的背景图 :</p>
-<img th:src="${session.BackgroundImageBase64}"/>
-
-<P> git 地址图片</P>
-<img th:src="${url}"/>
+    <div class="container">
+        <div class="row row-cols-auto">
+            <div class="commonDiv"><img th:src="${session.BackgroundImageBase64}" class="image" /></div>
+            <div class="commonDiv"><img th:src="${session.BackgroundImageBase64}" class="image" /></div>
+            <div class="commonDiv"><img th:src="${session.BackgroundImageBase64}" class="image" /></div>
+            <div class="commonDiv"><img th:src="${url}" class="image" /></div>
+            <div class="commonDiv"><img th:src="${url}" class="image" /></div>
+            <div class="commonDiv"><img th:src="${url}" class="image" /></div>
+        </div>
+    </div>
+    <div class="container" style="margin: 20px;">
+        
+        <!-- <div class="row justify-content-md-center">
+            <div class="col-md-auto">
+                <form th:action="@{/res/util/uploadFile}" method="post" enctype="multipart/form-data">
+                    <div class="mb-5">
+                        <label for="formFile" class="form-label">上传背景图片</label>
+                        <input class="form-control" type="file" id="file" name="file">
+                    </div>
+                    <div class="mb-5 row">
+                        <label for="inputPassword" class="col-sm-5 col-form-label">图片别名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                    </div>
+                    <input class="mb-5" type="submit" value="上传" />
+                </form>
+            </div>
+           
+        </div> -->
+        <form class="row g-3" th:action="@{/res/util/uploadFile}" method="post" enctype="multipart/form-data">
+            <div class="col-md-12">
+              <label for="name" class="form-label">图片别名</label>
+              <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <!-- <div class="col-md-6">
+              <label for="inputPassword4" class="form-label">Password</label>
+              <input type="password" class="form-control" id="inputPassword4">
+            </div> -->
+            <div class="col-12">
+                <label for="formFile" class="form-label">上传背景图片</label>
+                <input class="form-control" type="file" id="file" name="file">
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">上传</button>
+            </div>
+          </form>
+        
+    </div>
 
 </body>
+
 </html>
