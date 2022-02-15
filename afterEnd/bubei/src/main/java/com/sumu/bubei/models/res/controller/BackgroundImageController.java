@@ -50,7 +50,7 @@ public class BackgroundImageController {
     public IPage<BackgroundImage> getBackgroundImage(long current,long size) {
         IPage<BackgroundImage> page = new Page<>(current,size);
         backgroundImageService.page(page);
-        page.getRecords().forEach(System.out::println);
+//        page.getRecords().forEach(System.out::println);
         return page;
     }
 

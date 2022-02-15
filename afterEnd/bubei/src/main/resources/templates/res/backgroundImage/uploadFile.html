@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/bootstrap.css" rel="stylesheet">
-    <script src="/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.js"></script>
+    <script type="text/javascript" src="/js/jquery.js"></script>
+<!--    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>-->
     <title>上传背景图片</title>
     <style>
         .imageView {
@@ -59,17 +61,50 @@
             align-items: center;
         }
     </style>
+    <script type="text/javascript">
+        // 将函数绑定到文档的就绪事件（当文档完成加载时）
+    $(document).ready(function(){
+        var pic;
+        $("#getPic").click(
+            function() {
+                console.log("getPic");
+                $.get(`/background-image/getImage?current=1&size=10`,function(data,status){
+                    // alert("Data: " + data + "\nStatus: " + status);
+                    console.log(data["records"]);
+                    pic = data["records"];
+                    for(p of pic) {
+                        console.log(p);
+                        console.log(p["url"]);
+                        $("#addImage").after(`<div class="commonDiv"><img src="${p['url']}" class="image" /></div>`)
+                    }
+                  });
+            }
+        );
+        });
+    </script>
 </head>
 
 <body>
     <div class="container">
         <div class="row row-cols-auto">
+
             <div class="commonDiv"><img th:src="${session.BackgroundImageBase64}" class="image" /></div>
             <div class="commonDiv"><img th:src="${session.BackgroundImageBase64}" class="image" /></div>
             <div class="commonDiv"><img th:src="${session.BackgroundImageBase64}" class="image" /></div>
             <div class="commonDiv"><img th:src="${url}" class="image" /></div>
             <div class="commonDiv"><img th:src="${url}" class="image" /></div>
             <div class="commonDiv"><img th:src="${url}" class="image" /></div>
+            <div id="addImage"></div>
+            <!-- <div th:each="p:${pic}">
+                <div class="commonDiv" th:text="${p.url}"></div>
+                <div class="commonDiv"><img th:src="${p['url']}" class="image" /></div>
+            </div> -->
+
+        </div>
+        <div class="row">
+            <div class="col" >
+                <button id="getPic">获取图片</button>
+            </div>
         </div>
     </div>
     <div class="container" style="margin: 20px;">
