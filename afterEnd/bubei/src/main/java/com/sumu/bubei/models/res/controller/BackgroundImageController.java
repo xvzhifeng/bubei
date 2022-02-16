@@ -1,6 +1,7 @@
 package com.sumu.bubei.models.res.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sumu.bubei.common.rest.entity.BaseReturn;
@@ -48,8 +49,11 @@ public class BackgroundImageController {
     @RequestMapping("/getImage")
     @ResponseBody
     public IPage<BackgroundImage> getBackgroundImage(long current,long size) {
+        QueryWrapper<BackgroundImage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ne("url","");
+        queryWrapper.isNotNull("url");
         IPage<BackgroundImage> page = new Page<>(current,size);
-        backgroundImageService.page(page);
+        backgroundImageService.page(page,queryWrapper);
 //        page.getRecords().forEach(System.out::println);
         return page;
     }
