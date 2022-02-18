@@ -3,6 +3,7 @@ package com.sumu.bubei.models.login.controller;
 import io.github.biezhi.ome.OhMyEmail;
 import io.github.biezhi.ome.SendMailException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,8 @@ import static io.github.biezhi.ome.OhMyEmail.SMTP_163;
 @Slf4j
 @RestController
 @RequestMapping("/login/email")
+// 解决跨域
+@CrossOrigin
 public class EmailController {
 
 

@@ -17,11 +17,7 @@ import com.sumu.bubei.models.word.utils.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -133,7 +129,9 @@ public class WordsController {
      */
     @RequestMapping("/getNotStudyWords")
     @ResponseBody
-    public ResultInfo<List<WordVo>> getNotStudyWords(UserVo user) {
+    // 解决跨域
+    @CrossOrigin
+    public ResultInfo<List<WordVo>> getNotStudyWords(@Validated UserVo user) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("email", user.getEmail());
         User user1 = userService.getOne(userQueryWrapper);
@@ -180,7 +178,7 @@ public class WordsController {
      */
     @RequestMapping("/getStudyWords")
     @ResponseBody
-    public ResultInfo<List<WordVo>> getStudyWords(UserVo user) {
+    public ResultInfo<List<WordVo>> getStudyWords(@Validated UserVo user) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("email", user.getEmail());
         User user1 = userService.getOne(userQueryWrapper);
