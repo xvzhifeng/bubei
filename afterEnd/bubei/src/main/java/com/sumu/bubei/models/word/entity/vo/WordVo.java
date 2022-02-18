@@ -16,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WordVo {
+
+    private int wordID;
     @NotBlank
     private String japaneseMeans;
     @NotBlank

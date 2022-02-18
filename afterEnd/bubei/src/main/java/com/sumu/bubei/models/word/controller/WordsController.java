@@ -7,13 +7,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sumu.bubei.common.rest.entity.ResultInfo;
 import com.sumu.bubei.models.login.entity.User;
+import com.sumu.bubei.models.login.entity.vo.UserVo;
 import com.sumu.bubei.models.login.service.impl.UserServiceImpl;
-import com.sumu.bubei.models.word.entity.Sentences;
-import com.sumu.bubei.models.word.entity.SentencesRelaction;
-import com.sumu.bubei.models.word.entity.UserNotStudyWordRecord;
-import com.sumu.bubei.models.word.entity.Words;
+import com.sumu.bubei.models.word.entity.*;
+import com.sumu.bubei.models.word.entity.vo.StudyRecordVo;
 import com.sumu.bubei.models.word.entity.vo.WordVo;
 import com.sumu.bubei.models.word.service.impl.*;
+import com.sumu.bubei.models.word.utils.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,9 +59,14 @@ public class WordsController {
     @Autowired
     UserStudyWordRecordServiceImpl userStudyWordRecordService;
 
+    /**
+     * 添加单独的单词信息
+     * @param words 单词信息
+     * @return status
+     */
     @RequestMapping("/addWord")
     @ResponseBody
-    public ResultInfo add(@Validated Words words) {
+    public ResultInfo<String> add(@Validated Words words) {
         QueryWrapper<Words> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("japaneseMeans",words.getJapaneseMeans());
         boolean save = wordsService.saveOrUpdate(words,queryWrapper);
@@ -70,9 +77,14 @@ public class WordsController {
         }
     }
 
+    /**
+     * 添加完整的单词，包括短语和例句
+     * @param words 完整的单词信息
+     * @return  status
+     */
     @RequestMapping("/addWordAndSentence")
     @ResponseBody
-    public ResultInfo addWordAndSentence(@RequestBody @Validated WordVo words) {
+    public ResultInfo<String> addWordAndSentence(@RequestBody @Validated WordVo words) {
         StringBuilder message = new StringBuilder();
         Words word = new Words();
         word.setChineseMeans(words.getChineseMeans());
@@ -111,15 +123,21 @@ public class WordsController {
         return new ResultInfo().success(HttpStatus.OK.value(), message.toString());
     }
 
-    @RequestMapping("/getStudyWords")
+    /**
+     * 获取需要学习的单词
+     * @param user 用户
+     * @return 单词
+     */
+    @RequestMapping("/getNotStudyWords")
     @ResponseBody
-    public ResultInfo getStudyWords(User user) {
+    public ResultInfo<List<WordVo>> getNotStudyWords(UserVo user) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("email",user.getEmail());
         User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userID",user1);
-        IPage<UserNotStudyWordRecord> notStudy = new Page<>(1,10);
+        queryWrapper.eq("status",1);
+        IPage<UserNotStudyWordRecord> notStudy = new Page<>(user.getCurrent(),user.getSize());
         userNotStudyWordRecordService.page(notStudy,queryWrapper);
         List<WordVo> res = new ArrayList<>();
 
@@ -151,11 +169,114 @@ public class WordsController {
         return new ResultInfo().success(HttpStatus.OK.value(),"OK",res);
     }
 
+    /**
+     * 获取需要复习的单词
+     * @param user 用户信息
+     * @return 单词
+     */
+    @RequestMapping("/getStudyWords")
+    @ResponseBody
+    public ResultInfo<List<WordVo>> getStudyWords(UserVo user) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("email",user.getEmail());
+        User user1 = userService.getOne(userQueryWrapper);
+        QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userID",user1);
+        queryWrapper.eq("status",1);
+        List<String> review = Common.getDateReview();
+        for(int i=0;i<review.size();i++){
+            queryWrapper.or().eq("studyTime", review.get(i)).eq("studyWordCount",i);
+        }
+        IPage<UserStudyWordRecord> notStudy = new Page<>(user.getCurrent(),user.getSize());
+        userStudyWordRecordService.page(notStudy,queryWrapper);
+        List<WordVo> res = new ArrayList<>();
+
+        notStudy.getRecords().forEach((words)->{
+            WordVo subRes = new WordVo();
+            List<Sentences> sentencesList = new LinkedList<>();
+            List<Sentences> phraseList = new LinkedList<>();
+            QueryWrapper<Words> wordsQueryWrapper = new QueryWrapper<>();
+            wordsQueryWrapper.eq("wordID",words.getWordID());
+            Words words1 = wordsService.getOne(wordsQueryWrapper);
+            QueryWrapper<SentencesRelaction> sentencesRelactionQueryWrapper = new QueryWrapper<>();
+            sentencesRelactionQueryWrapper.eq("wordID",words1.getWordID());
+            List<SentencesRelaction> list = sentencesRelactionService.list(sentencesRelactionQueryWrapper);
+            list.forEach((sr)->{
+                QueryWrapper<Sentences> sentencesQueryWrapper = new QueryWrapper<>();
+                sentencesQueryWrapper.eq("sentenceID",sr.getSentenceID());
+                Sentences sentences = sentencesService.getOne(sentencesQueryWrapper);
+                if(sentences.getKind() == 1) {
+                    phraseList.add(sentences);
+                } else if (sentences.getKind() == 2) {
+                    sentencesList.add(sentences);
+                }
+            });
+            setWordsVo(subRes,words1);
+            subRes.setSentence(sentencesList);
+            subRes.setPhrase(phraseList);
+            res.add(subRes);
+        });
+        return new ResultInfo().success(HttpStatus.OK.value(),"OK",res);
+    }
+
+    /**
+     * 会清除复习的历史次数，只有当复习错误时或者第一次存入调用
+     * @param studyRecordVo 单词信息
+     * @return status
+     */
+    @RequestMapping("/addStudyRecord")
+    @ResponseBody
+    public ResultInfo<String> addStudyRecord(@Validated StudyRecordVo studyRecordVo) {
+        UserStudyWordRecord userStudyWordRecord = new UserStudyWordRecord();
+        userStudyWordRecord.setWordID(studyRecordVo.getWordID());
+        userStudyWordRecord.setUserID(studyRecordVo.getUserID());
+        userStudyWordRecord.setStudyTime(Common.getDateYearMouthDay());
+        userStudyWordRecordService.saveOrUpdate(userStudyWordRecord);
+        return new ResultInfo<String>().success(HttpStatus.OK.value(),"复习记录添加成功");
+    }
+
+    /**
+     * 复习完成的添加，会修改次数
+     * @param studyRecordVo 单词用户信息
+     * @return status
+     */
+    @RequestMapping("/updateStudyRecord")
+    @ResponseBody
+    public ResultInfo<String> updateStudyRecord(@Validated StudyRecordVo studyRecordVo) {
+        QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userID",studyRecordVo.getUserID());
+        queryWrapper.eq("wordID", studyRecordVo.getWordID());
+        UserStudyWordRecord userStudyWordRecordServiceOne = userStudyWordRecordService.getOne(queryWrapper);
+        UserStudyWordRecord userStudyWordRecord = new UserStudyWordRecord();
+        userStudyWordRecord.setWordID(studyRecordVo.getWordID());
+        userStudyWordRecord.setUserID(studyRecordVo.getUserID());
+        userStudyWordRecord.setStudyWordCount(userStudyWordRecordServiceOne.getStudyWordCount() + 1);
+        userStudyWordRecord.setStudyTime(Common.getDateYearMouthDay());
+        userStudyWordRecordService.saveOrUpdate(userStudyWordRecord);
+        return new ResultInfo<String>().success(HttpStatus.OK.value(),"复习记录添加成功");
+    }
+
+    /**
+     * 初始化 需要学习的单词表
+     * @param studyRecordVo
+     * @return
+     */
+    @RequestMapping("/addNotStudyRecord")
+    @ResponseBody
+    public ResultInfo<String> addNotStudyRecord(@Validated StudyRecordVo studyRecordVo) {
+        UserNotStudyWordRecord userNotStudyWordRecord = new UserNotStudyWordRecord();
+        userNotStudyWordRecord.setWordID(studyRecordVo.getWordID());
+        userNotStudyWordRecord.setUserID(studyRecordVo.getUserID());
+        userNotStudyWordRecordService.saveOrUpdate(userNotStudyWordRecord);
+        return new ResultInfo<String>().success(HttpStatus.OK.value(),"未学习的单词添加成功");
+    }
+
     public void setWordsVo(WordVo wordsVo, Words words) {
         wordsVo.setChineseMeans(words.getChineseMeans());
         wordsVo.setEnglishMeans(words.getEnglishMeans());
         wordsVo.setJapaneseMeans(words.getJapaneseMeans());
         wordsVo.setVoice(words.getVoice());
         wordsVo.setFalseName(words.getFalseName());
+        wordsVo.setWordID(words.getWordID());
     }
 }

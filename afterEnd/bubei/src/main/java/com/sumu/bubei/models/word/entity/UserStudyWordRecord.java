@@ -1,10 +1,8 @@
 package com.sumu.bubei.models.word.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,11 +33,11 @@ public class UserStudyWordRecord implements Serializable {
     @TableField("wordID")
     private Integer wordID;
 
-    @TableField("studyWordCount")
+    @TableField(value = "studyWordCount",fill = FieldFill.INSERT)
     private Integer studyWordCount;
 
     @TableField("studyTime")
-    private LocalDateTime studyTime;
+    private String studyTime;
 
     private String standby1;
 
@@ -49,16 +47,16 @@ public class UserStudyWordRecord implements Serializable {
 
     private Integer status;
 
-    @TableField("createUser")
+    @TableField(value = "createUser", fill = FieldFill.INSERT)
     private String createUser;
 
-    @TableField("createTime")
+    @TableField(value = "createTime", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    @TableField("updateUser")
+    @TableField(value = "updateUser", fill = FieldFill.INSERT_UPDATE)
     private String updateUser;
 
-    @TableField("updateTime")
+    @TableField(value = "updateTime", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 
