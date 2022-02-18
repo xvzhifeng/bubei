@@ -94,10 +94,10 @@
         ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
           <view class="sentenceName">
-            <text> {{ words[wordIndex].sentence[0].name }}</text>
+            <text v-if="words[wordIndex].sentence[0]"> {{ words[wordIndex].sentence[0].name }}</text>
           </view>
           <view class="sentenceMean">
-            <text> {{ words[wordIndex].sentence[0].means }}</text>
+            <text v-if="words[wordIndex].sentence[0]"> {{ words[wordIndex].sentence[0].means }}</text>
           </view>
         </view>
         <view
@@ -357,7 +357,11 @@ export default {
           "content-type": "application/json",
         },
         success: ({ data, statusCode, header }) => {
+          console.log(this.words)
+          console.log(data);
+          this.$set(this.words,data.response);
           this.words = data.response;
+          console.log(this.words)
         },
         fail: (error) => {
           alert(error.message);

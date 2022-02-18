@@ -28,4 +28,5 @@ public class WordVo {
     private String voice;
     private List<Sentences> sentence;
     private List<Sentences> phrase;
+    private List<wordOption> options;
 }

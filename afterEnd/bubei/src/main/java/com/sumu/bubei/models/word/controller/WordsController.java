@@ -12,6 +12,7 @@ import com.sumu.bubei.models.login.service.impl.UserServiceImpl;
 import com.sumu.bubei.models.word.entity.*;
 import com.sumu.bubei.models.word.entity.vo.StudyRecordVo;
 import com.sumu.bubei.models.word.entity.vo.WordVo;
+import com.sumu.bubei.models.word.entity.vo.wordOption;
 import com.sumu.bubei.models.word.service.impl.*;
 import com.sumu.bubei.models.word.utils.Common;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -141,7 +143,6 @@ public class WordsController {
         IPage<UserNotStudyWordRecord> notStudy = new Page<>(user.getCurrent(), user.getSize());
         userNotStudyWordRecordService.page(notStudy, queryWrapper);
         List<WordVo> res = new ArrayList<>();
-
         notStudy.getRecords().forEach((words) -> {
             WordVo subRes = new WordVo();
             List<Sentences> sentencesList = new LinkedList<>();
@@ -165,6 +166,10 @@ public class WordsController {
             setWordsVo(subRes, words1);
             subRes.setSentence(sentencesList);
             subRes.setPhrase(phraseList);
+            wordOption wordOption = new wordOption(words1.getJapaneseMeans(), words1.getFalseName(), words1.getChineseMeans(), words1.getEnglishMeans());
+            List<wordOption> options = getOptions(words1.getJapaneseMeans());
+            options.add(new Random().nextInt(4),wordOption);
+            subRes.setOptions(options);
             res.add(subRes);
         });
         return new ResultInfo().success(HttpStatus.OK.value(), "OK", res);
@@ -294,5 +299,22 @@ public class WordsController {
         wordsVo.setVoice(words.getVoice());
         wordsVo.setFalseName(words.getFalseName());
         wordsVo.setWordID(words.getWordID());
+    }
+
+    public List<wordOption> getOptions(String word) {
+        List<wordOption> res = new LinkedList<>();
+        QueryWrapper<Words> queryWrapper = new QueryWrapper<>();
+        for(int i=0;i<word.length();i++) {
+            String sub = word.substring(i,word.length());
+            queryWrapper.likeRight("japaneseMeans",sub);
+            List<Words> list = wordsService.list(queryWrapper);
+            for(Words w : list) {
+                if(res.size() >=  3) {
+                    break;
+                }
+                res.add(new wordOption(w.getJapaneseMeans(),w.getFalseName(),w.getChineseMeans(),w.getEnglishMeans()));
+            }
+        }
+        return res;
     }
 }
