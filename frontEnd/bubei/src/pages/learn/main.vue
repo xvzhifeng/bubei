@@ -22,10 +22,18 @@
       </view>
       <!-- 单词选项区域 -->
       <view class="wordOptions">
-        <view class="wordOption" v-for="(item,index) in words[wordIndex].options" :key="index">
+        <view
+          class="wordOption"
+          v-for="(item, index) in words[wordIndex].options"
+          :key="index"
+        >
           <view class="optionXvhua"></view>
-          <button @click="choice(item.name)" plain="true" class="buttonNoBorder">
-            {{ item.name}}
+          <button
+            @click="choice(item.name)"
+            plain="true"
+            class="buttonNoBorder"
+          >
+            {{ item.name }}
           </button>
         </view>
         <!-- <view class="wordOption">
@@ -86,16 +94,22 @@
         ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
           <view class="sentenceName">
-            <text> {{words[wordIndex].sentence[0].name}}</text>
+            <text> {{ words[wordIndex].sentence[0].name }}</text>
           </view>
-          <view class="sentenceMean"> <text> {{words[wordIndex].sentence[0].means}}</text> </view>
+          <view class="sentenceMean">
+            <text> {{ words[wordIndex].sentence[0].means }}</text>
+          </view>
         </view>
         <view
           class="grammarXvhua"
           :style="{ height: appHeight * 0.38 + 'rpx' }"
         ></view>
         <view class="grammar" :style="{ height: appHeight * 0.38 + 'rpx' }">
-          <view class="grammarList" v-for="(item, index) in words[wordIndex].grammer" :key="index">
+          <view
+            class="grammarList"
+            v-for="(item, index) in words[wordIndex].grammer"
+            :key="index"
+          >
             {{ item.name }} {{ item.means }}
           </view>
         </view>
@@ -145,10 +159,10 @@
         ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
           <view class="sentenceName">
-            <text>{{words[wordIndex].sentence[0].name}}</text>
+            <text>{{ words[wordIndex].sentence[0].name }}</text>
           </view>
           <view class="sentenceMean" :hidden="showSentenceMeansFlag">
-            <text> {{words[wordIndex].sentence[0].means}}</text>
+            <text> {{ words[wordIndex].sentence[0].means }}</text>
           </view>
         </view>
 
@@ -210,19 +224,19 @@ export default {
           means: "你好",
           voice: "nihao",
           count: 0,
-          options:[
+          options: [
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"hello1",
-            }
+              name: "hello1",
+            },
           ],
           sentence: [
             {
@@ -250,19 +264,19 @@ export default {
           means: "你好",
           voice: "nihao",
           count: 0,
-           options:[
+          options: [
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"hello1",
-            }
+              name: "hello1",
+            },
           ],
           sentence: [
             {
@@ -290,19 +304,19 @@ export default {
           means: "你好",
           voice: "nihao",
           count: 0,
-           options:[
+          options: [
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"word1",
+              name: "word1",
             },
             {
-              name:"hello3",
-            }
+              name: "hello3",
+            },
           ],
           sentence: [
             {
@@ -329,6 +343,27 @@ export default {
     };
   },
   onLoad(options) {
+    if (options.study == 1) {
+      uni.request({
+        url: "http://api.sumu.today:10111/words/getNotStudyWords",
+        data: {
+          userID: this.global_userID,
+          email: this.global_userEmail,
+          size: 10,
+          current: 1,
+        },
+        method: "GET",
+        header: {
+          "content-type": "application/json",
+        },
+        success: ({ data, statusCode, header }) => {
+          this.words = data.response;
+        },
+        fail: (error) => {
+          alert(error.message);
+        },
+      });
+    }
     uni.getSystemInfo({
       success: (result) => {
         this.appHeight = result.windowHeight * 2;
@@ -345,12 +380,12 @@ export default {
       console.log("changeShow :" + this.wordIndex);
       this.pageShow.fill(false);
       if (showDetail) {
-        this.$set(this.pageShow,1,true);
+        this.$set(this.pageShow, 1, true);
       } else {
         if (this.words[this.wordIndex].count == 0) {
-          this.$set(this.pageShow,0,true);
+          this.$set(this.pageShow, 0, true);
         } else {
-          this.$set(this.pageShow,2,true);
+          this.$set(this.pageShow, 2, true);
         }
       }
 
@@ -392,18 +427,18 @@ export default {
       this.changeShow(true);
     },
     choice(word) {
-      if(word == this.words[this.wordIndex].name) {
+      if (word == this.words[this.wordIndex].name) {
         this.words[this.wordIndex].count++;
       } else {
         this.words[this.wordIndex].count = 0;
-         uni.showToast({
-        title: "单词选择错误",
-        icon: "faild",
-        mask: true,
-      });
+        uni.showToast({
+          title: "单词选择错误",
+          icon: "faild",
+          mask: true,
+        });
       }
       this.changeShow(true);
-    }
+    },
   },
 };
 </script>
@@ -454,7 +489,6 @@ export default {
 .wordName {
   font-size: 56rpx;
   color: aliceblue;
-   
 }
 
 .wordVoice {
@@ -467,7 +501,6 @@ export default {
   font-size: 36rpx;
   color: aliceblue;
   margin: 10rpx;
-   
 }
 
 .optionXvhua {
@@ -481,17 +514,14 @@ export default {
 
 .wordOptions {
   width: 600rpx;
-   
- 
+
   position: absolute;
   left: 75rpx;
   bottom: 200rpx;
   border-radius: 10rpx;
-  
 }
 
 .wordOption {
- 
   margin: 20rpx;
   border-radius: 20rpx;
 }
@@ -501,7 +531,6 @@ export default {
   position: absolute;
   bottom: 50rpx;
   left: 300rpx;
-   
 }
 
 .lookAnsterText {

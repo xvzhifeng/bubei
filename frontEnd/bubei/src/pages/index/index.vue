@@ -97,7 +97,7 @@ export default {
     study() {
       // pages/learn/main
       uni.navigateTo({
-        url: "/pages/learn/main",
+        url: "/pages/learn/main?study=1",
         success: () => {
           console.log("success goto learn page");
         },
