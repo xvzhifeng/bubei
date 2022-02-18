@@ -232,7 +232,18 @@ public class WordsController {
         userStudyWordRecord.setUserID(studyRecordVo.getUserID());
         userStudyWordRecord.setStudyTime(Common.getDateYearMouthDay());
         userStudyWordRecordService.saveOrUpdate(userStudyWordRecord);
-        return new ResultInfo<String>().success(HttpStatus.OK.value(),"复习记录添加成功");
+
+        // 更新未学单词表
+        UserNotStudyWordRecord userNotStudyWordRecord = new UserNotStudyWordRecord();
+        QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("wordID", studyRecordVo.getWordID());
+        queryWrapper.eq("userID", studyRecordVo.getUserID());
+        queryWrapper.eq("status",1);
+        userNotStudyWordRecord.setWordID(studyRecordVo.getWordID());
+        userNotStudyWordRecord.setUserID(studyRecordVo.getWordID());
+        userNotStudyWordRecord.setStatus(2);
+        userNotStudyWordRecordService.saveOrUpdate(userNotStudyWordRecord, queryWrapper);
+        return new ResultInfo<String>().success(HttpStatus.OK.value(),"复习记录添加成功 and 删除未学习表当前单词");
     }
 
     /**
