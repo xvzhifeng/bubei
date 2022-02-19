@@ -20,7 +20,7 @@
           hover-class="button-hover"
           @click="register()"
         >
-          邮箱一键登录
+          账号登录
         </button>
       </view>
 
@@ -28,7 +28,7 @@
         <button class="subButton1" :disabled="true" @click="todo()">
           <uni-icons type="chatboxes-filled" size="25"></uni-icons>
         </button>
-        <button class="subButton1" :disabled="true" @click="todo()">
+        <button class="subButton1" :disabled="false" @click="register()">
           <uni-icons type="email" size="25"></uni-icons>
         </button>
         <button class="subButton1" :disabled="true" @click="todo()">

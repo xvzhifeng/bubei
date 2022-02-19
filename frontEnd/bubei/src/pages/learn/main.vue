@@ -13,6 +13,11 @@
           <text class="wordName">
             {{ words[wordIndex].name }}
           </text>
+          <uni-badge
+            v-bind:text="currentCount"
+            type="warning"
+            :inverted="true"
+          ></uni-badge>
         </view>
         <view class="wordVoice">
           <text>
@@ -70,6 +75,11 @@
           <text class="wordName">
             {{ words[wordIndex].name }}
           </text>
+          <uni-badge
+            v-bind:text="currentCount"
+            type="warning"
+            :inverted="true"
+          ></uni-badge>
         </view>
         <view class="wordVoice">
           <text>
@@ -94,10 +104,14 @@
         ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
           <view class="sentenceName">
-            <text v-if="words[wordIndex].sentence[0]"> {{ words[wordIndex].sentence[0].name }}</text>
+            <text v-if="words[wordIndex].sentence[0]">
+              {{ words[wordIndex].sentence[0].name }}</text
+            >
           </view>
           <view class="sentenceMean">
-            <text v-if="words[wordIndex].sentence[0]"> {{ words[wordIndex].sentence[0].means }}</text>
+            <text v-if="words[wordIndex].sentence[0]">
+              {{ words[wordIndex].sentence[0].means }}</text
+            >
           </view>
         </view>
         <view
@@ -133,6 +147,11 @@
           <text class="wordName">
             {{ words[wordIndex].name }}
           </text>
+          <uni-badge
+            v-bind:text="currentCount"
+            type="warning"
+            :inverted="true"
+          ></uni-badge>
         </view>
         <view class="wordVoice">
           <text>
@@ -218,6 +237,10 @@ export default {
       pageShow: [false, false, false],
       showSentenceMeansFlag: true,
       wordIndex: 0,
+      wordLength: 0,
+      currentCount: 1,
+      study: false,
+      reviwe: [],
       words: [
         {
           name: "hello1",
@@ -275,7 +298,7 @@ export default {
               name: "word1",
             },
             {
-              name: "hello1",
+              name: "hello2",
             },
           ],
           sentence: [
@@ -343,12 +366,15 @@ export default {
     };
   },
   onLoad(options) {
+    console.log(getApp().globalData.userID);
+    console.log(getApp().globalData.userEmail);
     if (options.study == 1) {
+      this.study = true;
       uni.request({
         url: "http://api.sumu.today:10111/words/getNotStudyWords",
         data: {
-          userID: this.global_userID,
-          email: this.global_userEmail,
+          userID: getApp().globalData.userID,
+          email: getApp().globalData.userEmail,
           size: 10,
           current: 1,
         },
@@ -357,11 +383,40 @@ export default {
           "content-type": "application/json",
         },
         success: ({ data, statusCode, header }) => {
-          console.log(this.words)
+          console.log(this.words);
           console.log(data);
-          this.$set(this.words,data.response);
           this.words = data.response;
-          console.log(this.words)
+          this.wordLength = this.words.length;
+          this.reviwe = new Array(this.wordLength);
+          this.reviwe.fill(false);
+          console.log(this.words);
+        },
+        fail: (error) => {
+          alert(error.message);
+        },
+      });
+    } else if (options.study == 2) {
+      this.study = false;
+      uni.request({
+        url: "http://api.sumu.today:10111/words/getStudyWords",
+        data: {
+          userID: getApp().globalData.userID,
+          email: getApp().globalData.userEmail,
+          size: 10,
+          current: 1,
+        },
+        method: "GET",
+        header: {
+          "content-type": "application/json",
+        },
+        success: ({ data, statusCode, header }) => {
+          console.log(this.words);
+          console.log(data);
+          this.words = data.response;
+          this.wordLength = this.words.length;
+          this.reviwe = new Array(this.wordLength);
+          this.reviwe.fill(true);
+          console.log(this.words);
         },
         fail: (error) => {
           alert(error.message);
@@ -381,6 +436,7 @@ export default {
   },
   methods: {
     changeShow(showDetail = false) {
+      this.currentCount = this.words[this.wordIndex].count;
       console.log("changeShow :" + this.wordIndex);
       this.pageShow.fill(false);
       if (showDetail) {
@@ -413,11 +469,61 @@ export default {
       this.showSentenceMeansFlag = !this.showSentenceMeansFlag;
     },
     lookAnster() {
-      this.changeShow(true);
       this.words[this.wordIndex].count = 0;
       console.log(this.pageShow);
+      this.changeShow(true);
+    },
+    add(api_url) {
+      uni.request({
+        url: api_url,
+        data: {
+          userID: getApp().globalData.userID,
+          wordID: this.words[this.wordIndex].wordID,
+          isStudy: this.words[this.wordIndex].count,
+        },
+        header: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+        sslVerify: true,
+        success: ({ data, statusCode, header }) => {
+          console.log(data.message);
+        },
+        fail: (error) => {
+          console.log("学习记录添加失败");
+        },
+      });
     },
     nextWord() {
+      if (
+        (this.currentCount >= 3 && study) ||
+        (!study && this.currentCount >= 1 && reviwe[this.wordIndex]) ||
+        (!study && this.currentCount >= 3 && !reviwe[this.wordIndex])
+      ) {
+        if (study || !reviwe[this.wordIndex]) {
+          add(getApp().globalData.api_addStudyRecord);
+        } else {
+          add(getApp().globalData.api_updateStudyRecord);
+        }
+        this.words.splice(this.wordIndex, 1);
+        this.reviwe.splice(this.wordIndex, 1);
+      }
+      if (this.words.length == 0) {
+        uni.showToast({
+          title: "当前单词学习完了",
+          icon: "success",
+          mask: true,
+        });
+        uni.redirectTo({
+          url: "/pages/index/index",
+          success: () => {
+            console.log("success goto index/index page");
+          },
+        });
+        return;
+      }
+      console.log(this.words);
       this.wordIndex = (this.wordIndex + 1) % this.words.length;
       console.log(this.wordIndex);
       this.changeShow();
@@ -435,6 +541,7 @@ export default {
         this.words[this.wordIndex].count++;
       } else {
         this.words[this.wordIndex].count = 0;
+        this.reviwe[this.wordIndex] = false;
         uni.showToast({
           title: "单词选择错误",
           icon: "faild",

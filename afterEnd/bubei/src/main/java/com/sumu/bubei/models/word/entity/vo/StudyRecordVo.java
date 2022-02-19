@@ -30,15 +30,14 @@ public class StudyRecordVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableField("userID")
     private Integer userID;
 
     @NotNull(message = "wordID is not null")
-    @TableField("wordID")
     private Integer wordID;
 
-    @TableField("studyTime")
     private LocalDateTime studyTime;
+
+    private int isStudy;
 
     private String standby1;
 

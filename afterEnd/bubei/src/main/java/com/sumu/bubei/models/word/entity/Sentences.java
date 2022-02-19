@@ -40,6 +40,7 @@ public class Sentences implements Serializable {
 
     private Integer kind;
 
+    // voiceUrl
     private String standby1;
 
     private String standby2;
