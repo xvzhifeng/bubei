@@ -137,11 +137,8 @@ public class WordsController {
     @RequestMapping("/getNotStudyWords")
     @ResponseBody
     public ResultInfo<List<WordVo>> getNotStudyWords(@Validated UserVo user) {
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("email", user.getEmail());
-        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userID", user1);
+        queryWrapper.eq("userID", user.getUserID());
         queryWrapper.eq("status", 1);
         IPage<UserNotStudyWordRecord> notStudy = new Page<>(user.getCurrent(), user.getSize());
         userNotStudyWordRecordService.page(notStudy, queryWrapper);
@@ -172,7 +169,7 @@ public class WordsController {
             subRes.setCount(words.getIsStudy());
             wordOption wordOption = new wordOption(words1.getJapaneseMeans(), words1.getFalseName(), words1.getChineseMeans(), words1.getEnglishMeans());
             List<wordOption> options = getOptions(words1.getJapaneseMeans());
-            options.add(new Random().nextInt(4),wordOption);
+            options.add(new Random().nextInt(4), wordOption);
             subRes.setOptions(options);
             res.add(subRes);
         });
@@ -180,7 +177,8 @@ public class WordsController {
     }
 
     /**
-     *  获取需要学习的单词数量
+     * 获取需要学习的单词数量
+     *
      * @param userVo 用户信息
      * @return status
      */
@@ -188,25 +186,26 @@ public class WordsController {
     @ResponseBody
     public ResultInfo<Integer> getNotStudyRecordCount(@Validated UserVo userVo) {
         QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userID",userVo.getUserID());
-        queryWrapper.eq("status",1);
+        queryWrapper.eq("userID", userVo.getUserID());
+        queryWrapper.eq("status", 1);
         Integer count = Math.toIntExact(userNotStudyWordRecordService.count(queryWrapper));
-        return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要学习的单词总数成功",count);
+        return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要学习的单词总数成功", count);
     }
 
     /**
      * 获取需要复习的单词数量
+     *
      * @param userVo 用户信息
-     * @return  status
+     * @return status
      */
     @RequestMapping("/getStudyRecordCount")
     @ResponseBody
     public ResultInfo<Integer> getStudyRecordCount(@Validated UserVo userVo) {
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userID",userVo.getUserID());
-        queryWrapper.eq("status",1);
+        queryWrapper.eq("userID", userVo.getUserID());
+        queryWrapper.eq("status", 1);
         Integer count = Math.toIntExact(userStudyWordRecordService.count(queryWrapper));
-        return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要复习的单词总数成功",count);
+        return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要复习的单词总数成功", count);
     }
 
     /**
@@ -218,11 +217,8 @@ public class WordsController {
     @RequestMapping("/getStudyWords")
     @ResponseBody
     public ResultInfo<List<WordVo>> getStudyWords(@Validated UserVo user) {
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("email", user.getEmail());
-        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userID", user1);
+        queryWrapper.eq("userID", user.getUserID());
         queryWrapper.eq("status", 1);
         List<String> review = Common.getDateReview();
         for (int i = 0; i < review.size(); i++) {
@@ -263,6 +259,7 @@ public class WordsController {
     /**
      * 学习完单词后添加到学习记录中，并且修改未学习标记
      * 会清除复习的历史次数，只有当复习错误时或者第一次存入调用
+     *
      * @param studyRecordVo 单词信息
      * @return status
      */
@@ -331,20 +328,20 @@ public class WordsController {
      * 从词书初始化需要学习的单词
      * 会清除上一本词书单词
      *
-     * @param bookAndUserVo  词书和用户信息
+     * @param bookAndUserVo 词书和用户信息
      * @return status
      */
     @RequestMapping("/initNotStudyRecordFromBook")
     @ResponseBody
     public ResultInfo<String> initNotStudyRecordFromBook(@Validated BookAndUserVo bookAndUserVo) {
         QueryWrapper<UserNotStudyWordRecord> userNotStudyWordRecordQueryWrapper = new QueryWrapper<>();
-        userNotStudyWordRecordQueryWrapper.eq("status",1);
-        userNotStudyWordRecordQueryWrapper.or().eq("status",2);
+        userNotStudyWordRecordQueryWrapper.eq("status", 1);
+        userNotStudyWordRecordQueryWrapper.or().eq("status", 2);
         userNotStudyWordRecordService.remove(userNotStudyWordRecordQueryWrapper);
         QueryWrapper<WordBookRelation> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("wordBookID",bookAndUserVo.getWordBookID());
+        queryWrapper.eq("wordBookID", bookAndUserVo.getWordBookID());
         List<WordBookRelation> list = wordBookRelationService.list(queryWrapper);
-        for(WordBookRelation w : list) {
+        for (WordBookRelation w : list) {
             UserNotStudyWordRecord userNotStudyWordRecord = new UserNotStudyWordRecord();
             userNotStudyWordRecord.setWordID(w.getWordID());
             userNotStudyWordRecord.setUserID(bookAndUserVo.getUserID());
@@ -365,15 +362,15 @@ public class WordsController {
     public List<wordOption> getOptions(String word) {
         List<wordOption> res = new LinkedList<>();
         QueryWrapper<Words> queryWrapper = new QueryWrapper<>();
-        for(int i=0;i<word.length();i++) {
-            String sub = word.substring(i,word.length());
-            queryWrapper.likeRight("japaneseMeans",sub);
+        for (int i = 0; i < word.length(); i++) {
+            String sub = word.substring(i, word.length());
+            queryWrapper.likeRight("japaneseMeans", sub);
             List<Words> list = wordsService.list(queryWrapper);
-            for(Words w : list) {
-                if(res.size() >=  3) {
+            for (Words w : list) {
+                if (res.size() >= 3) {
                     break;
                 }
-                res.add(new wordOption(w.getJapaneseMeans(),w.getFalseName(),w.getChineseMeans(),w.getEnglishMeans()));
+                res.add(new wordOption(w.getJapaneseMeans(), w.getFalseName(), w.getChineseMeans(), w.getEnglishMeans()));
             }
         }
         return res;

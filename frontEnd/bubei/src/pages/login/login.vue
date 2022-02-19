@@ -7,7 +7,7 @@
       <text class="font2">背</text>
     </view>
     <view class="title3">
-      <text class="font3">真实语境学单词</text>
+      <text class="font3">日语</text>
     </view>
 
     <!-- 底部布局 -->
@@ -18,7 +18,7 @@
           :disabled="false"
           :loading="false"
           hover-class="button-hover"
-          @click="register()"
+          @click="password()"
         >
           账号登录
         </button>
@@ -78,7 +78,15 @@ export default {
         alert("请先阅读相关条例");
         return;
       } else {
-        uni.navigateTo({ url: '/pages/login/email' })({
+
+        // uni.navigateTo({
+        //   url: "/pages/learn/main?study=2",
+        //   success: () => {
+        //     console.log("success goto review page");
+        //   },
+        // });
+
+        uni.navigateTo({
             url:"/pages/login/email",
             successs: () => {
                 console.log("跳转到邮箱输入页面成功");
@@ -89,6 +97,21 @@ export default {
         })
         console.log("注册");
       }
+    },
+    password(){
+      if (!this.pitchOn) {
+        alert("请先阅读相关条例");
+        return;
+      } else {
+       uni.navigateTo({ url: '/pages/login/password' ,
+        successs: () => {
+                console.log("跳转到密码页面成功");
+            },
+            fail: () => {
+                console.log("跳转密码输入页面失败");
+            }
+        })
+    }
     },
     checkboxChange(e) {
         console.log(...e.detail.value)

@@ -3,8 +3,10 @@
 		globalData: {  
             userID: 1,
 			userEmail:"user@sumu.com",
+			bkurl:"/static/temp/index.jpg",
 			api_updateStudyRecord:"http://127.0.0.1:10111/words/updateStudyRecord",
-			api_addStudyRecord:"http://127.0.0.1:10111/words/addStudyRecord"
+			api_addStudyRecord:"http://127.0.0.1:10111/words/addStudyRecord",
+			api_passwordLogin:"http://127.0.0.1:10111/user/passwordLogin"
         },
 		onLaunch: function() {
 			console.log('App Launch')
