@@ -3,6 +3,7 @@ package com.sumu.bubei.models.res.entity.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
+@ToString
 public class VoiceMp3Vo {
     private String fileName;
     private String base64;

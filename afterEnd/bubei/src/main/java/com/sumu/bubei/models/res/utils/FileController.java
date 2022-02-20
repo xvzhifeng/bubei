@@ -56,7 +56,9 @@ public class FileController {
     @RequestMapping("/uploadMp3")
     @ResponseBody
     public ResultInfo uploadMp3(VoiceMp3Vo voiceMp3Vo) {
+        log.info(voiceMp3Vo.toString());
         String url = uploadGit(voiceMp3Vo.getBase64(), voiceMp3Vo.getFileName(), ".mp3");
+        log.info(url);
         return new ResultInfo().success(HttpStatus.OK.value(),"音频文件上传到git成功",url);
     }
 
