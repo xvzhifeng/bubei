@@ -98,6 +98,7 @@ public class WordsController {
         word.setEnglishMeans(words.getEnglishMeans());
         word.setJapaneseMeans(words.getJapaneseMeans());
         word.setVoice(words.getVoice());
+        word.setVoiceUrl(words.getVoiceUrl());
         word.setFalseName(words.getFalseName());
         QueryWrapper<Words> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("japaneseMeans", word.getJapaneseMeans());

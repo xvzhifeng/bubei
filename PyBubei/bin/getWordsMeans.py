@@ -264,7 +264,7 @@ class Tool():
     def getJson(self):
         self.word.phrase = self.phrase
         self.word.sentence = self.sentence
-        return json.dumps(self.word, default=lambda o: o.__dict__, sort_keys=True, ensure_ascii=False, indent=4)
+        return json.dumps(self.word, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def getWord(self):
         self.word.phrase = self.phrase
@@ -272,8 +272,9 @@ class Tool():
         return self.word
     
     def uploadToDatabase(self, RequestData):
-        res = requests.post(U.api_addWordAndSentence,data=RequestData.encode('utf-8'))
-        print(res.json)
+        headers = {'Content-Type': 'application/json'}
+        res = requests.post(U.api_addWordAndSentence,headers=headers,data=RequestData)
+        print(res.json())
 
 
 class conf():
