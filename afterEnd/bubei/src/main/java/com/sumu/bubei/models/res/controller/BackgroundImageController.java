@@ -7,17 +7,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sumu.bubei.common.rest.entity.BaseReturn;
 import com.sumu.bubei.common.rest.entity.ResultInfo;
 import com.sumu.bubei.models.res.entity.BackgroundImage;
+import com.sumu.bubei.models.res.entity.BackgroundPicture;
 import com.sumu.bubei.models.res.service.BackgroundImageService;
 import com.sumu.bubei.models.res.service.impl.BackgroundImageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/background-image")
 @Validated
+@CrossOrigin
 public class BackgroundImageController {
 
     @Autowired
@@ -56,6 +56,19 @@ public class BackgroundImageController {
         backgroundImageService.page(page,queryWrapper);
 //        page.getRecords().forEach(System.out::println);
         return page;
+    }
+
+    @RequestMapping("/getBK")
+    @ResponseBody
+    public BackgroundPicture getBK(){
+        QueryWrapper<BackgroundImage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ne("url","");
+        queryWrapper.isNotNull("url");
+        queryWrapper.orderByDesc("updateTime");
+        List<BackgroundImage> list = backgroundImageService.list(queryWrapper);
+        BackgroundPicture res = new BackgroundPicture();
+        res.setUrl(list.get(0).getUrl());
+        return res;
     }
 
 }

@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WordVo {
-
     private int wordID;
     @NotBlank
     private String japaneseMeans;
@@ -30,4 +29,5 @@ public class WordVo {
     private List<Sentences> sentence;
     private List<Sentences> phrase;
     private List<wordOption> options;
+    private int wordBookID;
 }

@@ -80,6 +80,7 @@ public class WordsController {
     }
 
     /**
+     * /addWord/addWordAndSentence
      * 添加完整的单词，包括短语和例句
      *
      * @param words 完整的单词信息
@@ -100,6 +101,15 @@ public class WordsController {
         wordsService.saveOrUpdate(word, queryWrapper);
         Words one = wordsService.getOne(queryWrapper);
         message.append("word add success");
+        // 存入单词与词书的关系
+        WordBookRelation wordBookRelation = new WordBookRelation();
+        wordBookRelation.setWordID(one.getWordID());
+        wordBookRelation.setWordBookID(words.getWordBookID());
+        QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
+        wordBookRelationQueryWrapper.eq("wordID",one.getWordID());
+        wordBookRelationQueryWrapper.eq("wordBookID", words.getWordBookID());
+        wordBookRelationService.saveOrUpdate(wordBookRelation,wordBookRelationQueryWrapper);
+        // 存入单词的例句
         words.getSentence().forEach((sentences) -> {
             sentences.setKind(2);
             UpdateWrapper<Sentences> sentencesUpdateWrapper = new UpdateWrapper<>();
@@ -113,6 +123,7 @@ public class WordsController {
             sentencesRelactionService.saveOrUpdate(sentencesRelaction);
         });
 
+        // 存入单词的短语
         words.getPhrase().forEach((sentences) -> {
             sentences.setKind(1);
             UpdateWrapper<Sentences> sentencesUpdateWrapper = new UpdateWrapper<>();

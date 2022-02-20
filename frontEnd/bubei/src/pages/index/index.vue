@@ -71,8 +71,8 @@ export default {
     };
   },
   onLoad(options) {
-    getApp().globalData.userID = "13";
-    getApp().globalData.userEmail = "tesxt";
+    this.backgroundUrl = getApp().globalData.bkurl;
+    console.log(this.backgroundUrl);
     // 获取需要学习的单词数量
     uni.request({
       url: "http://127.0.0.1:10111/words/getNotStudyRecordCount",
@@ -86,6 +86,8 @@ export default {
       },
       method: "GET",
       success: ({ data, statusCode, header }) => {
+        console.log(data);
+        console.log(getApp().globalData.userID);
         this.learnCount = data.response;
       },
       fail: (error) => {
@@ -106,6 +108,7 @@ export default {
       },
       method: "GET",
       success: ({ data, statusCode, header }) => {
+        console.log(data);
         this.reviewCount = data.response;
       },
       fail: (error) => {

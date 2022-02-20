@@ -4,13 +4,16 @@ package com.sumu.bubei.models.res.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fasterxml.jackson.core.JsonParser;
+import com.sumu.bubei.common.rest.entity.ResultInfo;
 import com.sumu.bubei.common.utils.HttpUtil;
 import com.sumu.bubei.models.res.entity.BackgroundImage;
 import com.sumu.bubei.models.res.entity.git.FromData;
 import com.sumu.bubei.models.res.entity.git.GitUploadFile;
+import com.sumu.bubei.models.res.entity.vo.VoiceMp3Vo;
 import com.sumu.bubei.models.res.service.impl.BackgroundImageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +46,18 @@ public class FileController {
         // modelAndView.setViewName("/res/backgroundImage/uploadFile");
         modelAndView.setViewName("res/backgroundImage/uploadFile");
         return modelAndView;
+    }
+
+    /**
+     * url: /res/util/uploadMp3
+     * @param voiceMp3Vo 音频文件
+     * @return 音频文件url
+     */
+    @RequestMapping("/uploadMp3")
+    @ResponseBody
+    public ResultInfo uploadMp3(VoiceMp3Vo voiceMp3Vo) {
+        String url = uploadGit(voiceMp3Vo.getBase64(), voiceMp3Vo.getFileName(), ".mp3");
+        return new ResultInfo().success(HttpStatus.OK.value(),"音频文件上传到git成功",url);
     }
 
     @PostMapping(value = "/uploadFile")

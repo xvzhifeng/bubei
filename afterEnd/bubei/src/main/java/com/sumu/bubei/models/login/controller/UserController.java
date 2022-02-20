@@ -49,4 +49,26 @@ public class UserController {
             return new ResultInfo().error(HttpStatus.BAD_REQUEST.value(),"登录失败");
         }
     }
+
+    @RequestMapping("/register")
+    @ResponseBody
+    public ResultInfo register(String email) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName(email);
+        user.setManagerID(0);
+        user.setMemberID(0);
+        user.setPassword(email);
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("email",email);
+        if(userService.count(userQueryWrapper) > 0) {
+            log.info("用户已经注册！！！");
+            User userServiceOne = userService.getOne(userQueryWrapper);
+            return new ResultInfo().success(HttpStatus.OK.value(),"登录成功",userServiceOne.getUserID());
+        } else {
+            userService.saveOrUpdate(user,userQueryWrapper);
+            User userServiceOne = userService.getOne(userQueryWrapper);
+            return new ResultInfo().success(HttpStatus.OK.value(),"登录成功",userServiceOne.getUserID());
+        }
+    }
 }

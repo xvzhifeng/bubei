@@ -2,6 +2,7 @@ package com.sumu.bubei.models.res.controller;
 
 import com.sumu.bubei.models.res.entity.BackgroundPicture;
 import com.sumu.bubei.models.res.service.PictureService;
+import com.sumu.bubei.models.res.service.impl.PictureServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PictureController {
 
     @Autowired
-    PictureService pictureService;
+    PictureServiceImpl pictureService;
 
     @RequestMapping("/latestBackgroundPic")
     public BackgroundPicture getBackgroundPicture() {

@@ -46,9 +46,7 @@ export default {
       timeupSecond: 60,
       resCode: "",
       email: "",
-      formData: {
-        
-      },
+      formData: {},
       rules: {
         code: {
           // code 字段的校验
@@ -86,9 +84,9 @@ export default {
     this.email = options.email;
   },
   onReady() {
-        // 需要在onReady中设置规则
-        this.$refs.form.setRules(this.rules)
-    },
+    // 需要在onReady中设置规则
+    this.$refs.form.setRules(this.rules);
+  },
   methods: {
     // 触发提交表单
     submit() {
@@ -111,18 +109,45 @@ export default {
           //       }
           //   })
           if (res.code === this.resCode) {
-            // alert("注册成功");
-              console.log("注册成功");
-              uni.redirectTo({
-              url: `/pages/index/index?email=${this.email}`,
-              success: () => {
-                console.log("跳转到主页");
+            // 调用发送验证码的接口，返回验证码的内容
+            uni.request({
+              url: getApp().globalData.api_emailRegister,
+              data: {
+                email: this.email,
+              },
+              success: ({ data, statusCode, header }) => {
+                getApp().globalData.userID = data.response;
+                getApp().globalData.userEmail = this.email;
+                uni.request({
+                  url: getApp().globalData.api_getBK,
+                  data: {},
+                  header: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                  },
+                  method: 'GET',
+                  success: ({ data, statusCode, header }) => {
+                    console.log(data);
+                    getApp().globalData.bkurl = data.url;
+                  },
+                  fail: (error) => {
+                    console.log("获取背景图失败");
+                  }
+                })
+                console.log("注册成功");
+                uni.redirectTo({
+                  url: `/pages/index/index?email=${this.email}`,
+                  success: () => {
+                    console.log("跳转到主页");
+                  },
+                });
               },
             });
+            // alert("注册成功");
           } else {
             console.log("验证码错误");
           }
-            
         })
         .catch((err) => {
           console.log("表单错误信息：", err);
@@ -171,12 +196,12 @@ export default {
 }
 
 .countDown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1200px;
-    font-size: 18px;
-    margin: 20px;
-    color:rgb(146, 146, 146)
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1200px;
+  font-size: 18px;
+  margin: 20px;
+  color: rgb(146, 146, 146);
 }
 </style>
