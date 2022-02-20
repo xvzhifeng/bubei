@@ -16,6 +16,7 @@ import com.sumu.bubei.models.word.entity.vo.WordVo;
 import com.sumu.bubei.models.word.entity.vo.wordOption;
 import com.sumu.bubei.models.word.service.impl.*;
 import com.sumu.bubei.models.word.utils.Common;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ import java.util.*;
 @RequestMapping("/words")
 // 解决跨域
 @CrossOrigin
+@Slf4j
 public class WordsController {
 
     @Autowired
@@ -89,6 +91,7 @@ public class WordsController {
     @RequestMapping("/addWordAndSentence")
     @ResponseBody
     public ResultInfo<String> addWordAndSentence(@RequestBody @Validated WordVo words) {
+        log.info(words.toString());
         StringBuilder message = new StringBuilder();
         Words word = new Words();
         word.setChineseMeans(words.getChineseMeans());
