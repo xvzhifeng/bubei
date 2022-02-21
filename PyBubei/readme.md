@@ -30,11 +30,12 @@ python3 getWordsMeans.py
 ## 1. 运行时出现 下列错误（SSL）
 
 问题现象：
-`[52320:18108:0221/123852.263:ERROR:ssl_client_socket_impl.cc(995)] handshake failed; returned -1, SSL error code 1, net_error -100 `
+`[52320:18108:0221/123852.263:ERROR:ssl_client_socket_impl.cc(995)] handshake failed; returned -1, SSL error code 1, net_error -100`
 
 解决方法(暂未解决)：
 
 参考方法：
+
 ```python
  def initDriver(self):
         chrome_options = webdriver.ChromeOptions()

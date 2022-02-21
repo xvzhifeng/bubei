@@ -6,6 +6,10 @@ import com.sumu.bubei.common.rest.entity.ResultInfo;
 import com.sumu.bubei.models.login.entity.User;
 import com.sumu.bubei.models.login.entity.vo.UserLoginPasswordVo;
 import com.sumu.bubei.models.login.service.impl.UserServiceImpl;
+import com.sumu.bubei.models.word.controller.WordsController;
+import com.sumu.bubei.models.word.entity.WordBook;
+import com.sumu.bubei.models.word.entity.vo.BookAndUserVo;
+import com.sumu.bubei.models.word.entity.vo.WordBookAndUserV0;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -33,6 +39,9 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
     private ResultInfo resultInfo;
+
+    @Autowired
+    WordsController wordsController;
 
     @RequestMapping("/passwordLogin")
     @ResponseBody
@@ -70,5 +79,26 @@ public class UserController {
             User userServiceOne = userService.getOne(userQueryWrapper);
             return new ResultInfo().success(HttpStatus.OK.value(),"登录成功",userServiceOne.getUserID());
         }
+    }
+
+    @RequestMapping("/getUserInfo")
+    @ResponseBody
+    public ResultInfo getUserInfo(@NotNull(message = "userID can't is null") int userID) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID",userID);
+        User one = userService.getOne(userQueryWrapper);
+        return new ResultInfo().success(HttpStatus.OK.value(),"获取用户信息成功", one);
+    }
+
+    @RequestMapping("/choiceUserWordBook")
+    @ResponseBody
+    public ResultInfo choiceUserWordBook(BookAndUserVo bookAndUserVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", bookAndUserVo.getUserID());
+        User userServiceOne = userService.getOne(userQueryWrapper);
+        userServiceOne.setWordBookID(bookAndUserVo.getWordBookID());
+        userService.saveOrUpdate(userServiceOne, userQueryWrapper);
+        wordsController.initNotStudyRecordFromBook(bookAndUserVo);
+        return new ResultInfo().success(HttpStatus.OK.value(), "用户选择词书成功");
     }
 }
