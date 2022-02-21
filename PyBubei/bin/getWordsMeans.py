@@ -94,6 +94,12 @@ class Tool():
         self.chineseMeansWordOne = ""
         self.phrase = []
         self.sentence = []
+        
+    def init(self):
+        self.word = Word()
+        self.chineseMeansWordOne = ""
+        self.phrase = []
+        self.sentence = []
 
     def getWordInfoFromHujiang(self, wordName):
         print("正在获取单词信息：")
@@ -106,24 +112,27 @@ class Tool():
         self.operator.find_xpth(
             "//div[@class='search-buttonpane-group search-buttonpane-group-jp']/button[1]").click()
         time.sleep(1)
-        self.word.japaneseMeans = self.operator.find_xpth(
-            "//div[@class='word-text']/h2").text
-        self.word.falseName = self.operator.find_xpth(
-            '/html/body/div[1]/div/main/div/section/div/section/div/header/div[1]/div[2]/span[1]').text[1:-1]
-        self.word.chineseMeans = self.operator.find_xpth(
-            "//div[@class='simple']").text
-        self.word.standby = self.operator.find_xpth(
-            "//div[@class='simple']/h2").text[1:-1]
-        self.word.voice = self.operator.find_xpth(
-            '/html/body/div[1]/div/main/div/section/div/section/div/header/div[1]/div[2]/span[2]').text[1:-1]
-        time.sleep(1)
-        self.word.voiceUrl = self.operator.find_xpth(
-            "//span[@class='word-audio audio audio-light']").get_attribute("data-src")
-        # todo MP3 file save to local file （download）
-        # voiceFile = requests.get(word1.voiceUrl)
-        # saveToFile(voiceFile.text,word1.japaneseMeans)
-        self.saveVoiceFile(self.word.voiceUrl)
-        self.chineseMeansWordOne = self.getChineseMeansWordOne()
+        try:
+            self.word.japaneseMeans = self.operator.find_xpth(
+                "//div[@class='word-text']/h2").text
+            self.word.falseName = self.operator.find_xpth(
+                '/html/body/div[1]/div/main/div/section/div/section/div/header/div[1]/div[2]/span[1]').text[1:-1]
+            self.word.chineseMeans = self.operator.find_xpth(
+                "//div[@class='simple']").text
+            self.word.standby = self.operator.find_xpth(
+                "//div[@class='simple']/h2").text[1:-1]
+            self.word.voice = self.operator.find_xpth(
+                '/html/body/div[1]/div/main/div/section/div/section/div/header/div[1]/div[2]/span[2]').text[1:-1]
+            time.sleep(1)
+            self.word.voiceUrl = self.operator.find_xpth(
+                "//span[@class='word-audio audio audio-light']").get_attribute("data-src")
+            # todo MP3 file save to local file （download）
+            # voiceFile = requests.get(word1.voiceUrl)
+            # saveToFile(voiceFile.text,word1.japaneseMeans)
+            self.saveVoiceFile(self.word.voiceUrl)
+            self.chineseMeansWordOne = self.getChineseMeansWordOne()
+        except:
+            print("nout found chineseMeans")
 
     def getChineseMeansWordOne(self):
         firstLineChinese = self.operator.find_xpth(
@@ -138,7 +147,7 @@ class Tool():
         requestData = {}
         requestData["base64"] = str(base64.b64encode(r.content),"utf-8")
         requestData["fileName"] = self.word.japaneseMeans
-        print(requestData)
+        # print(requestData)
         responseVoice = requests.post(U.api_uploadMp3,data=requestData);
         res = responseVoice.json()
         self.word.voiceUrl = res['response']
@@ -190,42 +199,51 @@ class Tool():
             "//input[@name='q']").send_keys(self.chineseMeansWordOne)
         self.operator.find_xpth('/html/body/div[5]/div/form/button').click()
         phase1 = Sentence(kind=1)
-        phrasew = self.operator.find_xpth("//div[@class='more']")
-        if phrasew:
-            phrasew.click()
-        # 获取短语
-        time.sleep(1)
-        AllPhrase = self.operator.find_xpth("//div[@id='webPhrase']").text
-        phraseList = AllPhrase.splitlines()
-        for p in phraseList:
-            res = p.split(' ')
-            if len(res) == 2:
-                if len(res[0]) == 0 or len(res[1]) == 0:
-                    continue
-                subPhrase = Sentence(kind=1)
-                subPhrase.chineseMeans = res[0]
-                subPhrase.japaneseMeans = res[1]
-                print("中： " + res[0]+" 日：" + res[1])
-                self.phrase.append(subPhrase)
+        
+        try:
+            try:
+                phraseMore = self.operator.find_xpth("//div[@class='more']")
+                phraseMore.click()
+            except:
+                print("not have phraseMoreButton")
+            # 获取短语
+            time.sleep(1)
+            AllPhrase = self.operator.find_xpth("//div[@id='webPhrase']").text
+            phraseList = AllPhrase.splitlines()
+            for p in phraseList:
+                res = p.split(' ')
+                if len(res) == 2:
+                    if len(res[0]) == 0 or len(res[1]) == 0:
+                        continue
+                    subPhrase = Sentence(kind=1)
+                    subPhrase.chineseMeans = res[0]
+                    subPhrase.japaneseMeans = res[1]
+                    print("中： " + res[0]+" 日：" + res[1])
+                    self.phrase.append(subPhrase)
+        except:
+            print(self.word.japaneseMeans + " : not found phrase")
         # 获取例句
         time.sleep(1)
-        allSentence = self.operator.find_xpth(
-            "//div[@class='trans-container  tab-content']/ul[@class='ol']").text
-        sentenceList = allSentence.split('youdao')
-        for s in sentenceList:
-            subSentence = Sentence(kind=2)
-            s1 = s.splitlines()
-            if len(s1) == 3 and s1[0] == "":
-                subSentence.chineseMeans = s1[1]
-                subSentence.japaneseMeans = s1[2]
-                # todo get englishmenas
-            elif len(s1) == 2:
-                subSentence.chineseMeans = s1[0]
-                subSentence.japaneseMeans = s1[1]
-            else:
-                continue
-                # todo get englishmenas
-            self.sentence.append(subSentence)
+        try:
+            allSentence = self.operator.find_xpth(
+                "//div[@class='trans-container  tab-content']/ul[@class='ol']").text
+            sentenceList = allSentence.split('youdao')
+            for s in sentenceList:
+                subSentence = Sentence(kind=2)
+                s1 = s.splitlines()
+                if len(s1) == 3 and s1[0] == "":
+                    subSentence.chineseMeans = s1[1]
+                    subSentence.japaneseMeans = s1[2]
+                    # todo get englishmenas
+                elif len(s1) == 2:
+                    subSentence.chineseMeans = s1[0]
+                    subSentence.japaneseMeans = s1[1]
+                else:
+                    continue
+                    # todo get englishmenas
+                self.sentence.append(subSentence)
+        except:
+             print("nout found sentence")
         # sentence = [1,2,3,4,5,6]
         # # sentence = sentence[:3]
         # for i in range(len(sentence)):
@@ -276,6 +294,9 @@ class Tool():
         res = requests.post(U.api_addWordAndSentence,headers=headers,data=RequestData)
         print(res.json())
 
+    def quit(self):
+        self.operator.driver.quit()
+
 
 class conf():
     def __init__(self):
@@ -309,23 +330,25 @@ def start():
     wordbook.path = word_path
     wordbook.readFile()
     res = []
+    tool = Tool()
     for i in wordbook.wordList:
-        tool = Tool()
+        tool.init()
         tool.getWordInfoFromHujiang(i)
         # tool.getSentenceFromBing()
         tool.getSentenceFromYoudao()
         ret = tool.getJson()
-        # tool.uploadToDatabase(ret)
+        tool.uploadToDatabase(ret)
         print(ret)
         res.append(tool.getWord())
         time.sleep(10)
+
 
     # time.sleep(10)
 
     # res.append(word1)
     # json_str = json.dumps(res, default=lambda o: o.__dict__, sort_keys=True,ensure_ascii=False, indent=4)
     # print(json_str)
-    operator.quit()
+    tool.quit()
 
 
 # driver.get("https://www.hjdict.com/jp/")
