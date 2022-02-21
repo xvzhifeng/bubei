@@ -2,10 +2,6 @@
 # selenium 4
 
 import lib.route as U
-from ast import operator
-from cmath import phase
-from lib2to3.pgen2 import driver
-from click import open_file
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -34,11 +30,15 @@ word_book = 0
 
 class Operator():
     def __init__(self) -> None:
-        self.driver = webdriver.Chrome(service=Service(
-            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()))
+        self.driver = self.initDriver()
         self.word = ["学生", "大学生", "研究生"]
         self.result = []
 
+    def initDriver(self):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--ignore-certificate-errors')
+        return webdriver.Chrome(service=Service(
+            ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()),options=chrome_options)
     def gotoPage(self, url):
         self.driver.get(url)
 
@@ -286,7 +286,7 @@ class conf():
     def readFile(self, path=""):
         path = self.path
         try:
-            with open(path, "r") as fp:
+            with open(path, "r",encoding="utf-8") as fp:
                 line_no = 0
                 for line in fp:
                     line_no = line_no + 1
@@ -315,7 +315,7 @@ def start():
         # tool.getSentenceFromBing()
         tool.getSentenceFromYoudao()
         ret = tool.getJson()
-        tool.uploadToDatabase(ret)
+        # tool.uploadToDatabase(ret)
         print(ret)
         res.append(tool.getWord())
         time.sleep(10)
