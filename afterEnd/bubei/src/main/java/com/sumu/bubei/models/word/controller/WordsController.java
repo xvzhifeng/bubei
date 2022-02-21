@@ -112,6 +112,7 @@ public class WordsController {
         QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
         wordBookRelationQueryWrapper.eq("wordID",one.getWordID());
         wordBookRelationQueryWrapper.eq("wordBookID", words.getWordBookID());
+        wordBookRelationQueryWrapper.or().eq("wordBookID", "");
         wordBookRelationService.saveOrUpdate(wordBookRelation,wordBookRelationQueryWrapper);
         // 存入单词的例句
         words.getSentence().forEach((sentences) -> {
