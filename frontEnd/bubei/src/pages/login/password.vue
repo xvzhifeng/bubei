@@ -51,7 +51,7 @@ export default {
               errorMessage: "请输入用户名姓名",
             },
             {
-              minLength: 5,
+              minLength: 3,
               maxLength: 25,
               errorMessage: "姓名长度在 {minLength} 到 {maxLength} 个字符",
             },
