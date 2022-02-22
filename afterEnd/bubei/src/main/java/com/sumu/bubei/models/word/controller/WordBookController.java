@@ -65,7 +65,7 @@ public class WordBookController {
         userNotStudyWordRecordQueryWrapper.eq("userID", word.getUserID());
         userNotStudyWordRecordQueryWrapper.eq("status",2);
         wordBookAndUserV0.setLearnCount((int) userNotStudyWordRecordService.count(userNotStudyWordRecordQueryWrapper));
-        return new ResultInfo().success(HttpStatus.OK.value(),"获取词书成功",bookServiceOne);
+        return new ResultInfo().success(HttpStatus.OK.value(),"获取词书成功",wordBookAndUserV0);
 
     }
 

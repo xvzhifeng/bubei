@@ -28,7 +28,7 @@ public class WordVo {
     private String EnglishMeans;
     private String voice;
     private String voiceUrl;
-    private int count;
+    private Integer count;
     private List<Sentences> sentence;
     private List<Sentences> phrase;
     private List<wordOption> options;

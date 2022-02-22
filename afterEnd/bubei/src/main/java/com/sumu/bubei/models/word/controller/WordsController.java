@@ -163,6 +163,9 @@ public class WordsController {
         IPage<UserNotStudyWordRecord> notStudy = new Page<>(user.getCurrent(), user.getSize());
         userNotStudyWordRecordService.page(notStudy, queryWrapper);
         List<WordVo> res = new ArrayList<>();
+//        for(UserNotStudyWordRecord words: notStudy.getRecords()) {
+//
+//        }
         notStudy.getRecords().forEach((words) -> {
             WordVo subRes = new WordVo();
             List<Sentences> sentencesList = new LinkedList<>();
@@ -189,7 +192,7 @@ public class WordsController {
             subRes.setCount(words.getIsStudy());
             wordOption wordOption = new wordOption(words1.getJapaneseMeans(), words1.getFalseName(), words1.getChineseMeans(), words1.getEnglishMeans());
             List<wordOption> options = getOptions(words1.getJapaneseMeans());
-            options.add(new Random().nextInt(4), wordOption);
+            options.add(new Random().nextInt(options.size()), wordOption);
             subRes.setOptions(options);
             res.add(subRes);
         });
@@ -355,8 +358,8 @@ public class WordsController {
     @ResponseBody
     public ResultInfo<String> initNotStudyRecordFromBook(@Validated BookAndUserVo bookAndUserVo) {
         QueryWrapper<UserNotStudyWordRecord> userNotStudyWordRecordQueryWrapper = new QueryWrapper<>();
-        userNotStudyWordRecordQueryWrapper.eq("status", 1);
-        userNotStudyWordRecordQueryWrapper.or().eq("status", 2);
+//        userNotStudyWordRecordQueryWrapper.eq("status", 1);
+//        userNotStudyWordRecordQueryWrapper.or().eq("status", 2);
         userNotStudyWordRecordService.remove(userNotStudyWordRecordQueryWrapper);
         QueryWrapper<WordBookRelation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("wordBookID", bookAndUserVo.getWordBookID());

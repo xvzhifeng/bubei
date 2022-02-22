@@ -81,7 +81,7 @@ export default {
             method: "GET",
             success: ({ data, statusCode, header }) => {
               console.log(data);
-              this.bookName = data.response.bookName;
+              this.bookName = data.response.wordBookName;
               this.learnCount = data.response.learnCount;
               this.count = data.response.count;
             },

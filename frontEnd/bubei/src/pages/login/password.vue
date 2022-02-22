@@ -48,7 +48,7 @@ export default {
             },
             {
               minLength: 5,
-              maxLength: 13,
+              maxLength: 25,
               errorMessage: "姓名长度在 {minLength} 到 {maxLength} 个字符",
             },
           ],
@@ -62,7 +62,7 @@ export default {
             },
             {
               minLength: 6,
-              maxLength: 13,
+              maxLength: 25,
               errorMessage: "密码长度在 {minLength} 到 {maxLength} 个字符",
             },
           ],

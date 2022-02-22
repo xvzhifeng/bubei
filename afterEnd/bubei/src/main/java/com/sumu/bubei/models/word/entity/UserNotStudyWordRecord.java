@@ -1,10 +1,8 @@
 package com.sumu.bubei.models.word.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,6 +42,7 @@ public class UserNotStudyWordRecord implements Serializable {
 
     private String standby3;
 
+    @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
     @TableField("createUser")

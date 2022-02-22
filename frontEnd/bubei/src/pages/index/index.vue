@@ -197,6 +197,7 @@ export default {
       });
     },
     statistics() {
+      uni.navigateTo({ url: '/pages/setting/userSetting' })
       //todo
       uni.showToast({
         title: "statistics",

@@ -11,7 +11,7 @@
       <view class="wordView">
         <view class="wordName">
           <text class="wordName">
-            {{ words[wordIndex].name }}
+            {{ words[wordIndex].japaneseMeans }}
           </text>
           <uni-badge
             v-bind:text="currentCount"
@@ -34,11 +34,11 @@
         >
           <view class="optionXvhua"></view>
           <button
-            @click="choice(item.name)"
+            @click="choice(item.japaneseMeans)"
             plain="true"
             class="buttonNoBorder"
           >
-            {{ item.name }}
+            {{ item.chineseMeans }}
           </button>
         </view>
         <!-- <view class="wordOption">
@@ -73,7 +73,7 @@
       <view class="wordView">
         <view class="wordName">
           <text class="wordName">
-            {{ words[wordIndex].name }}
+            {{ words[wordIndex].japaneseMeans }}
           </text>
           <uni-badge
             v-bind:text="currentCount"
@@ -88,7 +88,7 @@
         </view>
         <view class="wordMeans">
           <text>
-            {{ words[wordIndex].means }}
+            {{ words[wordIndex].chineseMeans }}
           </text>
         </view>
       </view>
@@ -104,13 +104,13 @@
         ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
           <view class="sentenceName">
-            <text v-if="words[wordIndex].sentence[0]">
-              {{ words[wordIndex].sentence[0].name }}</text
+            <text v-if="words[wordIndex].sentence[0]!=null">
+              {{ words[wordIndex].sentence[0].japaneseMeans }}</text
             >
           </view>
           <view class="sentenceMean">
-            <text v-if="words[wordIndex].sentence[0]">
-              {{ words[wordIndex].sentence[0].means }}</text
+            <text v-if="words[wordIndex].sentence[0]!=null">
+              {{ words[wordIndex].sentence[0].chineseMeans }}</text
             >
           </view>
         </view>
@@ -121,10 +121,10 @@
         <view class="grammar" :style="{ height: appHeight * 0.38 + 'rpx' }">
           <view
             class="grammarList"
-            v-for="(item, index) in words[wordIndex].grammer"
+            v-for="(item, index) in words[wordIndex].phrase"
             :key="index"
           >
-            {{ item.name }} {{ item.means }}
+            {{ item.japaneseMeans }} {{ item.chineseMeans }}
           </view>
         </view>
       </view>
@@ -145,7 +145,7 @@
       <view class="wordView">
         <view class="wordName">
           <text class="wordName">
-            {{ words[wordIndex].name }}
+            {{ words[wordIndex].japaneseMeans }}
           </text>
           <uni-badge
             v-bind:text="currentCount"
@@ -160,7 +160,7 @@
         </view>
         <view class="wordMeans">
           <text>
-            {{ words[wordIndex].means }}
+            {{ words[wordIndex].chineseMeans }}
           </text>
         </view>
       </view>
@@ -177,11 +177,11 @@
           :style="{ height: appHeight * 0.18 + 'rpx' }"
         ></view>
         <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
-          <view class="sentenceName">
-            <text>{{ words[wordIndex].sentence[0].name }}</text>
+          <view class="sentenceName" v-if="words[wordIndex].sentence[0]!=null">
+            <text>{{ words[wordIndex].sentence[0].japaneseMeans }}</text>
           </view>
-          <view class="sentenceMean" :hidden="showSentenceMeansFlag">
-            <text> {{ words[wordIndex].sentence[0].means }}</text>
+          <view class="sentenceMean" :hidden="showSentenceMeansFlag" v-if="words[wordIndex].sentence[0]!=null">
+            <text> {{ words[wordIndex].sentence[0].chineseMeans }}</text>
           </view>
         </view>
 
@@ -243,122 +243,122 @@ export default {
       reviwe: [],
       words: [
         {
-          name: "hello1",
-          means: "你好",
+          japaneseMeans: "hello1",
+          chineseMeans: "你好",
           voice: "nihao",
           count: 0,
           options: [
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "hello1",
+              japaneseMeans: "hello1",
             },
           ],
           sentence: [
             {
-              name: "hello world",
-              means: "你好，世界",
+              japaneseMeans: "hello world",
+              chineseMeans: "你好，世界",
             },
           ],
-          grammer: [
+          phrase: [
             {
-              name: "hello world",
-              means: "你好，世界",
+              japaneseMeans: "hello world",
+              chineseMeans: "你好，世界",
             },
             {
-              name: "hi",
-              means: "你好",
+              japaneseMeans: "hi",
+              chineseMeans: "你好",
             },
             {
-              name: "hello,bye",
-              means: "你好，再见",
+              japaneseMeans: "hello,bye",
+              chineseMeans: "你好，再见",
             },
           ],
         },
         {
-          name: "hello2",
-          means: "你好",
+          japaneseMeans: "hello2",
+          chineseMeans: "你好",
           voice: "nihao",
           count: 0,
           options: [
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "hello2",
+              japaneseMeans: "hello2",
             },
           ],
           sentence: [
             {
-              name: "hello world",
-              means: "你好，世界",
+              japaneseMeans: "hello world",
+              chineseMeans: "你好，世界",
             },
           ],
-          grammer: [
+          phrase: [
             {
-              name: "hello world",
-              means: "你好，世界",
+              japaneseMeans: "hello world",
+              chineseMeans: "你好，世界",
             },
             {
-              name: "hi",
-              means: "你好",
+              japaneseMeans: "hi",
+              chineseMeans: "你好",
             },
             {
-              name: "hello,bye",
-              means: "你好，再见",
+              japaneseMeans: "hello,bye",
+              chineseMeans: "你好，再见",
             },
           ],
         },
         {
-          name: "hello3",
+          japaneseMeans: "hello3",
           means: "你好",
           voice: "nihao",
           count: 0,
           options: [
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "word1",
+              japaneseMeans: "word1",
             },
             {
-              name: "hello3",
+              japaneseMeans: "hello3",
             },
           ],
           sentence: [
             {
-              name: "hello world",
-              means: "你好，世界",
+              japaneseMeans: "hello world",
+              chineseMeans: "你好，世界",
             },
           ],
-          grammer: [
+          phrase: [
             {
-              name: "hello world",
-              means: "你好，世界",
+              japaneseMeans: "hello world",
+              chineseMeans: "你好，世界",
             },
             {
-              name: "hi",
-              means: "你好",
+              japaneseMeans: "hi",
+              chineseMeans: "你好",
             },
             {
-              name: "hello,bye",
-              means: "你好，再见",
+              japaneseMeans: "hello,bye",
+              chineseMeans: "你好，再见",
             },
           ],
         },
@@ -371,7 +371,7 @@ export default {
     if (options.study == 1) {
       this.study = true;
       uni.request({
-        url: "http://api.sumu.today:10111/words/getNotStudyWords",
+        url: getApp().globalData.api_getNotStudyWords,
         data: {
           userID: getApp().globalData.userID,
           email: getApp().globalData.userEmail,
@@ -398,7 +398,7 @@ export default {
     } else if (options.study == 2) {
       this.study = false;
       uni.request({
-        url: "http://api.sumu.today:10111/words/getStudyWords",
+        url: getApp().globalData.api_getStudyWords,
         data: {
           userID: getApp().globalData.userID,
           email: getApp().globalData.userEmail,
@@ -442,7 +442,7 @@ export default {
       if (showDetail) {
         this.$set(this.pageShow, 1, true);
       } else {
-        if (this.words[this.wordIndex].count == 0) {
+        if (this.words[this.wordIndex].count == 0 && this.study && !reviwe[this.wordIndex]) {
           this.$set(this.pageShow, 0, true);
         } else {
           this.$set(this.pageShow, 2, true);
@@ -497,14 +497,14 @@ export default {
     },
     nextWord() {
       if (
-        (this.currentCount >= 3 && study) ||
-        (!study && this.currentCount >= 1 && reviwe[this.wordIndex]) ||
-        (!study && this.currentCount >= 3 && !reviwe[this.wordIndex])
+        (this.currentCount >= 3 && this.study) ||
+        (!this.study && this.currentCount >= 1 && reviwe[this.wordIndex]) ||
+        (!this.study && this.currentCount >= 3 && !reviwe[this.wordIndex])
       ) {
-        if (study || !reviwe[this.wordIndex]) {
-          add(getApp().globalData.api_addStudyRecord);
+        if (this.study || !reviwe[this.wordIndex]) {
+          this.add(getApp().globalData.api_addStudyRecord);
         } else {
-          add(getApp().globalData.api_updateStudyRecord);
+          this.add(getApp().globalData.api_updateStudyRecord);
         }
         this.words.splice(this.wordIndex, 1);
         this.reviwe.splice(this.wordIndex, 1);
@@ -537,7 +537,7 @@ export default {
       this.changeShow(true);
     },
     choice(word) {
-      if (word == this.words[this.wordIndex].name) {
+      if (word == this.words[this.wordIndex].japaneseMeans) {
         this.words[this.wordIndex].count++;
       } else {
         this.words[this.wordIndex].count = 0;
