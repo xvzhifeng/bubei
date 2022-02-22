@@ -35,3 +35,7 @@ build/
 !/.mvn/
 frontEnd/.DS_Store
 .DS_Store
+PyBubei/bin/lib/__pycache__/
+PyBubei/bin/lib/__pycache__/common.cpython-38.pyc
+PyBubei/bin/lib/__pycache__/ini.cpython-38.pyc
+PyBubei/bin/lib/__pycache__/route.cpython-38.pyc

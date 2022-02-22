@@ -115,32 +115,36 @@ public class WordsController {
         wordBookRelationQueryWrapper.eq("wordBookID", words.getWordBookID());
         wordBookRelationService.saveOrUpdate(wordBookRelation,wordBookRelationQueryWrapper);
         // 存入单词的例句
-        words.getSentence().forEach((sentences) -> {
-            sentences.setKind(2);
-            UpdateWrapper<Sentences> sentencesUpdateWrapper = new UpdateWrapper<>();
-            sentencesUpdateWrapper.eq("japaneseMeans", sentences.getJapaneseMeans());
-            sentencesService.saveOrUpdate(sentences, sentencesUpdateWrapper);
-            Sentences one1 = sentencesService.getOne(sentencesUpdateWrapper);
-            SentencesRelaction sentencesRelaction = new SentencesRelaction();
-            sentencesRelaction.setSentenceID(one1.getSentenceID());
-            sentencesRelaction.setWordID(one.getWordID());
-            sentencesRelaction.setStandby1(sentences.getStandby1());
-            sentencesRelactionService.saveOrUpdate(sentencesRelaction);
-        });
+        if (words.getSentence() != null) {
+            words.getSentence().forEach((sentences) -> {
+                sentences.setKind(2);
+                UpdateWrapper<Sentences> sentencesUpdateWrapper = new UpdateWrapper<>();
+                sentencesUpdateWrapper.eq("japaneseMeans", sentences.getJapaneseMeans());
+                sentencesService.saveOrUpdate(sentences, sentencesUpdateWrapper);
+                Sentences one1 = sentencesService.getOne(sentencesUpdateWrapper);
+                SentencesRelaction sentencesRelaction = new SentencesRelaction();
+                sentencesRelaction.setSentenceID(one1.getSentenceID());
+                sentencesRelaction.setWordID(one.getWordID());
+                sentencesRelaction.setStandby1(sentences.getStandby1());
+                sentencesRelactionService.saveOrUpdate(sentencesRelaction);
+            });
+        }
 
-        // 存入单词的短语
-        words.getPhrase().forEach((sentences) -> {
-            sentences.setKind(1);
-            UpdateWrapper<Sentences> sentencesUpdateWrapper = new UpdateWrapper<>();
-            sentencesUpdateWrapper.eq("japaneseMeans", sentences.getJapaneseMeans());
-            sentencesService.saveOrUpdate(sentences, sentencesUpdateWrapper);
-            Sentences one1 = sentencesService.getOne(sentencesUpdateWrapper);
-            SentencesRelaction sentencesRelaction = new SentencesRelaction();
-            sentencesRelaction.setSentenceID(one1.getSentenceID());
-            sentencesRelaction.setWordID(one.getWordID());
-            sentencesRelaction.setStandby1(sentences.getStandby1());
-            sentencesRelactionService.saveOrUpdate(sentencesRelaction);
-        });
+        if(words.getPhrase() != null) {
+            // 存入单词的短语
+            words.getPhrase().forEach((sentences) -> {
+                sentences.setKind(1);
+                UpdateWrapper<Sentences> sentencesUpdateWrapper = new UpdateWrapper<>();
+                sentencesUpdateWrapper.eq("japaneseMeans", sentences.getJapaneseMeans());
+                sentencesService.saveOrUpdate(sentences, sentencesUpdateWrapper);
+                Sentences one1 = sentencesService.getOne(sentencesUpdateWrapper);
+                SentencesRelaction sentencesRelaction = new SentencesRelaction();
+                sentencesRelaction.setSentenceID(one1.getSentenceID());
+                sentencesRelaction.setWordID(one.getWordID());
+                sentencesRelaction.setStandby1(sentences.getStandby1());
+                sentencesRelactionService.saveOrUpdate(sentencesRelaction);
+            });
+        }
         return new ResultInfo().success(HttpStatus.OK.value(), message.toString());
     }
 
