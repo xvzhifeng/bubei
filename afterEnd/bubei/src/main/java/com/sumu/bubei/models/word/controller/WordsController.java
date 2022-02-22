@@ -109,10 +109,10 @@ public class WordsController {
         WordBookRelation wordBookRelation = new WordBookRelation();
         wordBookRelation.setWordID(one.getWordID());
         wordBookRelation.setWordBookID(words.getWordBookID());
+        log.info(wordBookRelation.toString());
         QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
         wordBookRelationQueryWrapper.eq("wordID",one.getWordID());
         wordBookRelationQueryWrapper.eq("wordBookID", words.getWordBookID());
-        wordBookRelationQueryWrapper.or().eq("wordBookID", "");
         wordBookRelationService.saveOrUpdate(wordBookRelation,wordBookRelationQueryWrapper);
         // 存入单词的例句
         words.getSentence().forEach((sentences) -> {

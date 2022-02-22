@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # selenium 4
 
-import lib.route as U
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -20,13 +20,34 @@ sys.path.append(os.path.join(
     os.path.dirname(
         os.path.abspath(__file__)), "lib"))
 
+import lib.route as U
+import lib.ini as ini
+import lib.common as common
+
 
 word_path = os.path.join(
     os.path.dirname(
         os.path.abspath(__file__)), "conf/wordbook.conf")
 
-word_book = 0
+bubei_conf = os.path.join(
+    os.path.dirname(
+        os.path.abspath(__file__)), "conf/bubei.conf")
 
+# 配置文件
+_bubei_conf_check_reg = ini.ConfCheck()
+_bubei_conf_check_reg.add_regulation(
+    "wordBookID",
+    True,
+    common.check_int,
+    "wordBookID")
+
+class BubeiConf(ini.ConfBase):
+    def __init__(self):
+        ini.ConfBase.__init__(self, _bubei_conf_check_reg)
+        self.wordBookID=0
+    
+    def set_value(self):
+        self.wordBookID=self.cfg["wordBookID"]
 
 class Operator():
     def __init__(self) -> None:
@@ -57,7 +78,7 @@ class Operator():
 
 
 class Word():
-    def __init__(self) -> None:
+    def __init__(self, bubei_cfg) -> None:
         self.japaneseMeans = ""
         self.chineseMeans = ""
         self.falseName = ""
@@ -67,7 +88,7 @@ class Word():
         self.sentence = []
         self.phrase = []
         self.standby = ""
-        self.wordBookId = word_book
+        self.wordBookId = bubei_cfg.wordBookID
 
 
 class Sentence():
@@ -88,15 +109,16 @@ def saveToFile(ret, wordName):
 
 
 class Tool():
-    def __init__(self):
+    def __init__(self, bubei_cfg):
         self.operator = Operator()
-        self.word = Word()
+        self.word = Word(bubei_cfg)
         self.chineseMeansWordOne = ""
         self.phrase = []
         self.sentence = []
+        self.notFoundWord = []
         
-    def init(self):
-        self.word = Word()
+    def init(self, bubei_cfg):
+        self.word = Word(bubei_cfg)
         self.chineseMeansWordOne = ""
         self.phrase = []
         self.sentence = []
@@ -133,6 +155,7 @@ class Tool():
             self.chineseMeansWordOne = self.getChineseMeansWordOne()
         except:
             print("nout found chineseMeans")
+            self.notFoundWord.append(wordName)
 
     def getChineseMeansWordOne(self):
         firstLineChinese = self.operator.find_xpth(
@@ -190,7 +213,7 @@ class Tool():
         """
         print("正在从有道获取例句和短语：")
         self.operator.gotoPage(U.Youdao_url)
-        time.sleep(1)
+        time.sleep(10)
         self.operator.find_xpth("//span[@class='arrow']").click()
         time.sleep(1)
         self.operator.find_xpth(
@@ -298,7 +321,7 @@ class Tool():
         self.operator.driver.quit()
 
 
-class conf():
+class WordConf():
     def __init__(self):
         self.path = ""
         self.wordList = []
@@ -326,22 +349,30 @@ class conf():
 
 def start():
 
-    wordbook = conf()
+    wordbook = WordConf()
     wordbook.path = word_path
     wordbook.readFile()
+
+    bubeiConf = BubeiConf()
+    bubeiConf.load(bubei_conf)
+
     res = []
-    tool = Tool()
+    tool = Tool(bubeiConf)
     for i in wordbook.wordList:
-        tool.init()
+        tool.init(bubeiConf)
         tool.getWordInfoFromHujiang(i)
         # tool.getSentenceFromBing()
         tool.getSentenceFromYoudao()
         ret = tool.getJson()
         tool.uploadToDatabase(ret)
-        print(ret)
+        # print(ret)
         res.append(tool.getWord())
         time.sleep(10)
-
+    print("当前单词获取结束！")
+    if len(tool.notFoundWord) > 0:
+        print("有以下单词没有添加成功：")
+        for i in tool.notFoundWord:
+            print(i)
 
     # time.sleep(10)
 
