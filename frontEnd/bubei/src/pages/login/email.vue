@@ -1,5 +1,9 @@
 <template>
   <view class="content">
+    <view class="navigate">
+      <uni-icons type="left" color="" @click="back()" size="50rpx"/>
+    </view>
+    <view :style="{ height: appHeight*0.1 + 'rpx' }"></view>
     <uni-forms ref="form" :modelValue="formData" :rules="rules" class="form">
       <uni-forms-item
         label="邮箱:"
@@ -62,6 +66,9 @@ export default {
     }
   },
   methods: {
+    back() {
+      uni.redirectTo({ url: "/pages/login/login" });
+    },
     /**
      * 复写 binddata 方法，如果只是为了校验，无复杂自定义操作，可忽略此方法
      * @param {String} name 字段名称
@@ -124,6 +131,14 @@ export default {
   align-items: center;
   /* justify-items: center; */
   /* color: rgb(59, 58, 58); */
+}
+
+.navigate{
+  margin: 20rpx;
+  position: absolute;
+  left: 0rpx;
+  top:30rpx;
+  z-index: 100;
 }
 
 .form {

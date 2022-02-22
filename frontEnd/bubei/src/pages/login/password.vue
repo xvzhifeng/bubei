@@ -1,6 +1,10 @@
 <template>
   <view class="content" :style="{ height: appHeight + 'rpx' }">
     <image class="image-bg" :src="bkurl" />
+     <view class="navigate">
+      <uni-icons type="left" color="" @click="back()" size="50rpx"/>
+    </view>
+    <view :style="{ height: appHeight*0.1 + 'rpx' }"></view>
     <view>
       <view class="formView">
         <view class="xvhua" :style="{ top: appHeight * 0.3 + 'rpx' }"></view>
@@ -84,6 +88,9 @@ export default {
     this.$refs.form.setRules(this.rules);
   },
   methods: {
+    back() {
+      uni.redirectTo({ url: "/pages/login/login" });
+    },
     submit() {
       this.$refs.form
         .validate()
@@ -151,6 +158,14 @@ export default {
   right: 0;
   width: 100%;
   height: 100%;
+}
+
+.navigate{
+  margin: 20rpx;
+  position: absolute;
+  left: 0rpx;
+  top:30rpx;
+  z-index: 100;
 }
 
 .content {
