@@ -75,7 +75,7 @@ export default {
     console.log(this.backgroundUrl);
     // 获取需要学习的单词数量
     uni.request({
-      url: "http://127.0.0.1:10111/words/getNotStudyRecordCount",
+      url: getApp().globalData.api_getNotStudyRecordCount,
       data: {
         userID: getApp().globalData.userID,
         email: getApp().globalData.userEmail,
@@ -97,7 +97,7 @@ export default {
 
     // 获取需要复习的单词数量
     uni.request({
-      url: "http://127.0.0.1:10111/words/getStudyRecordCount",
+      url: getApp().globalData.api_getStudyRecordCount,
       data: {
         userID: getApp().globalData.userID,
         email: getApp().globalData.userEmail,

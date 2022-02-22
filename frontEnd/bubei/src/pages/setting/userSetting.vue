@@ -66,7 +66,8 @@ export default {
       success: ({ data, statusCode, header }) => {
         console.log(data);
         this.wordbookID = data.response.wordBookID;
-        if (this.wordbookID != 0) {
+        console.log(this.wordbookID)
+        if (this.wordbookID != null) {
           uni.request({
             url: getApp().globalData.api_getWordBookInfo,
             data: {

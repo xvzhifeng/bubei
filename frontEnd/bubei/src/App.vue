@@ -15,7 +15,10 @@
 			api_getAllWordBook:"http://api.sumu.today:10111/word-book/getAllWordBook",
 			api_choiceUserWordBook:"http://api.sumu.today:10111/user/choiceUserWordBook",
 			api_getNotStudyWords:"http://api.sumu.today:10111/words/getNotStudyWords",
-			api_getStudyWords:"http://api.sumu.today:10111/words/getStudyWords"
+			api_getStudyWords:"http://api.sumu.today:10111/words/getStudyWords",
+			api_getNotStudyRecordCount:"http://api.sumu.today:10111/words/getNotStudyRecordCount",
+			api_getStudyRecordCount:"http://api.sumu.today:10111/words/getStudyRecordCount"
+
         },
 		onLaunch: function() {
 			console.log('App Launch')
