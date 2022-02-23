@@ -69,7 +69,7 @@ public class FileController {
     @RequestMapping("/getMp3")
     @ResponseBody
     public String getMp3(String url) throws FileNotFoundException {
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/voice/test1.mp3";
+        String projectPath = System.getProperty("user.dir") + "/upload/voice/test1.mp3";
         File file=new File(projectPath + "test1.mp3");
         HttpDownLoadUtil.download(url, projectPath);
 //        FileOutputStream f1=new FileOutputStream(file);
@@ -91,7 +91,7 @@ public class FileController {
 //            }
 //        }
 //        log.info(res);
-        return projectPath;
+        return "http://api.sumu.today:10111/upload/voice/test1.mp3";
     }
 
     @PostMapping(value = "/uploadFile")
