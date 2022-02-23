@@ -17,7 +17,8 @@
 			api_getNotStudyWords:"http://api.sumu.today:10111/words/getNotStudyWords",
 			api_getStudyWords:"http://api.sumu.today:10111/words/getStudyWords",
 			api_getNotStudyRecordCount:"http://api.sumu.today:10111/words/getNotStudyRecordCount",
-			api_getStudyRecordCount:"http://api.sumu.today:10111/words/getStudyRecordCount"
+			api_getStudyRecordCount:"http://api.sumu.today:10111/words/getStudyRecordCount",
+			api_getMp3:"http://api.sumu.today:10111/res/util/getMp3"
 
         },
 		onLaunch: function() {

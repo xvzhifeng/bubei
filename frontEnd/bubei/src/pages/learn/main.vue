@@ -592,20 +592,38 @@ export default {
       this.audio();
     },
     audio() {
-      console.log(this.words[this.wordIndex]);
-      console.log("开始播放" + "http://api.sumu.today:10111/res/util/getMp3?url="+this.words[this.wordIndex].voiceUrl);
-      const innerAudioContext = uni.createInnerAudioContext();
-      innerAudioContext.autoplay = true;
-      innerAudioContext.src = "http://api.sumu.today:10111/res/util/getMp3?url="+this.words[this.wordIndex].voiceUrl;
-      innerAudioContext.play();
-      innerAudioContext.onPlay(() => {
-        console.log("开始播放");
-      });
-      innerAudioContext.onError((res) => {
-        console.log(res);
-        console.log(res.errMsg);
-        console.log(res.errCode);
-      });
+      console.log(this.words[this.wordIndex].japaneseMeans);
+      console.log(this.words[this.wordIndex].voiceUrl);
+      uni.request({
+        url: getApp().globalData.api_getMp3,
+        data: {
+          url:this.words[this.wordIndex].voiceUrl
+        },
+        header: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        method: 'GET',
+        success: ({ data, statusCode, header }) => {
+          console.log(this.words[this.wordIndex]);
+          console.log("开始播放" + data);
+          const innerAudioContext = uni.createInnerAudioContext();
+          innerAudioContext.autoplay = true;
+          innerAudioContext.src = data;
+          innerAudioContext.play();
+          innerAudioContext.onPlay(() => {
+            console.log("开始播放");
+          });
+          innerAudioContext.onError((res) => {
+            console.log(res);
+            console.log(res.errMsg);
+            console.log(res.errCode);
+          });
+        },
+        fail: (error) => {}
+      })
+      
     },
     know() {
       this.words[this.wordIndex].count += 1;
