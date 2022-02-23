@@ -593,10 +593,10 @@ export default {
     },
     audio() {
       console.log(this.words[this.wordIndex]);
-      console.log("开始播放" + this.words[this.wordIndex].voiceUrl);
+      console.log("开始播放" + "http://api.sumu.today:10111/res/util/getMp3?url="+this.words[this.wordIndex].voiceUrl);
       const innerAudioContext = uni.createInnerAudioContext();
       innerAudioContext.autoplay = true;
-      innerAudioContext.src = this.words[this.wordIndex].voiceUrl;
+      innerAudioContext.src = "http://api.sumu.today:10111/res/util/getMp3?url="+this.words[this.wordIndex].voiceUrl;
       innerAudioContext.play();
       innerAudioContext.onPlay(() => {
         console.log("开始播放");

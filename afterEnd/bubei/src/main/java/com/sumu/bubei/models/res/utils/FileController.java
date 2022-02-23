@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.fasterxml.jackson.core.JsonParser;
 import com.sumu.bubei.common.rest.entity.ResultInfo;
+import com.sumu.bubei.common.utils.HttpDownLoadUtil;
 import com.sumu.bubei.common.utils.HttpUtil;
 import com.sumu.bubei.models.res.entity.BackgroundImage;
 import com.sumu.bubei.models.res.entity.git.FromData;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -65,16 +68,30 @@ public class FileController {
 
     @RequestMapping("/getMp3")
     @ResponseBody
-    public String getMp3(String url) {
-        log.info(url.toString());
-        String res = null;
-        try {
-            res = HttpUtil.doGet(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        log.info(res);
-        return res;
+    public String getMp3(String url) throws FileNotFoundException {
+        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/voice/test1.mp3";
+        File file=new File(projectPath + "test1.mp3");
+        HttpDownLoadUtil.download(url, projectPath);
+//        FileOutputStream f1=new FileOutputStream(file);
+//        System.out.println(projectPath);
+//        log.info(url.toString());
+//        Base64.Decoder decoder = Base64.getDecoder();
+//        String res = null;
+//        try {
+//            res = HttpUtil.doGet(url);
+//            f1.write(decoder.decode(res.getBytes("UTF-8")));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                f1.close();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }
+//        log.info(res);
+        return projectPath;
     }
 
     @PostMapping(value = "/uploadFile")
