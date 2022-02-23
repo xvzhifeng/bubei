@@ -48,11 +48,11 @@
                   style="transform: scale(0.7)"
                 />&nbsp;&nbsp;
 
-                <p class="xieyi">
+                <text class="xieyi">
                   我已成功阅读并同意<span>《隐私协议》《服务条款》</span>和<span
                     >《儿童信息保护》</span
                   >
-                </p>
+               </text>
               </view>
             </label>
           </checkbox-group>
@@ -261,7 +261,7 @@ span {
   width: 90%;
   height: 50px;
   font-size: 10px;
-  /* position: absolute; */
+  position: absolute;
   bottom: 8%;
   display: flex;
   justify-content: center;

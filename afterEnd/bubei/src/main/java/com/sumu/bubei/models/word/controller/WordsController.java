@@ -378,6 +378,7 @@ public class WordsController {
         wordsVo.setEnglishMeans(words.getEnglishMeans());
         wordsVo.setJapaneseMeans(words.getJapaneseMeans());
         wordsVo.setVoice(words.getVoice());
+        wordsVo.setVoiceUrl(words.getVoiceUrl());
         wordsVo.setFalseName(words.getFalseName());
         wordsVo.setWordID(words.getWordID());
     }
