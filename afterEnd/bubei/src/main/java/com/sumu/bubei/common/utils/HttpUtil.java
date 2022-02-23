@@ -45,9 +45,9 @@ public class HttpUtil {
      *
      * @return
      */
-    public static String doGet(String url) {
+    public static String doGet(String url) throws Exception {
         try {
-            HttpClient client = new DefaultHttpClient();
+            HttpClient client = new SSLClient();
             //发送get请求
             HttpGet request = new HttpGet(url);
             HttpResponse response = client.execute(request);

@@ -35,6 +35,7 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping("/res/util")
+@CrossOrigin
 public class FileController {
 
     @Autowired
@@ -60,6 +61,20 @@ public class FileController {
         String url = uploadGit(voiceMp3Vo.getBase64(), voiceMp3Vo.getFileName(), ".mp3");
         log.info(url);
         return new ResultInfo().success(HttpStatus.OK.value(),"音频文件上传到git成功",url);
+    }
+
+    @RequestMapping("/getMp3")
+    @ResponseBody
+    public String getMp3(String url) {
+        log.info(url.toString());
+        String res = null;
+        try {
+            res = HttpUtil.doGet(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info(res);
+        return res;
     }
 
     @PostMapping(value = "/uploadFile")
