@@ -77,10 +77,11 @@
 
     
     <!-- 单词详细信息 -->
-    <view class="pageDetail" v-show="pageShow[1]">
+    <view class="pageDetailMain" v-show="pageShow[1]">
+      <view class="navagateDetail"></view>
       <!-- 单词显示区域 -->
       <!-- 单词显示区域 -->
-      <view class="wordView">
+      <view class="wordViewDetail">
         <view class="wordName" @click="audio()">
           <view>
             <text class="wordName">
@@ -101,7 +102,7 @@
             {{ words[wordIndex].voice }}
           </text>
         </view>
-        <view class="wordMeans">
+        <view class="wordMeansDetail">
           <text @click="open">
             {{ words[wordIndex].chineseMeans }}
           </text>
@@ -112,17 +113,17 @@
     </uni-popup>
         </view>
       </view>
-      <view
+      <!-- <view
         class="wordViewSize"
         :style="{ height: appHeight * 0.18 + 'rpx' }"
-      ></view>
+      ></view> -->
       <!-- 单词详细页面 -->
-      <view class="sentenceAndPhrase">
-        <view class="wordDetail" :style="{ height: appHeight * 0.6 + 'rpx' }">
-          <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' }">
+      <view class="sentenceAndPhraseDetail">
+        <view class="wordDetail">
+          <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' ,width: 710 + 'rpx' }">
             <view
               class="sentenceXvhua"
-              :style="{ height: appHeight * 0.18 + 'rpx' }"
+              :style="{ height: appHeight * 0.18 + 'rpx'}"
             ></view>
             <view class="sentenceName">
               <text v-if="words[wordIndex].sentence[0] != null">
@@ -136,10 +137,11 @@
             </view>
           </view>
 
-          <view class="grammar" :style="{ height: appHeight * 0.38 + 'rpx' }">
+          <view class="grammar" id="grammar">
             <view
+              id="grammarXvhua"
               class="grammarXvhua"
-              :style="{ height: appHeight * 0.38 + 'rpx' }"
+              :style="{ height: appHeight * 0.30 + 'rpx', width: 710 + 'rpx' }"
             ></view>
             <scroll-view
               :scroll-top="scrollTop"
@@ -149,7 +151,7 @@
               @scrolltoupper="upper"
               @scrolltolower="lower"
               @scroll="scroll"
-              :style="{ height: appHeight * 0.38 + 'rpx', width: 710 + 'rpx' }"
+              :style="{ height: appHeight * 0.30 + 'rpx', width: 710 + 'rpx' }"
             >
               <view class="phraseView">
                 <view
@@ -165,8 +167,8 @@
         </view>
       </view>
 
-      <view>
-        <view class="lookAnster">
+      <view class="buttonDetail">
+        <view class="lookAnsterDetail">
           <view @click="nextWord()" class="lookAnsterText">
             <view>
               <text>下一词</text>
@@ -414,6 +416,9 @@ export default {
       ],
     };
   },
+  onReady() {
+  }
+  ,
   onLoad(options) {
     console.log(getApp().globalData.userID);
     console.log(getApp().globalData.userEmail);
@@ -715,6 +720,11 @@ export default {
   overflow: hidden;
 }
 
+.wordMeansDetail {
+  font-size: 34rpx;
+  color: aliceblue;
+}
+
 .wordPopup {
   position: fixed;
   top: 300rpx;
@@ -765,6 +775,15 @@ export default {
   margin: 5%;
 }
 
+.lookAnsterDetail {
+  color: rgb(211, 177, 28);
+  display: flex;
+  bottom: 50rpx;
+  width: 90%;
+  justify-content: center;
+  margin: 5%;
+}
+
 .lookAnsterText {
   width: 150rpx;
   text-align: center;
@@ -794,6 +813,7 @@ export default {
   border-radius: 20rpx;
   display: flex;
   flex-direction: column;
+  /* flex-direction: column; */
   /* justify-self: center; */
   /* justify-content: flex-start; */
   /* opacity: 0.8; */
@@ -884,5 +904,43 @@ export default {
   display: flex;
   flex-direction: column;
   text-align: center;
+}
+
+.pageDetailMain{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-content: center;
+  margin-top: 120rpx;
+}
+
+.navagateDetail {
+  display: flex;
+  /* height: 5%; */
+}
+
+.wordViewDetail {
+  width: 90%;
+  margin: 30rpx;
+  padding-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: flex-start;
+}
+
+.sentenceAndPhraseDetail{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.buttonDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
