@@ -602,7 +602,8 @@ export default {
       uni.request({
         url: getApp().globalData.api_getMp3,
         data: {
-          url:this.words[this.wordIndex].voiceUrl
+          url:this.words[this.wordIndex].voiceUrl,
+          name:this.words[this.wordIndex].wordID,
         },
         header: {
           Accept: 'application/json',
