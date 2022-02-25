@@ -111,9 +111,9 @@ public class WordsController {
         wordBookRelation.setWordBookID(words.getWordBookID());
         log.info(wordBookRelation.toString());
         QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
-        wordBookRelationQueryWrapper.eq("wordID",one.getWordID());
+        wordBookRelationQueryWrapper.eq("wordID", one.getWordID());
         wordBookRelationQueryWrapper.eq("wordBookID", words.getWordBookID());
-        wordBookRelationService.saveOrUpdate(wordBookRelation,wordBookRelationQueryWrapper);
+        wordBookRelationService.saveOrUpdate(wordBookRelation, wordBookRelationQueryWrapper);
         // 存入单词的例句
         if (words.getSentence() != null) {
             words.getSentence().forEach((sentences) -> {
@@ -126,11 +126,14 @@ public class WordsController {
                 sentencesRelaction.setSentenceID(one1.getSentenceID());
                 sentencesRelaction.setWordID(one.getWordID());
                 sentencesRelaction.setStandby1(sentences.getStandby1());
-                sentencesRelactionService.saveOrUpdate(sentencesRelaction);
+                QueryWrapper<SentencesRelaction> sentencesRelactionQueryWrapper = new QueryWrapper<>();
+                sentencesRelactionQueryWrapper.eq("wordID", one.getWordID());
+                sentencesRelactionQueryWrapper.eq("sentenceID", one.getSentenceID());
+                sentencesRelactionService.saveOrUpdate(sentencesRelaction, sentencesRelactionQueryWrapper);
             });
         }
 
-        if(words.getPhrase() != null) {
+        if (words.getPhrase() != null) {
             // 存入单词的短语
             words.getPhrase().forEach((sentences) -> {
                 sentences.setKind(1);
@@ -142,7 +145,10 @@ public class WordsController {
                 sentencesRelaction.setSentenceID(one1.getSentenceID());
                 sentencesRelaction.setWordID(one.getWordID());
                 sentencesRelaction.setStandby1(sentences.getStandby1());
-                sentencesRelactionService.saveOrUpdate(sentencesRelaction);
+                QueryWrapper<SentencesRelaction> sentencesRelactionQueryWrapper = new QueryWrapper<>();
+                sentencesRelactionQueryWrapper.eq("wordID", one.getWordID());
+                sentencesRelactionQueryWrapper.eq("sentenceID", one.getSentenceID());
+                sentencesRelactionService.saveOrUpdate(sentencesRelaction, sentencesRelactionQueryWrapper);
             });
         }
         return new ResultInfo().success(HttpStatus.OK.value(), message.toString());
@@ -227,6 +233,10 @@ public class WordsController {
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userID", userVo.getUserID());
         queryWrapper.eq("status", 1);
+        List<String> review = Common.getDateReview();
+        for (int i = 0; i < review.size(); i++) {
+            queryWrapper.or().eq("studyTime", review.get(i)).eq("studyWordCount", i);
+        }
         Integer count = Math.toIntExact(userStudyWordRecordService.count(queryWrapper));
         return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要复习的单词总数成功", count);
     }
@@ -326,7 +336,7 @@ public class WordsController {
         userStudyWordRecord.setUserID(studyRecordVo.getUserID());
         userStudyWordRecord.setStudyWordCount(userStudyWordRecordServiceOne.getStudyWordCount() + 1);
         userStudyWordRecord.setStudyTime(Common.getDateYearMouthDay());
-        userStudyWordRecordService.saveOrUpdate(userStudyWordRecord);
+        userStudyWordRecordService.saveOrUpdate(userStudyWordRecord, queryWrapper);
         return new ResultInfo<String>().success(HttpStatus.OK.value(), "复习记录添加成功");
     }
 
@@ -396,6 +406,11 @@ public class WordsController {
                 }
                 res.add(new wordOption(w.getJapaneseMeans(), w.getFalseName(), w.getChineseMeans(), w.getEnglishMeans()));
             }
+        }
+        List<Words> list = wordsService.list();
+        while(res.size() < 3) {
+            Words words = list.get(new Random().nextInt(list.size()));
+            res.add(new wordOption(words.getJapaneseMeans(), words.getFalseName(), words.getChineseMeans(), words.getEnglishMeans()));
         }
         return res;
     }

@@ -41,12 +41,13 @@ public class WordBookRelation implements Serializable {
 
     private String standby3;
 
+    @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
     @TableField(value = "createUser", fill = FieldFill.INSERT)
     private String createUser;
 
-    @TableField(value = "createTime",fill = FieldFill.INSERT)
+    @TableField(value = "createTime", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @TableField(value = "updateUser", fill = FieldFill.INSERT_UPDATE)

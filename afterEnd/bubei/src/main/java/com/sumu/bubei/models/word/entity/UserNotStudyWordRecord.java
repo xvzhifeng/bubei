@@ -45,16 +45,16 @@ public class UserNotStudyWordRecord implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
-    @TableField("createUser")
+    @TableField(value = "createUser", fill = FieldFill.INSERT)
     private String createUser;
 
-    @TableField("createTime")
+    @TableField(value = "createTime", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    @TableField("updateUser")
+    @TableField(value = "updateUser", fill = FieldFill.INSERT_UPDATE)
     private String updateUser;
 
-    @TableField("updateTime")
+    @TableField(value = "updateTime", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
 

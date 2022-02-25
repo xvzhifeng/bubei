@@ -444,6 +444,7 @@ export default {
           this.reviwe = new Array(this.wordLength);
           this.reviwe.fill(false);
           console.log(this.words);
+          this.changeShow();
         },
         fail: (error) => {
           alert(error.message);
@@ -471,6 +472,7 @@ export default {
           this.reviwe = new Array(this.wordLength);
           this.reviwe.fill(true);
           console.log(this.words);
+          this.changeShow();
         },
         fail: (error) => {
           alert(error.message);
@@ -486,17 +488,18 @@ export default {
       },
     });
 
-    this.changeShow();
+    
   },
   methods: {
     changeShow(showDetail = false) {
+      console.log(this.reviwe)
       this.showSentenceMeansFlag = true;
       this.currentCount = this.words[this.wordIndex].count;
       console.log("changeShow :" + this.wordIndex);
       this.pageShow.fill(false);
       if (showDetail) {
         this.$set(this.pageShow, 1, true);
-      } else {
+      } else if (!this.reviwe[this.wordIndex]){
         if (
           this.words[this.wordIndex].count == 0 ||
           this.words[this.wordIndex].count == null
@@ -506,6 +509,8 @@ export default {
         } else {
           this.$set(this.pageShow, 2, true);
         }
+      } else {
+        this.$set(this.pageShow, 2, true);
       }
 
       console.log(this.pageShow);
@@ -783,6 +788,7 @@ export default {
   width: 90%;
   justify-content: center;
   margin: 5%;
+  position: absolute;
 }
 
 .lookAnsterText {

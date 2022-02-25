@@ -45,6 +45,7 @@ public class UserStudyWordRecord implements Serializable {
 
     private String standby3;
 
+    @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
     @TableField(value = "createUser", fill = FieldFill.INSERT)

@@ -70,15 +70,16 @@ public class Words implements Serializable {
 
     private String standby3;
 
+    @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
-    @TableField("createUser")
+    @TableField(value = "createUser", fill = FieldFill.INSERT)
     private String createUser;
 
     @TableField(value = "createTime", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    @TableField("updateUser")
+    @TableField(value = "updateUser", fill = FieldFill.INSERT_UPDATE)
     private String updateUser;
 
     @TableField(value = "updateTime", fill = FieldFill.INSERT_UPDATE)
