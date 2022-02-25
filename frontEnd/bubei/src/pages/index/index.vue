@@ -156,7 +156,7 @@ export default {
       }
     },
     review() {
-      if (this.learnCount == 0 || this.learnCount == null) {
+      if (this.reviewCount == 0 || this.learnCount == null) {
         uni.showToast({
           title: "当前没有需要复习的单词",
           icon: "success",
