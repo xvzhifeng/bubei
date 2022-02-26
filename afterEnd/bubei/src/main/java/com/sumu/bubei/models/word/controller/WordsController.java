@@ -367,9 +367,10 @@ public class WordsController {
     @RequestMapping("/initNotStudyRecordFromBook")
     @ResponseBody
     public ResultInfo<String> initNotStudyRecordFromBook(@Validated BookAndUserVo bookAndUserVo) {
+        log.info("initNotStudyRecordFromBook",bookAndUserVo);
         QueryWrapper<UserNotStudyWordRecord> userNotStudyWordRecordQueryWrapper = new QueryWrapper<>();
-//        userNotStudyWordRecordQueryWrapper.eq("status", 1);
-//        userNotStudyWordRecordQueryWrapper.or().eq("status", 2);
+        userNotStudyWordRecordQueryWrapper.eq("status", 1);
+        userNotStudyWordRecordQueryWrapper.or().eq("status", 2);
         userNotStudyWordRecordService.remove(userNotStudyWordRecordQueryWrapper);
         QueryWrapper<WordBookRelation> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("wordBookID", bookAndUserVo.getWordBookID());
