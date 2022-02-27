@@ -75,7 +75,6 @@
       </view>
     </view>
 
-    
     <!-- 单词详细信息 -->
     <view class="pageDetailMain" v-show="pageShow[1]">
       <view class="navagateDetail"></view>
@@ -106,11 +105,16 @@
           <text @click="open">
             {{ words[wordIndex].chineseMeans }}
           </text>
-          <uni-popup ref="popup" type="center" :animation="true" class="wordPopup">
-      <view>
-        <text class="wordPopup">{{ words[wordIndex].chineseMeans }}</text>
-      </view>
-    </uni-popup>
+          <uni-popup
+            ref="popup"
+            type="center"
+            :animation="true"
+            class="wordPopup"
+          >
+            <view>
+              <text class="wordPopup">{{ words[wordIndex].chineseMeans }}</text>
+            </view>
+          </uni-popup>
         </view>
       </view>
       <!-- <view
@@ -120,10 +124,13 @@
       <!-- 单词详细页面 -->
       <view class="sentenceAndPhraseDetail">
         <view class="wordDetail">
-          <view class="sentence" :style="{ height: appHeight * 0.18 + 'rpx' ,width: 710 + 'rpx' }">
+          <view
+            class="sentence"
+            :style="{ height: appHeight * 0.18 + 'rpx', width: 710 + 'rpx' }"
+          >
             <view
               class="sentenceXvhua"
-              :style="{ height: appHeight * 0.18 + 'rpx'}"
+              :style="{ height: appHeight * 0.18 + 'rpx' }"
             ></view>
             <view class="sentenceName">
               <text v-if="words[wordIndex].sentence[0] != null">
@@ -141,7 +148,7 @@
             <view
               id="grammarXvhua"
               class="grammarXvhua"
-              :style="{ height: appHeight * 0.30 + 'rpx', width: 710 + 'rpx' }"
+              :style="{ height: appHeight * 0.2 + 'rpx', width: 690 + 'rpx' }"
             ></view>
             <scroll-view
               :scroll-top="scrollTop"
@@ -151,29 +158,30 @@
               @scrolltoupper="upper"
               @scrolltolower="lower"
               @scroll="scroll"
-              :style="{ height: appHeight * 0.30 + 'rpx', width: 710 + 'rpx' }"
+              :style="{ height: appHeight * 0.2 + 'rpx', width: 710 + 'rpx' }"
             >
+              <!-- 控制显示前三条 -->
               <view class="phraseView">
                 <view
                   class="grammarList"
-                  v-for="(item, index) in words[wordIndex].phrase"
+                  v-for="(item, index) in words[wordIndex].phrase.slice(0, 3)"
                   :key="index"
                 >
                   {{ item.japaneseMeans }} {{ item.chineseMeans }}
                 </view>
               </view>
             </scroll-view>
-          </view>
-        </view>
-      </view>
-
-      <view class="buttonDetail">
-        <view class="lookAnsterDetail">
-          <view @click="nextWord()" class="lookAnsterText">
-            <view>
-              <text>下一词</text>
+            <view class="buttonDetail">
+            <view class="lookAnsterDetail">
+              <view @click="nextWord()" class="lookAnsterText">
+                <view>
+                  <text>下一词</text>
+                </view>
+              </view>
             </view>
           </view>
+          </view>
+          
         </view>
       </view>
     </view>
@@ -416,9 +424,7 @@ export default {
       ],
     };
   },
-  onReady() {
-  }
-  ,
+  onReady() {},
   onLoad(options) {
     console.log(getApp().globalData.userID);
     console.log(getApp().globalData.userEmail);
@@ -487,19 +493,17 @@ export default {
         console.log(`user: ${error}`);
       },
     });
-
-    
   },
   methods: {
     changeShow(showDetail = false) {
-      console.log(this.reviwe)
+      console.log(this.reviwe);
       this.showSentenceMeansFlag = true;
       this.currentCount = this.words[this.wordIndex].count;
       console.log("changeShow :" + this.wordIndex);
       this.pageShow.fill(false);
       if (showDetail) {
         this.$set(this.pageShow, 1, true);
-      } else if (!this.reviwe[this.wordIndex]){
+      } else if (!this.reviwe[this.wordIndex]) {
         if (
           this.words[this.wordIndex].count == 0 ||
           this.words[this.wordIndex].count == null
@@ -607,15 +611,15 @@ export default {
       uni.request({
         url: getApp().globalData.api_getMp3,
         data: {
-          url:this.words[this.wordIndex].voiceUrl,
-          name:this.words[this.wordIndex].wordID,
+          url: this.words[this.wordIndex].voiceUrl,
+          name: this.words[this.wordIndex].wordID,
         },
         header: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest'
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
         },
-        method: 'GET',
+        method: "GET",
         success: ({ data, statusCode, header }) => {
           console.log(this.words[this.wordIndex]);
           console.log("开始播放" + data);
@@ -632,9 +636,8 @@ export default {
             console.log(res.errCode);
           });
         },
-        fail: (error) => {}
-      })
-      
+        fail: (error) => {},
+      });
     },
     know() {
       this.words[this.wordIndex].count += 1;
@@ -788,7 +791,7 @@ export default {
   width: 90%;
   justify-content: center;
   margin: 5%;
-  position: absolute;
+  /* position: absolute; */
 }
 
 .lookAnsterText {
@@ -833,7 +836,7 @@ export default {
   border-radius: 20rpx;
   position: absolute;
   z-index: -1;
-  width: 710rpx;
+  width: 690rpx;
   /* filter: blur(2px); */
   opacity: 0.7;
 }
@@ -856,7 +859,7 @@ export default {
   border-radius: 20rpx;
   position: absolute;
   z-index: -1;
-  width: 710rpx;
+  width: 690rpx;
   /* filter: blur(2px); */
   opacity: 0.7;
 }
@@ -913,7 +916,7 @@ export default {
   text-align: center;
 }
 
-.pageDetailMain{
+.pageDetailMain {
   display: flex;
   width: 100%;
   height: 100%;
@@ -937,7 +940,7 @@ export default {
   align-self: flex-start;
 }
 
-.sentenceAndPhraseDetail{
+.sentenceAndPhraseDetail {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -949,5 +952,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-self: center;
+  margin-top: 20rpx;
 }
 </style>
