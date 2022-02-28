@@ -5,13 +5,24 @@
     </view>
     <view :style="{ height: appHeight * 0.1 + 'rpx' }"></view>
     <button @click="showDrawer" type="primary" plain="true">选择章节</button>
+    <scroll-view
+              :scroll-top="scrollTop"
+              scroll-y="true"
+              class="scroll-Y"
+              show-scrollbar="false"
+              style="height: 80%"
+              >
+
     <view :v-if="wordLength > 0">
-      <view v-for="(item, index) in word" :key="index" class="wordList">
-        <uni-card :title="item.japaneseMeans">
-          <text :@click="audio(item.voiceUrl)">{{ item.chineseMeans }}</text>
+      <view v-for="(item, index) in word" :key="index">
+        <view >
+          <uni-card :title="item.japaneseMeans" @click="audio(item.voiceUrl,item.wordID)">
+          <text >{{ item.chineseMeans }}</text>
         </uni-card>
+        </view>
       </view>
     </view>
+    </scroll-view>
     <view :v-else-if="wordLength <= 0">
       <uni-card title="info">
         <text>当前章节没有单词</text>
@@ -50,7 +61,7 @@ export default {
       section: [],
       word: [],
       wordLength: 0,
-      sectionLegth: 0,
+      sectionLength: 0,
     };
   },
   onLoad(options) {
@@ -101,12 +112,13 @@ export default {
     });
   },
   methods: {
-    audio(url) {
+    audio(url,name) {
+      console.log(url)
       uni.request({
-        url: url,
+        url: getApp().globalData.api_getMp3,
         data: {
-          url: this.words[this.wordIndex].voiceUrl,
-          name: this.words[this.wordIndex].wordID,
+          url: url,
+          name: name,
         },
         header: {
           Accept: "application/json",
@@ -115,7 +127,6 @@ export default {
         },
         method: "GET",
         success: ({ data, statusCode, header }) => {
-          console.log(this.words[this.wordIndex]);
           console.log("开始播放" + data);
           const innerAudioContext = uni.createInnerAudioContext();
           innerAudioContext.autoplay = true;
