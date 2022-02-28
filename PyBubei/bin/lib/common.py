@@ -42,3 +42,7 @@ def check_int(value, key):
     if ret is None:
         raise FormatError(value,key + " must number")
     print(ret)
+
+def check_string(value, key):
+    if value is None:
+        raise FormatError(value,key + " must not null")

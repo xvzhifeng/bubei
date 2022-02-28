@@ -33,4 +33,5 @@ public class WordVo {
     private List<Sentences> phrase;
     private List<wordOption> options;
     private int wordBookID;
+    private String wordSection;
 }

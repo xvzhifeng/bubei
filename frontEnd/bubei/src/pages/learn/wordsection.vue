@@ -1,33 +1,42 @@
 <template>
-  <view>
-    <button @click="showDrawer" type="primary">选择章节</button>
-	<view :v-if="word.lengh > 0">
-		<view v-for="(item, index) in word" :key="index" class="wordList">
-      <uni-card :title="item.japaneseMeans">
-        <text :@click="audio(item.voiceUrl)">{{ item.chineseMeans }}</text>
+  <view class="content" :style="{ height: appHeight + 'rpx' }">
+    <view class="navigate">
+      <uni-icons type="left" color="" @click="back()" size="50rpx" />
+    </view>
+    <view :style="{ height: appHeight * 0.1 + 'rpx' }"></view>
+    <button @click="showDrawer" type="primary" plain="true">选择章节</button>
+    <view :v-if="wordLength > 0">
+      <view v-for="(item, index) in word" :key="index" class="wordList">
+        <uni-card :title="item.japaneseMeans">
+          <text :@click="audio(item.voiceUrl)">{{ item.chineseMeans }}</text>
+        </uni-card>
+      </view>
+    </view>
+    <view :v-else-if="wordLength <= 0">
+      <uni-card title="info">
+        <text>当前章节没有单词</text>
       </uni-card>
     </view>
-	</view>
-    <view :v-else-if="word.lengh <= 0">
-		<uni-card title="info">
-        <text >当前章节没有单词</text>
-      </uni-card>
-	</view>
 
     <uni-drawer ref="showLeft" mode="left" :mask-click="true">
-      <scroll-view style="height: 100%" scroll-y="true">
+      <scroll-view style="height: 100%" scroll-y="true" class="sectionList">
         <!-- <button @click="closeDrawer" type="primary">关闭Drawer</button> -->
-        <view :v-if="section.length > 0">
+        <view :v-if="sectionLength > 0">
           <view
             v-for="item in section"
             :key="item.name"
             @click="choiceSection(item.name)"
+            class="infoSectionSub"
             >{{ item.name }}</view
           >
         </view>
-		<view :v-else-if="section.length <= 0" style="background:blue">
-			当前词书没有章节
-		</view>
+        <view :v-else-if="sectionLength <= 0">
+          <view class="infoSection">
+            <view class="infoSectionSub">
+              <text>当前词书没有章节</text>
+            </view>
+          </view>
+        </view>
       </scroll-view>
     </uni-drawer>
   </view>
@@ -40,6 +49,8 @@ export default {
       wordBookID: 0,
       section: [],
       word: [],
+      wordLength: 0,
+      sectionLegth: 0,
     };
   },
   onLoad(options) {
@@ -143,6 +154,9 @@ export default {
         fail: (error) => {},
       });
     },
+    back() {
+      uni.redirectTo({ url: "/pages/learn/wordbook" });
+    },
     showDrawer() {
       this.$refs.showLeft.open();
     },
@@ -153,4 +167,52 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.content {
+  /* background: #63639c; */
+  position: fixed;
+  /* z-index: 0; */
+  background-size: cover;
+  left: 0;
+  right: 0;
+  /* display: flex; */
+  /* flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  background-color: rgb(73, 73, 73);
+}
+
+.navigate {
+  margin: 20rpx;
+  position: absolute;
+  left: 0rpx;
+  top: 30rpx;
+  z-index: 100;
+}
+text {
+  font-size: 36rpx;
+}
+.wordList {
+  background-color: aliceblue;
+}
+
+.sectionList {
+  background-color: aliceblue;
+  margin: 10rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+.infoSectionSub {
+  display: flex;
+  margin: 10rpx;
+}
+</style>

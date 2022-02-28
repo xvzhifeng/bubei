@@ -109,6 +109,7 @@ public class WordsController {
         WordBookRelation wordBookRelation = new WordBookRelation();
         wordBookRelation.setWordID(one.getWordID());
         wordBookRelation.setWordBookID(words.getWordBookID());
+        wordBookRelation.setStandby1(words.getWordSection());
         log.info(wordBookRelation.toString());
         QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
         wordBookRelationQueryWrapper.eq("wordID", one.getWordID());

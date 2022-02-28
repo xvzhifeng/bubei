@@ -40,6 +40,12 @@ _bubei_conf_check_reg.add_regulation(
     True,
     common.check_int,
     "wordBookID")
+_bubei_conf_check_reg.add_regulation(
+    "wordSection",
+    True,
+    common.check_string,
+    "wordBookID")
+
 
 class BubeiConf(ini.ConfBase):
     def __init__(self):
@@ -89,6 +95,7 @@ class Word():
         self.phrase = []
         self.standby = ""
         self.wordBookId = bubei_cfg.wordBookID
+        self.wordSection = bubei_cfg.wordSection
 
 
 class Sentence():
