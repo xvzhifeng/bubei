@@ -33,6 +33,7 @@ public class WordBookAndUserV0 implements Serializable {
     private String wordBookName;
     private String wordBookKind;
     private String wordBookLabel;
+    private String wordSection;
     private int learnCount;
     private int count;
 }

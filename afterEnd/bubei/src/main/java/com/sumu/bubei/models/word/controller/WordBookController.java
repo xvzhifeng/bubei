@@ -8,6 +8,7 @@ import com.sumu.bubei.models.word.entity.WordBook;
 import com.sumu.bubei.models.word.entity.WordBookRelation;
 import com.sumu.bubei.models.word.entity.Words;
 import com.sumu.bubei.models.word.entity.vo.WordBookAndUserV0;
+import com.sumu.bubei.models.word.entity.vo.wordBookSectionVo;
 import com.sumu.bubei.models.word.service.impl.UserNotStudyWordRecordServiceImpl;
 import com.sumu.bubei.models.word.service.impl.WordBookRelationServiceImpl;
 import com.sumu.bubei.models.word.service.impl.WordBookServiceImpl;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,7 +68,6 @@ public class WordBookController {
         userNotStudyWordRecordQueryWrapper.eq("status",2);
         wordBookAndUserV0.setLearnCount((int) userNotStudyWordRecordService.count(userNotStudyWordRecordQueryWrapper));
         return new ResultInfo().success(HttpStatus.OK.value(),"获取词书成功",wordBookAndUserV0);
-
     }
 
     @RequestMapping("/getAllWordBook")
@@ -74,5 +75,37 @@ public class WordBookController {
     public ResultInfo getAllWordBook(){
         List<WordBook> list = wordBookService.list();
         return new ResultInfo().success(HttpStatus.OK.value(), "获取所有词书",list);
+    }
+
+    @RequestMapping("/getWordBookSectionList")
+    @ResponseBody
+    public ResultInfo getWordBookSectionList(WordBookAndUserV0 word) {
+        log.info(word.toString());
+        List<wordBookSectionVo> res = new ArrayList<>();
+        res = wordBookRelationService.getWordBookSectionList(word.getWordBookID());
+        return new ResultInfo().success(HttpStatus.OK.value(),"查询单词章节信息成功!",res);
+    }
+
+
+    /**
+     * 查询章节单词信息
+     * @param word
+     * @return
+     */
+    @RequestMapping("/getWordBookSectionWordList")
+    @ResponseBody
+    public ResultInfo getWordBookSectionWordList(WordBookAndUserV0 word) {
+        log.debug(word.toString());
+        QueryWrapper<WordBookRelation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("wordBookID", word.getWordBookID());
+        queryWrapper.eq("standby1",word.getWordSection());
+        List<WordBookRelation> list = wordBookRelationService.list(queryWrapper);
+        List<Words> wordsList = new ArrayList<>();
+        list.forEach((w)->{
+            QueryWrapper<Words> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("wordID",w.getWordID());
+            wordsList.add(wordsService.getOne(queryWrapper1));
+        });
+        return new ResultInfo().success(HttpStatus.OK.value(),"查询章节单词信息成功!",wordsList);
     }
 }

@@ -15,6 +15,7 @@ mybatis-plus:
   configuration:
     #默认开启驼峰命名法，可以不用设置该属性
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #数据源连接信息
 spring:
