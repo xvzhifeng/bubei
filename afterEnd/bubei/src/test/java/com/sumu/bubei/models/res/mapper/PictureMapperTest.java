@@ -1,5 +1,6 @@
 package com.sumu.bubei.models.res.mapper;
 
+import com.sumu.bubei.models.res.entity.BackgroundPicture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,8 @@ class PictureMapperTest {
     @Test
     void getOneBackgroundPicture() {
 //        pictureMapper.selectList(null).forEach(System.out::println);
+        BackgroundPicture backgroundPicture = new BackgroundPicture(1,"test","123");
         pictureMapper.getOneBackgroundPicture();
+//        pictureMapper.insert(backgroundPicture);
     }
 }

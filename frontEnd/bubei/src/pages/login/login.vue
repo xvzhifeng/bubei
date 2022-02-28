@@ -7,7 +7,7 @@
       <text class="font2">背</text>
     </view>
     <view class="title3">
-      <text class="font3">真实语境学单词</text>
+      <text class="font3">日语</text>
     </view>
 
     <!-- 底部布局 -->
@@ -18,9 +18,9 @@
           :disabled="false"
           :loading="false"
           hover-class="button-hover"
-          @click="register()"
+          @click="password()"
         >
-          邮箱一键登录
+          账号登录
         </button>
       </view>
 
@@ -28,7 +28,7 @@
         <button class="subButton1" :disabled="true" @click="todo()">
           <uni-icons type="chatboxes-filled" size="25"></uni-icons>
         </button>
-        <button class="subButton1" :disabled="true" @click="todo()">
+        <button class="subButton1" :disabled="false" @click="register()">
           <uni-icons type="email" size="25"></uni-icons>
         </button>
         <button class="subButton1" :disabled="true" @click="todo()">
@@ -37,18 +37,26 @@
       </view>
 
       <view class="option">
-        <checkbox-group @change="checkboxChange">
-          <label class="checkboxs">
-            <checkbox
-              :value="isRead"
-              :checked="false"
-              color="rgb(250, 166, 96)"
-              style="transform: scale(0.7)"
-            />&nbsp;&nbsp;
-            
-            <p class="xieyi">我已成功阅读并同意<span>《隐私协议》《服务条款》</span>和<span>《儿童信息保护》</span></p>
-          </label>
-        </checkbox-group>
+        <view>
+          <checkbox-group @change="checkboxChange">
+            <label class="checkboxs">
+              <view class="blockAndText">
+                <checkbox
+                  :value="isRead"
+                  :checked="false"
+                  color="rgb(250, 166, 96)"
+                  style="transform: scale(0.7)"
+                />&nbsp;&nbsp;
+
+                <text class="xieyi">
+                  我已成功阅读并同意<span>《隐私协议》《服务条款》</span>和<span
+                    >《儿童信息保护》</span
+                  >
+               </text>
+              </view>
+            </label>
+          </checkbox-group>
+        </view>
       </view>
     </view>
   </view>
@@ -61,7 +69,7 @@ export default {
       title: "Hello",
       isRead: "isRead",
       pitchOn: false,
-      appHeight:0,
+      appHeight: 0,
     };
   },
   onLoad() {
@@ -78,22 +86,45 @@ export default {
         alert("请先阅读相关条例");
         return;
       } else {
-        uni.navigateTo({ url: '/pages/login/email' })({
-            url:"/pages/login/email",
-            successs: () => {
-                console.log("跳转到邮箱输入页面成功");
-            },
-            fail: () => {
-                console.log("跳转邮箱输入页面失败");
-            }
-        })
+        // uni.navigateTo({
+        //   url: "/pages/learn/main?study=2",
+        //   success: () => {
+        //     console.log("success goto review page");
+        //   },
+        // });
+
+        uni.navigateTo({
+          url: "/pages/login/email",
+          successs: () => {
+            console.log("跳转到邮箱输入页面成功");
+          },
+          fail: () => {
+            console.log("跳转邮箱输入页面失败");
+          },
+        });
         console.log("注册");
       }
     },
+    password() {
+      if (!this.pitchOn) {
+        alert("请先阅读相关条例");
+        return;
+      } else {
+        uni.navigateTo({
+          url: "/pages/login/password",
+          successs: () => {
+            console.log("跳转到密码页面成功");
+          },
+          fail: () => {
+            console.log("跳转密码输入页面失败");
+          },
+        });
+      }
+    },
     checkboxChange(e) {
-        console.log(...e.detail.value)
-        let [temp] = [...e.detail.value] 
-        this.pitchOn = temp === 'isRead';
+      console.log(...e.detail.value);
+      let [temp] = [...e.detail.value];
+      this.pitchOn = temp === "isRead";
     },
   },
 };
@@ -124,8 +155,6 @@ export default {
   width: 124rpx;
   height: 124rpx;
   margin: 6rpx;
-  
-  
 }
 .title2 {
   display: flex;
@@ -137,26 +166,21 @@ export default {
   width: 124rpx;
   height: 124rpx;
   margin: 6rpx;
-
 }
-.xieyi{
-  color:#ffffff;
-  display: flex;
-  position: absolute;
-  left:10%;
+.xieyi {
+  color: #ffffff;
+  /* display: flex; */
+  /* position: absolute;
+  left: 10%; */
   width: 100%;
-  word-break: break-all;
-  word-wrap: break-word;
-
+  /* word-break: break-all;
+  word-wrap: break-word; */
 }
-strong{
-  color:rgb(242, 245, 53);
-  
-  
- 
+strong {
+  color: rgb(242, 245, 53);
 }
-span{
-  color:rgb(242, 245, 53);
+span {
+  color: rgb(242, 245, 53);
 }
 .title3 {
   display: flex;
@@ -168,8 +192,8 @@ span{
   width: 400px;
   height: 40px;
   margin: 10rpx;
-  position:absolute;
-  top:35%;
+  position: absolute;
+  top: 35%;
 }
 
 .font1 {
@@ -199,7 +223,6 @@ span{
   justify-content: end;
   align-items: center;
   height: 400px;
-  
 }
 
 .subButton {
@@ -207,7 +230,7 @@ span{
   display: flex;
   justify-content: center;
   align-items: center;
-   position: absolute;
+  position: absolute;
   bottom: 25%;
   /* align-items: center; */
   /* align-self: end; */
@@ -228,9 +251,8 @@ span{
   height: 50px;
   margin: 10px;
   background-color: rgb(242, 245, 53);
-  
 }
-.emailButton{
+.emailButton {
   position: absolute;
   bottom: 35%;
 }
@@ -242,15 +264,21 @@ span{
   position: absolute;
   bottom: 8%;
   display: flex;
- 
-left: 5%;
+  justify-content: center;
+
+  /* left: 5%; */
 }
 
 .checkboxs {
   height: 7%;
   color: rgb(242, 245, 53);
   display: flex;
- 
-  
+  /* display: inherit; */
+}
+
+.blockAndText{
+  display: flex;
+  flex-direction: row;
+  margin: 1%;
 }
 </style>

@@ -1,0 +1,33 @@
+#全局配置文件
+
+# log 配置文件地址
+logging:
+  config: config/log4j2.xml
+###################################### MyBatis 配置######################################
+mybatis-plus:
+#  config-location: classpath:mybatis/mapper/mybatis-config.xml
+  # 指定 mapper.xml 的位置
+  mapper-locations: classpath:mybatis/mapper/*/*.xml
+
+  #扫描实体类的位置,在此处指明扫描实体类的包，在 mapper.xml 中就可以不写实体类的全路径名
+#  type-aliases-package: net.biancheng.www.bean
+  configuration:
+    #默认开启驼峰命名法，可以不用设置该属性
+    map-underscore-to-camel-case: true
+
+#数据源连接信息
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/bubei
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-file-size:
+        -1
+      max-request-size:
+        -1
+  profiles:
+    active: dev

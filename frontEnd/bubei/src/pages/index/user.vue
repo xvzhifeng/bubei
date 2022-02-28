@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     back() {
-      uni.navigateTo({
+      uni.redirectTo({
         url: "/pages/index/index",
         success: () => {
           console.log("success goto index/index page");

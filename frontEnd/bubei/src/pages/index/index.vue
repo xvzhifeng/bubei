@@ -1,4 +1,4 @@
-<template >
+<template>
   <view class="content" :style="{ height: appHeight + 'rpx' }">
     <!-- // backgrount -->
     <image class="image-bg" :src="backgroundUrl" />
@@ -14,7 +14,6 @@
     </view>
 
     <view class="buttonView">
-       
       <view classs="subButtonView1">
         <view class="xvhua"></view>
         <button
@@ -71,7 +70,52 @@ export default {
       // backgroundUrl:"/static/logo.png",
     };
   },
-  onLoad() {
+  onLoad(options) {
+    this.backgroundUrl = getApp().globalData.bkurl;
+    console.log(this.backgroundUrl);
+    // 获取需要学习的单词数量
+    uni.request({
+      url: getApp().globalData.api_getNotStudyRecordCount,
+      data: {
+        userID: getApp().globalData.userID,
+        email: getApp().globalData.userEmail,
+      },
+      header: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+      success: ({ data, statusCode, header }) => {
+        console.log(data);
+        console.log(getApp().globalData.userID);
+        this.learnCount = data.response;
+      },
+      fail: (error) => {
+        console.log("获取需要学习的单词数量失败");
+      },
+    });
+
+    // 获取需要复习的单词数量
+    uni.request({
+      url: getApp().globalData.api_getStudyRecordCount,
+      data: {
+        userID: getApp().globalData.userID,
+        email: getApp().globalData.userEmail,
+      },
+      header: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+      success: ({ data, statusCode, header }) => {
+        console.log(data);
+        this.reviewCount = data.response;
+      },
+      fail: (error) => {
+        console.log("获取需要复习的单词数量失败");
+      },
+    });
+
     uni.getSystemInfo({
       success: (res) => {
         console.log("手机可用高度:" + res.windowHeight * 2 + "rpx");
@@ -95,29 +139,43 @@ export default {
       });
     },
     study() {
-      // pages/learn/main
-      uni.navigateTo({
-        url: "/pages/learn/main",
-        success: () => {
-          console.log("success goto learn page");
-        },
-      });
-      uni.showToast({
-        title: "Learn",
-        icon: "success",
-        mask: true,
-      });
+      if (this.learnCount == 0 || this.learnCount == null) {
+        uni.showToast({
+          title: "当前没有需要学习的单词",
+          icon: "success",
+          mask: true,
+        });
+      } else {
+        // pages/learn/main
+        uni.navigateTo({
+          url: "/pages/learn/main?study=1",
+          success: () => {
+            console.log("success goto learn page");
+          },
+        });
+      }
     },
     review() {
-      uni.showToast({
-        title: "review",
-        icon: "success",
-        mask: true,
-      });
+      if (this.reviewCount == 0 || this.learnCount == null) {
+        uni.showToast({
+          title: "当前没有需要复习的单词",
+          icon: "success",
+          mask: true,
+        });
+      } else {
+        // pages/learn/main
+        uni.navigateTo({
+          url: "/pages/learn/main?study=2",
+          success: () => {
+            console.log("success goto review page");
+          },
+        });
+      }
     },
     home() {
+      uni.navigateTo({ url: '/pages/learn/wordbook' })
       //todo
-      uni.showToast({
+    uni.showToast({
         title: "home",
         icon: "success",
         mask: true,
@@ -140,6 +198,7 @@ export default {
       });
     },
     statistics() {
+      uni.navigateTo({ url: '/pages/setting/userSetting' })
       //todo
       uni.showToast({
         title: "statistics",
@@ -199,7 +258,7 @@ export default {
 }
 .button {
   padding: 0rpx;
-  border:0rpx;
+  border: 0rpx;
   /* filter: blur(1px); */
 }
 .subButtonView1 {
@@ -266,8 +325,8 @@ export default {
 }
 .reviewButtton {
   z-index: 1;
-   /* position: absolute; */
-    /* filter: blur(10px); */
+  /* position: absolute; */
+  /* filter: blur(10px); */
   /* float: left; */
 }
 </style>
