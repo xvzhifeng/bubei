@@ -173,8 +173,9 @@ export default {
       }
     },
     home() {
+      uni.navigateTo({ url: '/pages/learn/wordbook' })
       //todo
-      uni.showToast({
+    uni.showToast({
         title: "home",
         icon: "success",
         mask: true,

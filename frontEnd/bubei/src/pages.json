@@ -50,7 +50,21 @@
         "navigationStyle": "custom"
       }
     }
-  ],
+      ,{
+            "path" : "pages/learn/wordsection",
+            "style" :                                                                                    
+            {
+            }
+            
+        },
+		{
+		      "path" : "pages/learn/wordbook",
+		      "style" :                                                                                    
+		      {
+		      }
+		      
+		  }
+    ],
   "globalStyle": {
     "navigationStyle": "custom"
   }
