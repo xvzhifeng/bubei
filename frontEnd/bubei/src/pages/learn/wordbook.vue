@@ -3,7 +3,6 @@
     <view class="navigate">
       <uni-icons type="left" color="" @click="back()" size="50rpx"/>
     </view>
-    <view :style="{ height: appHeight*0.1 + 'rpx' }"></view>
     <view v-if="len == 0">
       <view>
         <uni-card title="词书" @click="uploadBook()">
@@ -85,11 +84,12 @@ export default {
   background-color: rgb(73, 73, 73);
 }
 
-.navigate{
+.navigate {
   margin: 20rpx;
-  position: absolute;
+  display: flex;
+  justify-content: flex-start;
   left: 0rpx;
-  top:30rpx;
+  top: 30rpx;
   z-index: 100;
 }
 
