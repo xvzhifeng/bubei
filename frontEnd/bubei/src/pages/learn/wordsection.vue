@@ -16,7 +16,7 @@
     <view v-if="wordLength > 0">
       <view v-for="(item, index) in word" :key="index">
         <view >
-          <uni-card :title="item.japaneseMeans" @click="audio(item.voiceUrl,item.wordID)">
+          <uni-card :title="item.japaneseMeans" :extra="item.falseName" @click="audio(item.voiceUrl,item.wordID)">
           <text>{{ item.chineseMeans }}</text>
         </uni-card>
         </view>
