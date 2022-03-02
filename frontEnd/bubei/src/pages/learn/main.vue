@@ -197,12 +197,12 @@
             </text>
           </view>
           <view>
-            <text class="wordName"> {{ words[wordIndex].japaneseMeans }}</text>
+            <!-- <text class="wordName"> {{ words[wordIndex].japaneseMeans }}</text>
             <uni-badge
               v-bind:text="currentCount"
               type="warning"
               :inverted="true"
-            ></uni-badge>
+            ></uni-badge> -->
           </view>
         </view>
         <view class="wordVoice">

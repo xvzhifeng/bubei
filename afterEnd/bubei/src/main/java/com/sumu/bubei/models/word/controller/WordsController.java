@@ -320,7 +320,7 @@ public class WordsController {
         queryWrapper.eq("userID", studyRecordVo.getUserID());
         queryWrapper.eq("status", 1);
         userNotStudyWordRecord.setWordID(studyRecordVo.getWordID());
-        userNotStudyWordRecord.setUserID(studyRecordVo.getWordID());
+        userNotStudyWordRecord.setUserID(studyRecordVo.getUserID());
         userNotStudyWordRecord.setStatus(2);
         userNotStudyWordRecordService.saveOrUpdate(userNotStudyWordRecord, queryWrapper);
         return new ResultInfo<String>().success(HttpStatus.OK.value(), "复习记录添加成功 and 删除未学习表当前单词");

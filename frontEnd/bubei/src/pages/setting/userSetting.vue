@@ -12,7 +12,7 @@
         </view>
         <view class="progress-box">
           <progress
-            :percent="(learnCount * 100.0) / count"
+            :percent="Math.floor((learnCount * 100.0) / count)"
             show-info
             stroke-width="3"
             activeColor="rgb(248, 194, 16)"
