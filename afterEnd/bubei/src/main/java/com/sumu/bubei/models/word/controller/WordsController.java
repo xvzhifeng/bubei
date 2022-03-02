@@ -232,11 +232,14 @@ public class WordsController {
     @ResponseBody
     public ResultInfo<Integer> getStudyRecordCount(@Validated UserVo userVo) {
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userID", userVo.getUserID());
-        queryWrapper.eq("status", 1);
         List<String> review = Common.getDateReview();
         for (int i = 0; i < review.size(); i++) {
-            queryWrapper.or().eq("studyTime", review.get(i)).eq("studyWordCount", i);
+            queryWrapper.eq("userID", userVo.getUserID());
+            queryWrapper.eq("status", 1);
+            queryWrapper.eq("studyTime", review.get(i)).eq("studyWordCount", i);
+            if (i != review.size() - 1) {
+                queryWrapper.or();
+            }
         }
         Integer count = Math.toIntExact(userStudyWordRecordService.count(queryWrapper));
         return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要复习的单词总数成功", count);
@@ -252,11 +255,15 @@ public class WordsController {
     @ResponseBody
     public ResultInfo<List<WordVo>> getStudyWords(@Validated UserVo user) {
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userID", user.getUserID());
-        queryWrapper.eq("status", 1);
         List<String> review = Common.getDateReview();
+        log.info(String.valueOf(review.size()));
         for (int i = 0; i < review.size(); i++) {
-            queryWrapper.or().eq("studyTime", review.get(i)).eq("studyWordCount", i);
+            queryWrapper.eq("userID", user.getUserID());
+            queryWrapper.eq("status", 1);
+            queryWrapper.eq("studyTime", review.get(i)).eq("studyWordCount", i);
+            if (i != review.size() - 1) {
+                queryWrapper.or();
+            }
         }
         IPage<UserStudyWordRecord> notStudy = new Page<>(user.getCurrent(), user.getSize());
         userStudyWordRecordService.page(notStudy, queryWrapper);
