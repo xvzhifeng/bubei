@@ -4,6 +4,7 @@
             userID: 1,
 			userEmail:"user@sumu.com",
 			bkurl:"/static/temp/index.jpg",
+			api_root:"http://api.sumu.today:10111",
 			api_updateStudyRecord:"http://api.sumu.today:10111/words/updateStudyRecord",
 			api_addStudyRecord:"http://api.sumu.today:10111/words/addStudyRecord",
 			api_passwordLogin:"http://api.sumu.today:10111/user/passwordLogin",
