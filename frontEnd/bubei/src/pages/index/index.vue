@@ -130,7 +130,7 @@ export default {
           getApp().globalData.bkurl = getApp().globalData.api_root+`/upload/other/bk.jpg`
         }
         // getApp().globalData.bkurl = getApp().globalData.api_root+`/upload/${res.model}/bk.jpg`
-        console.log(res.system);
+        console.log(getApp().globalData.bkurl);
         console.log(res.model);
       },
     });
