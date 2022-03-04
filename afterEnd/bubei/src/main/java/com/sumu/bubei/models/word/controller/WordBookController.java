@@ -89,6 +89,7 @@ public class WordBookController {
             QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
             wordBookRelationQueryWrapper.eq("wordBookID", l.getWordBookID());
             wordBookCountInfoVo.setCount((int) wordBookRelationService.count(wordBookRelationQueryWrapper));
+            ans.add(wordBookCountInfoVo);
         });
         return new ResultInfo().success(HttpStatus.OK.value(), "获取所有词书",ans);
     }
