@@ -13,7 +13,7 @@
     </view>
     <view v-else class="wordBookList" >
       <view v-for="(item, index) in booklist" :key="index">
-        <uni-card title="词书" :extra="item.wordBookID"  @click="choice(item.wordBookID)" class="studyCard">
+        <uni-card title="词书" :extra="item.count"  @click="choice(item.wordBookID)" class="studyCard">
           <text>{{ item.wordBookName }}</text>
         </uni-card>
       </view>
@@ -117,7 +117,7 @@ export default {
 }
 
 .studyCard {
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(219, 219, 219);
   /* color: aliceblue; */
 }
 

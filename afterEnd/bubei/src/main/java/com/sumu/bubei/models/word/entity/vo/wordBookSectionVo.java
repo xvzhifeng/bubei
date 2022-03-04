@@ -19,4 +19,5 @@ import java.time.LocalDateTime;
 @ToString
 public class wordBookSectionVo {
     private String name;
+    private int count;
 }

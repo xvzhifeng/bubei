@@ -8,6 +8,7 @@ import com.sumu.bubei.models.word.entity.WordBook;
 import com.sumu.bubei.models.word.entity.WordBookRelation;
 import com.sumu.bubei.models.word.entity.Words;
 import com.sumu.bubei.models.word.entity.vo.WordBookAndUserV0;
+import com.sumu.bubei.models.word.entity.vo.WordBookCountInfoVo;
 import com.sumu.bubei.models.word.entity.vo.wordBookSectionVo;
 import com.sumu.bubei.models.word.service.impl.UserNotStudyWordRecordServiceImpl;
 import com.sumu.bubei.models.word.service.impl.WordBookRelationServiceImpl;
@@ -70,19 +71,45 @@ public class WordBookController {
         return new ResultInfo().success(HttpStatus.OK.value(),"获取词书成功",wordBookAndUserV0);
     }
 
+    /**
+     * 获取所有的词书信息，以及当前词书一共的单词数量
+     * @return
+     */
     @RequestMapping("/getAllWordBook")
     @ResponseBody
     public ResultInfo getAllWordBook(){
+        List<WordBookCountInfoVo> ans = new ArrayList<>();
         List<WordBook> list = wordBookService.list();
+        list.forEach((l)->{
+            WordBookCountInfoVo wordBookCountInfoVo = new WordBookCountInfoVo();
+            wordBookCountInfoVo.setWordBookID(l.getWordBookID());
+            wordBookCountInfoVo.setWordBookName(l.getWordBookName());
+            wordBookCountInfoVo.setWordBookKind(l.getWordBookKind());
+            wordBookCountInfoVo.setWordBookLabel(l.getWordBookLabel());
+            QueryWrapper<WordBookRelation> wordBookRelationQueryWrapper = new QueryWrapper<>();
+            wordBookRelationQueryWrapper.eq("wordBookID", l.getWordBookID());
+            wordBookCountInfoVo.setCount((int) wordBookRelationService.count(wordBookRelationQueryWrapper));
+        });
         return new ResultInfo().success(HttpStatus.OK.value(), "获取所有词书",list);
     }
 
+    /**
+     * 获取词书的section信息
+     * @param word
+     * @return
+     */
     @RequestMapping("/getWordBookSectionList")
     @ResponseBody
     public ResultInfo getWordBookSectionList(WordBookAndUserV0 word) {
         log.info(word.toString());
         List<wordBookSectionVo> res = new ArrayList<>();
         res = wordBookRelationService.getWordBookSectionList(word.getWordBookID());
+        res.forEach((section)->{
+            QueryWrapper<WordBookRelation> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("wordBookID", word.getWordBookID());
+            queryWrapper.eq("standby1",section.getName());
+            section.setCount((int) wordBookRelationService.count(queryWrapper));
+        });
         return new ResultInfo().success(HttpStatus.OK.value(),"查询单词章节信息成功!",res);
     }
 

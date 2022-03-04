@@ -3,6 +3,13 @@
     <view class="navigate">
       <uni-icons type="left" color="" @click="back()" size="50rpx"/>
     </view>
+    <scroll-view
+              :scroll-top="scrollTop"
+              scroll-y="true"
+              class="scroll-Y"
+              show-scrollbar="false"
+              style="height: 80%"
+              >
     <view v-if="len == 0">
       <view>
         <uni-card title="词书" @click="uploadBook()">
@@ -12,11 +19,12 @@
     </view>
     <view v-else class="wordBookList" >
       <view v-for="(item, index) in booklist" :key="index">
-        <uni-card title="词书" :extra="item.wordBookID"  @click="choice(item.wordBookID)" class="studyCard">
+        <uni-card title="词书" :extra="item.count"  @click="choice(item.wordBookID)" class="studyCard">
           <text>{{ item.wordBookName }}</text>
         </uni-card>
       </view>
     </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -98,7 +106,7 @@ export default {
 }
 
 .studyCard {
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(219, 219, 219);
   /* color: aliceblue; */
 }
 

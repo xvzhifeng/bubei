@@ -4,31 +4,35 @@
       <uni-icons type="left" color="" @click="back()" size="50rpx" />
     </view>
     <!-- <view :style="{ height: 100+ 'rpx' }"></view> -->
-    <button @click="showDrawer"  plain="true" class="choiceButton">选择章节</button>
+    <button @click="showDrawer" plain="true" class="choiceButton">
+      选择章节
+    </button>
     <scroll-view
-              :scroll-top="scrollTop"
-              scroll-y="true"
-              class="scroll-Y"
-              show-scrollbar="false"
-              style="height: 80%"
-              >
-
-    <view v-if="wordLength > 0">
-      <view v-for="(item, index) in word" :key="index">
-        <view >
-          <uni-card :title="item.japaneseMeans" :extra="item.falseName" @click="audio(item.voiceUrl,item.wordID)">
-          <text>{{ item.chineseMeans }}</text>
-        </uni-card>
+      :scroll-top="scrollTop"
+      scroll-y="true"
+      class="scroll-Y"
+      show-scrollbar="false"
+      style="height: 80%"
+    >
+      <view v-if="wordLength > 0">
+        <view v-for="(item, index) in word" :key="index">
+          <view>
+            <uni-card
+              :title="item.japaneseMeans"
+              :extra="item.falseName"
+              @click="audio(item.voiceUrl, item.wordID)"
+            >
+              <text>{{ item.chineseMeans }}</text>
+            </uni-card>
+          </view>
         </view>
       </view>
-    </view>
-	<view v-else>
-      <uni-card title="info">
-        <text>当前章节没有单词</text>
-      </uni-card>
-    </view>
+      <view v-else>
+        <uni-card title="info">
+          <text>当前章节没有单词</text>
+        </uni-card>
+      </view>
     </scroll-view>
-    
 
     <uni-drawer ref="showLeft" mode="left" :mask-click="true">
       <scroll-view style="height: 100%" scroll-y="true" class="sectionList">
@@ -39,11 +43,9 @@
             :key="item.name"
             @click="choiceSection(item.name)"
             class="infoSectionSub"
-            >
-			
-				<text class="sectionButoon">{{ item.name }}</text>
-			
-			</view>
+          >
+            <text class="sectionButoon">{{ item.name }}--{{item.count}}</text>
+          </view>
         </view>
         <view v-else>
           <view class="infoSection">
@@ -86,7 +88,7 @@ export default {
       success: ({ data, statusCode, header }) => {
         console.log(data);
         this.section = data.response;
-		this.sectionLength = this.section.length;
+        this.sectionLength = this.section.length;
         uni.request({
           url: getApp().globalData.api_getWordBookSectionWordList,
           data: {
@@ -103,7 +105,7 @@ export default {
           success: ({ data, statusCode, header }) => {
             console.log(data);
             this.word = data.response;
-			this.wordLength = this.word.length;
+            this.wordLength = this.word.length;
           },
           fail: (error) => {},
         });
@@ -118,8 +120,8 @@ export default {
     });
   },
   methods: {
-    audio(url,name) {
-      console.log(url)
+    audio(url, name) {
+      console.log(url);
       uni.request({
         url: getApp().globalData.api_getMp3,
         data: {
@@ -167,7 +169,7 @@ export default {
         success: ({ data, statusCode, header }) => {
           console.log(data);
           this.word = data.response;
-		  this.$refs.showLeft.close();
+          this.$refs.showLeft.close();
         },
         fail: (error) => {},
       });
@@ -210,8 +212,8 @@ export default {
 }
 
 .choiceButton {
-	margin: 20rpx;
-	color: rgb(245, 244, 243);
+  margin: 20rpx;
+  color: rgb(245, 244, 243);
 }
 text {
   font-size: 36rpx;
@@ -239,14 +241,14 @@ text {
 }
 
 .sectionButoon {
-	/* background-color: antiquewhite; */
-	width: 100%;
-	margin: 10rpx;
+  /* background-color: antiquewhite; */
+  width: 100%;
+  margin: 10rpx;
 }
 .infoSectionSub {
   display: flex;
   margin: 10rpx;
-  border-style:  solid;
+  border-style: solid;
   border-width: 0px 0px 10rpx 0rpx;
   border-color: rgb(47, 68, 68);
   width: 100%;
