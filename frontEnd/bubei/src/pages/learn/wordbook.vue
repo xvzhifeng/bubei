@@ -48,6 +48,7 @@ export default {
       },
       method: "GET",
       success: ({ data, statusCode, header }) => {
+        console.log(data);
         this.booklist = data.response;
         this.len = this.booklist.length;
       },
