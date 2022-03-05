@@ -122,13 +122,14 @@ export default {
         this.appHeight = res.windowHeight * 2;
         if(res.model.search('PC') >= 0) {
           getApp().globalData.bkurl = getApp().globalData.api_root+`/img/PC/bk.jpg`
-        } else if(res.model.search('ipad') >= 0) {
-          getApp().globalData.bkurl = getApp().globalData.api_root+`/img/ipad/bk.jpg`
+        } else if(res.model.search('iPad') >= 0) {
+          getApp().globalData.bkurl = getApp().globalData.api_root+`/img/iPad/bk.jpg`
         } else if(res.model.search('iPhone') >= 0) {
           getApp().globalData.bkurl = getApp().globalData.api_root+`/img/iPhone/bk.jpg`
         } else {
           getApp().globalData.bkurl = getApp().globalData.api_root+`/img/other/bk.jpg`
         }
+        this.backgroundUrl = getApp().globalData.bkurl;
         // getApp().globalData.bkurl = getApp().globalData.api_root+`/upload/${res.model}/bk.jpg`
         console.log(getApp().globalData.bkurl);
         console.log(res.model);

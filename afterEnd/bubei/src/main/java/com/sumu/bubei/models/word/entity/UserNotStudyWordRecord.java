@@ -33,6 +33,9 @@ public class UserNotStudyWordRecord implements Serializable {
     @TableField("wordID")
     private Integer wordID;
 
+    @TableField("wordBookID")
+    private Integer wordBookID;
+
     @TableField("isStudy")
     private Integer isStudy;
 

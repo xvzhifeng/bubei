@@ -426,6 +426,7 @@ export default {
   },
   onReady() {},
   onLoad(options) {
+    this.backgroundUrl = getApp().globalData.bkurl;
     console.log(getApp().globalData.userID);
     console.log(getApp().globalData.userEmail);
     if (options.study == 1) {
@@ -818,11 +819,17 @@ export default {
   /* background-color: rgb(211, 177, 28); */
   height: 200rpx;
   margin: 20rpx;
+  width: 690rpx;
   /* width: 300rpx; */
   /* background-color: bisque; */
   border-radius: 20rpx;
   display: flex;
   flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-all;
   /* flex-direction: column; */
   /* justify-self: center; */
   /* justify-content: flex-start; */
@@ -844,6 +851,9 @@ export default {
 .sentenceName {
   /* position: absolute; */
   margin: 40rpx 60rpx 0rpx;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
 .sentenceMean {
@@ -854,12 +864,13 @@ export default {
 
 .grammarXvhua {
   background-color: rgba(143, 143, 143, 0.651);
+  width: 740rpx;
   /* height: 160rpx; */
   margin: 20rpx;
   border-radius: 20rpx;
   position: absolute;
   z-index: -1;
-  width: 690rpx;
+  /* width: 690rpx; */
   /* filter: blur(2px); */
   opacity: 0.7;
 }

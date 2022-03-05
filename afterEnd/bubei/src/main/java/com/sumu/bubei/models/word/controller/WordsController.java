@@ -164,9 +164,13 @@ public class WordsController {
     @RequestMapping("/getNotStudyWords")
     @ResponseBody
     public ResultInfo<List<WordVo>> getNotStudyWords(@Validated UserVo user) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", user.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userID", user.getUserID());
         queryWrapper.eq("status", 1);
+        queryWrapper.eq("wordBookID", user1.getWordBookID());
         IPage<UserNotStudyWordRecord> notStudy = new Page<>(user.getCurrent(), user.getSize());
         userNotStudyWordRecordService.page(notStudy, queryWrapper);
         List<WordVo> res = new ArrayList<>();
@@ -215,9 +219,13 @@ public class WordsController {
     @RequestMapping("/getNotStudyRecordCount")
     @ResponseBody
     public ResultInfo<Integer> getNotStudyRecordCount(@Validated UserVo userVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", userVo.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userID", userVo.getUserID());
         queryWrapper.eq("status", 1);
+        queryWrapper.eq("wordBookID", user1.getWordBookID());
         Integer count = Math.toIntExact(userNotStudyWordRecordService.count(queryWrapper));
         return new ResultInfo<Integer>().success(HttpStatus.OK.value(), "查询需要学习的单词总数成功", count);
     }
@@ -231,11 +239,15 @@ public class WordsController {
     @RequestMapping("/getStudyRecordCount")
     @ResponseBody
     public ResultInfo<Integer> getStudyRecordCount(@Validated UserVo userVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", userVo.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
         List<String> review = Common.getDateReview();
         for (int i = 0; i < review.size(); i++) {
             queryWrapper.eq("userID", userVo.getUserID());
             queryWrapper.eq("status", 1);
+            queryWrapper.eq("wordBookID", user1.getWordBookID());
             queryWrapper.eq("studyTime", review.get(i)).eq("studyWordCount", i);
             if (i != review.size() - 1) {
                 queryWrapper.or();
@@ -254,12 +266,16 @@ public class WordsController {
     @RequestMapping("/getStudyWords")
     @ResponseBody
     public ResultInfo<List<WordVo>> getStudyWords(@Validated UserVo user) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", user.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
         List<String> review = Common.getDateReview();
         log.info(String.valueOf(review.size()));
         for (int i = 0; i < review.size(); i++) {
             queryWrapper.eq("userID", user.getUserID());
             queryWrapper.eq("status", 1);
+            queryWrapper.eq("wordBookID", user1.getWordBookID());
             queryWrapper.eq("studyTime", review.get(i)).eq("studyWordCount", i);
             if (i != review.size() - 1) {
                 queryWrapper.or();
@@ -307,10 +323,14 @@ public class WordsController {
     @RequestMapping("/addStudyRecord")
     @ResponseBody
     public ResultInfo<String> addStudyRecord(@Validated StudyRecordVo studyRecordVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", studyRecordVo.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         UserStudyWordRecord userStudyWordRecord = new UserStudyWordRecord();
         userStudyWordRecord.setWordID(studyRecordVo.getWordID());
         userStudyWordRecord.setUserID(studyRecordVo.getUserID());
         userStudyWordRecord.setStudyTime(Common.getDateYearMouthDay());
+        userStudyWordRecord.setWordBookID(user1.getWordBookID());
         userStudyWordRecordService.saveOrUpdate(userStudyWordRecord);
 
         // 更新未学单词表
@@ -318,10 +338,12 @@ public class WordsController {
         QueryWrapper<UserNotStudyWordRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("wordID", studyRecordVo.getWordID());
         queryWrapper.eq("userID", studyRecordVo.getUserID());
+        queryWrapper.eq("wordBookID",user1.getWordBookID());
         queryWrapper.eq("status", 1);
         userNotStudyWordRecord.setWordID(studyRecordVo.getWordID());
         userNotStudyWordRecord.setUserID(studyRecordVo.getUserID());
         userNotStudyWordRecord.setStatus(2);
+        userNotStudyWordRecord.setWordBookID(user1.getWordBookID());
         userNotStudyWordRecordService.saveOrUpdate(userNotStudyWordRecord, queryWrapper);
         return new ResultInfo<String>().success(HttpStatus.OK.value(), "复习记录添加成功 and 删除未学习表当前单词");
     }
@@ -335,13 +357,18 @@ public class WordsController {
     @RequestMapping("/updateStudyRecord")
     @ResponseBody
     public ResultInfo<String> updateStudyRecord(@Validated StudyRecordVo studyRecordVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", studyRecordVo.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         QueryWrapper<UserStudyWordRecord> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userID", studyRecordVo.getUserID());
         queryWrapper.eq("wordID", studyRecordVo.getWordID());
+        queryWrapper.eq("wordBookID", user1.getWordBookID());
         UserStudyWordRecord userStudyWordRecordServiceOne = userStudyWordRecordService.getOne(queryWrapper);
         UserStudyWordRecord userStudyWordRecord = new UserStudyWordRecord();
         userStudyWordRecord.setWordID(studyRecordVo.getWordID());
         userStudyWordRecord.setUserID(studyRecordVo.getUserID());
+        userStudyWordRecord.setWordBookID(user1.getWordBookID());
         userStudyWordRecord.setStudyWordCount(userStudyWordRecordServiceOne.getStudyWordCount() + 1);
         userStudyWordRecord.setStudyTime(Common.getDateYearMouthDay());
         userStudyWordRecordService.saveOrUpdate(userStudyWordRecord, queryWrapper);
@@ -349,7 +376,7 @@ public class WordsController {
     }
 
     /**
-     * 初始化 需要学习的单词表
+     * 添加需要学习的单词表
      *
      * @param studyRecordVo
      * @return
@@ -357,10 +384,14 @@ public class WordsController {
     @RequestMapping("/addNotStudyRecord")
     @ResponseBody
     public ResultInfo<String> addNotStudyRecord(@Validated StudyRecordVo studyRecordVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("userID", studyRecordVo.getUserID());
+        User user1 = userService.getOne(userQueryWrapper);
         UserNotStudyWordRecord userNotStudyWordRecord = new UserNotStudyWordRecord();
         userNotStudyWordRecord.setWordID(studyRecordVo.getWordID());
         userNotStudyWordRecord.setUserID(studyRecordVo.getUserID());
         userNotStudyWordRecord.setIsStudy(studyRecordVo.getIsStudy());
+        userNotStudyWordRecord.setWordBookID(user1.getWordBookID());
         userNotStudyWordRecordService.saveOrUpdate(userNotStudyWordRecord);
         return new ResultInfo<String>().success(HttpStatus.OK.value(), "未学习完成的单词添加成功");
     }
@@ -387,9 +418,27 @@ public class WordsController {
             UserNotStudyWordRecord userNotStudyWordRecord = new UserNotStudyWordRecord();
             userNotStudyWordRecord.setWordID(w.getWordID());
             userNotStudyWordRecord.setUserID(bookAndUserVo.getUserID());
+            userNotStudyWordRecord.setWordBookID(bookAndUserVo.getWordBookID());
             userNotStudyWordRecordService.saveOrUpdate(userNotStudyWordRecord);
         }
         return new ResultInfo<String>().success(HttpStatus.OK.value(), "未学习的单词初始化成功");
+    }
+
+    /**
+     * 从词书初始化需要学习的单词
+     * 会清除上一本词书单词
+     *
+     * @param bookAndUserVo 词书和用户信息
+     * @return status
+     */
+    @RequestMapping("/delNotStudyRecordFromBook")
+    @ResponseBody
+    public ResultInfo<String> delNotStudyRecordFromBook(@Validated BookAndUserVo bookAndUserVo) {
+        log.info("delNotStudyRecordFromBook",bookAndUserVo);
+        QueryWrapper<UserNotStudyWordRecord> userNotStudyWordRecordQueryWrapper = new QueryWrapper<>();
+        userNotStudyWordRecordQueryWrapper.eq("wordBookID", bookAndUserVo.getWordBookID());
+        userNotStudyWordRecordService.remove(userNotStudyWordRecordQueryWrapper);
+        return new ResultInfo<String>().success(HttpStatus.OK.value(), "删除未学习的词书"+bookAndUserVo.getWordBookID()+"的单词");
     }
 
     public void setWordsVo(WordVo wordsVo, Words words) {

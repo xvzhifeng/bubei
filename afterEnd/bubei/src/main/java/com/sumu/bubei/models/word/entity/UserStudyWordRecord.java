@@ -39,6 +39,9 @@ public class UserStudyWordRecord implements Serializable {
     @TableField("studyTime")
     private String studyTime;
 
+    @TableField("wordBookID")
+    private Integer wordBookID;
+
     private String standby1;
 
     private String standby2;
