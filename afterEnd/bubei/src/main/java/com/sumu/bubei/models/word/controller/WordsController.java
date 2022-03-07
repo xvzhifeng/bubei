@@ -12,8 +12,8 @@ import com.sumu.bubei.models.login.service.impl.UserServiceImpl;
 import com.sumu.bubei.models.word.entity.*;
 import com.sumu.bubei.models.word.entity.vo.BookAndUserVo;
 import com.sumu.bubei.models.word.entity.vo.StudyRecordVo;
+import com.sumu.bubei.models.word.entity.vo.WordOption;
 import com.sumu.bubei.models.word.entity.vo.WordVo;
-import com.sumu.bubei.models.word.entity.vo.wordOption;
 import com.sumu.bubei.models.word.service.impl.*;
 import com.sumu.bubei.models.word.utils.Common;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -201,9 +202,8 @@ public class WordsController {
             subRes.setSentence(sentencesList);
             subRes.setPhrase(phraseList);
             subRes.setCount(words.getIsStudy());
-            wordOption wordOption = new wordOption(words1.getJapaneseMeans(), words1.getFalseName(), words1.getChineseMeans(), words1.getEnglishMeans());
-            List<wordOption> options = getOptions(words1.getJapaneseMeans());
-            options.add(new Random().nextInt(options.size()), wordOption);
+            WordOption wordOption = new WordOption(words1.getJapaneseMeans(), words1.getFalseName(), words1.getChineseMeans(), words1.getEnglishMeans());
+            List<WordOption> options = getOptions(wordOption);
             subRes.setOptions(options);
             res.add(subRes);
         });
@@ -451,24 +451,42 @@ public class WordsController {
         wordsVo.setWordID(words.getWordID());
     }
 
-    public List<wordOption> getOptions(String word) {
-        List<wordOption> res = new LinkedList<>();
+    public List<WordOption> getOptions(WordOption word) {
+        boolean have = false;
+        List<WordOption> res = new LinkedList<>();
         QueryWrapper<Words> queryWrapper = new QueryWrapper<>();
-        for (int i = 0; i < word.length(); i++) {
-            String sub = word.substring(i, word.length());
+        int len = 0;
+        if(word != null && word.getJapaneseMeans() != null && !word.getJapaneseMeans().equals("")) {
+            len = word.getJapaneseMeans().length();
+        }
+        for (int i = 0; i < len; i++) {
+            String sub = word.getJapaneseMeans().substring(i, word.getJapaneseMeans().length());
             queryWrapper.likeRight("japaneseMeans", sub);
             List<Words> list = wordsService.list(queryWrapper);
             for (Words w : list) {
                 if (res.size() >= 3) {
                     break;
                 }
-                res.add(new wordOption(w.getJapaneseMeans(), w.getFalseName(), w.getChineseMeans(), w.getEnglishMeans()));
+                if(w.getJapaneseMeans().equals(word.getJapaneseMeans())) {
+                    have = true;
+                }
+                res.add(new WordOption(w.getJapaneseMeans(), w.getFalseName(), w.getChineseMeans().split("\n")[1], w.getEnglishMeans()));
             }
         }
+        if (!have) {
+            res.add(word);
+        }
         List<Words> list = wordsService.list();
-        while(res.size() < 3) {
+        while(res.size() < 4) {
             Words words = list.get(new Random().nextInt(list.size()));
-            res.add(new wordOption(words.getJapaneseMeans(), words.getFalseName(), words.getChineseMeans(), words.getEnglishMeans()));
+            String[] chineses = words.getChineseMeans().split("\n");
+            String chinese = "";
+            if(chineses.length > 1) {
+                chinese = chineses[1];
+            } else {
+                chinese = words.getChineseMeans();
+            }
+            res.add(new WordOption(words.getJapaneseMeans(), words.getFalseName(), chinese, words.getEnglishMeans()));
         }
         return res;
     }

@@ -31,7 +31,7 @@ public class WordVo {
     private Integer count;
     private List<Sentences> sentence;
     private List<Sentences> phrase;
-    private List<wordOption> options;
+    private List<WordOption> options;
     private int wordBookID;
     private String wordSection;
 }

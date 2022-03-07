@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class wordOption {
+public class WordOption {
     private String japaneseMeans;
     private String falseName;
     private String chineseMeans;
