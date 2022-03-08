@@ -837,7 +837,7 @@ export default {
 }
 
 .sentenceXvhua {
-  background-color: rgba(143, 143, 143, 0.651);
+  background-color: rgba(112, 110, 110, 0.1);
   /* height: 160rpx; */
   margin: 20rpx;
   border-radius: 20rpx;
@@ -863,7 +863,7 @@ export default {
 }
 
 .grammarXvhua {
-  background-color: rgba(143, 143, 143, 0.651);
+  background-color: rgba(112, 110, 110, 0.1);
   width: 740rpx;
   /* height: 160rpx; */
   margin: 20rpx;
