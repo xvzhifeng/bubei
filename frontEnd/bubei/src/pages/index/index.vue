@@ -330,11 +330,11 @@ export default {
 .xvhua {
   position: absolute;
   z-index: -1;
-  background-color: rgb(179, 178, 178);
+  background-color: rgba(112, 110, 110, 0.1);
   filter: blur(2px);
   height: 100%;
   width: 250rpx;
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
 .reviewButtton {
   z-index: 1;

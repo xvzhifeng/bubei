@@ -484,7 +484,7 @@ public class WordsController {
             if(chineses.length > 1) {
                 chinese = chineses[1];
             } else {
-                chinese = words.getChineseMeans();
+                chinese = words.getChineseMeans().replace("1.","").trim();
             }
             res.add(new WordOption(words.getJapaneseMeans(), words.getFalseName(), chinese, words.getEnglishMeans()));
         }

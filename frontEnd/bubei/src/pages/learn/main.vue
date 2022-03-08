@@ -744,7 +744,7 @@ export default {
 
 .optionXvhua {
   position: absolute;
-  background-color: rgba(143, 143, 143, 0.651);
+  background-color: rgba(112, 110, 110, 0.1);
   width: 560rpx;
   height: 100rpx;
   border-radius: 20rpx;
