@@ -460,7 +460,7 @@ public class WordsController {
             len = word.getJapaneseMeans().length();
         }
         for (int i = 0; i < len; i++) {
-            String sub = word.getJapaneseMeans().substring(i, word.getJapaneseMeans().length());
+            String sub = word.getJapaneseMeans().substring(i, len);
             queryWrapper.likeRight("japaneseMeans", sub);
             List<Words> list = wordsService.list(queryWrapper);
             for (Words w : list) {
@@ -470,7 +470,14 @@ public class WordsController {
                 if(w.getJapaneseMeans().equals(word.getJapaneseMeans())) {
                     have = true;
                 }
-                res.add(new WordOption(w.getJapaneseMeans(), w.getFalseName(), w.getChineseMeans().split("\n")[1], w.getEnglishMeans()));
+                String[] chineses = w.getChineseMeans().split("\n");
+                String chinese = "";
+                if(chineses.length > 1) {
+                    chinese = chineses[1].replace("1.","").trim().replace("。","");
+                } else {
+                    chinese = w.getChineseMeans().replace("1.","").trim().replace("。","");
+                }
+                res.add(new WordOption(w.getJapaneseMeans(), w.getFalseName(), chinese, w.getEnglishMeans()));
             }
         }
         if (!have) {
