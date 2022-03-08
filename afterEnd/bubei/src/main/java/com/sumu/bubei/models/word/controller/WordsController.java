@@ -482,7 +482,7 @@ public class WordsController {
             String[] chineses = words.getChineseMeans().split("\n");
             String chinese = "";
             if(chineses.length > 1) {
-                chinese = chineses[1];
+                chinese = chineses[1].replace("1.","").trim();
             } else {
                 chinese = words.getChineseMeans().replace("1.","").trim();
             }
