@@ -116,8 +116,10 @@ export default {
                 email: this.email,
               },
               success: ({ data, statusCode, header }) => {
-                getApp().globalData.userID = data.response;
+                getApp().globalData.userID = data.response.userID;
+                getApp().globalData.userInfo = data.response;
                 getApp().globalData.userEmail = this.email;
+                uni.setStorageSync('userID', data.response.userID);
                 uni.request({
                   url: getApp().globalData.api_getBK,
                   data: {},

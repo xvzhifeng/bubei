@@ -51,7 +51,6 @@ export default {
               errorMessage: "请输入用户名姓名",
             },
             {
-              minLength: 3,
               maxLength: 25,
               errorMessage: "姓名长度在 {minLength} 到 {maxLength} 个字符",
             },
@@ -111,7 +110,10 @@ export default {
             success: ({ data, statusCode, header }) => {
               console.log(data);
               if (data.status == 200) {
-                getApp().globalData.userID = data.response;
+                console.log(data.response);
+                getApp().globalData.userID = data.response.userID;
+                getApp().globalData.userInfo = data.response;
+                uni.setStorageSync('userID', data.response.userID);
                 uni.navigateTo({
                   url: "/pages/index/index",
                   successs: () => {

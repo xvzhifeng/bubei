@@ -7,6 +7,7 @@ const router = createRouter({
 });
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
+  getApp().globalData.userID = uni.getStorageSync("userID");
   if (getApp().globalData.userID < 0 && to.path.indexOf("login") < 0) {
     console.log("用户未登录！！！");
     next({ path: "/pages/login/login", NAVTYPE: "replaceAll" });
@@ -14,7 +15,7 @@ router.beforeEach((to, from, next) => {
     console.log("用户已经登录！！！");
     next();
   }
-// next();
+  // next();
 });
 // 全局路由后置守卫
 router.afterEach((to, from) => {

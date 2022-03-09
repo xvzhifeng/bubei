@@ -53,7 +53,7 @@ public class UserController {
         long count = userService.count(userQueryWrapper);
         if(count == 1) {
             User userServiceOne = userService.getOne(userQueryWrapper);
-            return new ResultInfo().success(HttpStatus.OK.value(),"登录成功",userServiceOne.getUserID());
+            return new ResultInfo().success(HttpStatus.OK.value(),"登录成功",userServiceOne);
         } else {
             return new ResultInfo().error(HttpStatus.BAD_REQUEST.value(),"登录失败");
         }

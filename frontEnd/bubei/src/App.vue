@@ -1,7 +1,8 @@
 <script>
 	export default {
 		globalData: {  
-            userID: 1,
+			userInfo:{},
+            userID: -1,
 			userEmail:"user@sumu.com",
 			bkurl:"/static/temp/index.jpg",
 			api_root:"http://api.sumu.today:10111",

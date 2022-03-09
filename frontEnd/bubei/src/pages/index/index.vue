@@ -4,7 +4,7 @@
     <image class="image-bg" :src="backgroundUrl" />
     <view class="userIconView">
       <cover-image
-        src="/static/logo.png"
+        :src="avatar"
         class="userIcon"
         @click="gotoUserPage()"
       ></cover-image>
@@ -67,11 +67,14 @@ export default {
       reviewCount: 20,
       appHeight: 0,
       backgroundUrl: "/static/temp/index.jpg",
+      avatar:"/static/logo.png"
       // backgroundUrl:"/static/logo.png",
     };
   },
   onLoad(options) {
     this.backgroundUrl = getApp().globalData.bkurl;
+    this.avatar = getApp().globalData.userInfo.avatar;
+    uni.getStorageSync('loginStatus')
     console.log(this.backgroundUrl);
     // 获取需要学习的单词数量
     uni.request({
