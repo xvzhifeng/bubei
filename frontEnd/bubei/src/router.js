@@ -8,7 +8,8 @@ const router = createRouter({
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
   getApp().globalData.userID = uni.getStorageSync("userID");
-  if (getApp().globalData.userID < 0 && to.path.indexOf("login") < 0) {
+  if ((getApp().globalData.userID == null || getApp().globalData.userID == "" 
+  || getApp().globalData.userID < 0 )&& to.path.indexOf("login") < 0) {
     console.log("用户未登录！！！");
     next({ path: "/pages/login/login", NAVTYPE: "replaceAll" });
   } else {
